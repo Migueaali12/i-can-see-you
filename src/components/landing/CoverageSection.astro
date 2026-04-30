@@ -2,16 +2,15 @@
 import { ScanEye, EyeOff } from "@lucide/astro"
 
 const detectedItems = [
-  "Cambios de visibilidad de la pestana (tab switch).",
-  "Perdida y recuperacion del foco de ventana.",
-  "Salida de pantalla completa e inactividad prolongada.",
+  "Tab visibility changes (tab switch).",
+  "Window focus loss and recovery.",
+  "Fullscreen exit and prolonged inactivity.",
 ]
 
 const notDetectedItems = [
-  "Aplicaciones abiertas fuera del navegador.",
-
-  "Contenido exacto de otras ventanas del sistema.",
-  "Lo que haz desayunado esta mañana.",
+  "Applications open outside the browser.",
+  "Exact content of other system windows.",
+  "What you ate for breakfast this morning.",
 ]
 
 const listMarker = "•"
@@ -29,7 +28,7 @@ const listMarker = "•"
         <ScanEye />
       </div>
       <h2 class='mb-6 font-display text-[1.35rem] font-semibold leading-tight flex items-center gap-2 border-b-2 border-black pb-3 text-black'>
-        Que puedo detectar
+        What I can detect
       </h2>
       <ul class='list-none m-0 p-0 flex flex-col gap-4 text-[1.05rem] leading-relaxed text-(--color-on-surface) grow'>
         {
@@ -57,7 +56,7 @@ const listMarker = "•"
         <EyeOff size={27} />
       </div>
       <h2 class='mb-6 font-display text-[1.35rem] font-semibold leading-tight flex items-center gap-2 border-b-2 border-black pb-3 text-black'>
-        Que no puedo detectar
+        What I can't detect
       </h2>
       <ul class='list-none m-0 p-0 flex flex-col gap-4 text-[1.05rem] leading-relaxed text-(--color-on-surface) grow opacity-80'>
         {
