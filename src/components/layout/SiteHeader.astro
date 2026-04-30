@@ -1,0 +1,63 @@
+<header class="site-header">
+  <span class="site-header__brand">I can see you</span>
+  <nav class="site-header__nav" aria-label="Navegacion principal">
+    <ul>
+      <li><a href="/">Inicio</a></li>
+      <li><a href="#transparencia">Senales</a></li>
+      <li><a href="/demo">Demo</a></li>
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: #fff;
+    border: 2px solid #000;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: 4px solid #000;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.08);
+  }
+
+  .site-header__brand {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-style: italic;
+    font-size: 1.4rem;
+    letter-spacing: -0.04em;
+    color: #000;
+  }
+
+  .site-header__nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 2rem;
+  }
+
+  .site-header__nav a {
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-secondary);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    transition: color 120ms ease, transform 120ms ease;
+  }
+
+  .site-header__nav a:hover {
+    color: #000;
+    transform: rotate(-1deg) scale(1.05);
+    display: inline-block;
+  }
+</style>

@@ -43,6 +43,9 @@ The app demonstrates **browser signals**, not full OS-level surveillance.
   - Pupils follow cursor
   - Occasional blink
   - Expression states: neutral → suspicious → annoyed
+- **Typography:**
+  - Titles (`h1`, `h2`, brand name): `Nanum Pen Script` → `var(--font-display)`
+  - Subtitles and body text: `LXGW WenKai Mono TC` → `var(--font-body)`
 - **Voice:** Short, playful messages; one at a time.
 **Do not** introduce colorful gradients or generic “SaaS template” aesthetics.
 ---

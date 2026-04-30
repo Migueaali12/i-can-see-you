@@ -1,0 +1,90 @@
+---
+interface Props {
+  href?: string;
+  variant?: "primary" | "ghost";
+  type?: "button" | "submit";
+  icon?: string;
+}
+
+const { href, variant = "primary", type = "button", icon } = Astro.props as Props;
+const tag = href ? "a" : "button";
+---
+
+<div class={`btn-wrap btn-wrap--${variant}`}>
+  <div class="btn-shadow"></div>
+  {tag === "a" ? (
+    <a class="btn-inner" href={href}>
+      <slot />
+      {icon && <span class="material-symbols-outlined">{icon}</span>}
+    </a>
+  ) : (
+    <button class="btn-inner" type={type}>
+      <slot />
+      {icon && <span class="material-symbols-outlined">{icon}</span>}
+    </button>
+  )}
+</div>
+
+<style>
+  .btn-wrap {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  .btn-shadow {
+    position: absolute;
+    inset: 0;
+    translate: 6px 6px;
+    transition: translate 120ms ease;
+  }
+
+  .btn-inner {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.9rem 2rem;
+    border: 2px solid #000;
+    background: var(--color-surface);
+    color: #000;
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 120ms ease, translate 120ms ease;
+  }
+
+  .btn-inner .material-symbols-outlined {
+    font-size: 1.2rem;
+  }
+
+  .btn-wrap:hover .btn-inner {
+    transform: rotate(-2deg);
+  }
+
+  .btn-wrap:active .btn-shadow {
+    translate: 2px 2px;
+  }
+
+  .btn-wrap:active .btn-inner {
+    translate: 2px 2px;
+  }
+
+  /* Primary: sombra negra */
+  .btn-wrap--primary .btn-shadow {
+    background: #000;
+  }
+
+  /* Ghost: sombra gris */
+  .btn-wrap--ghost .btn-shadow {
+    background: var(--color-secondary);
+  }
+
+  .btn-wrap--ghost .btn-inner {
+    font-size: 1rem;
+    padding: 0.7rem 1.4rem;
+  }
+</style>

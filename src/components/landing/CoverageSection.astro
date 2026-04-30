@@ -1,0 +1,195 @@
+---
+import { ScanEye, EyeOff } from "@lucide/astro"
+
+const detectedItems = [
+  "Cambios de visibilidad de la pestana (tab switch).",
+  "Perdida y recuperacion del foco de ventana.",
+  "Salida de pantalla completa e inactividad prolongada.",
+]
+
+const notDetectedItems = [
+  "Aplicaciones abiertas fuera del navegador.",
+  "Entorno fisico o lo que ocurre en tu habitacion.",
+  "Contenido exacto de otras ventanas del sistema.",
+  "Lo que haz desayunado esta mañana.",
+]
+---
+
+<section class='coverage'>
+  <!-- Que si detectamos -->
+  <article class='sticker-card'>
+    <div class='sticker-card__shadow'></div>
+    <div class='sticker-card__body'>
+      <div class='sticker-card__decorator' aria-hidden='true'>
+        <ScanEye />
+      </div>
+      <h2>Que puedo detectar</h2>
+      <ul>
+        {
+          detectedItems.map((item) => (
+            <li>
+              <span class='list-marker' aria-hidden='true'>
+                —
+              </span>
+              <span>{item}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </article>
+
+  <!-- Que no detectamos -->
+  <article class='sticker-card sticker-card--muted'>
+    <div class='sticker-card__shadow sticker-card__shadow--inverse'></div>
+    <div class='sticker-card__body'>
+      <div
+        class='sticker-card__decorator sticker-card__decorator--right'
+        aria-hidden='true'
+      >
+        <EyeOff />
+      </div>
+      <h2>Que no puedo detectar</h2>
+      <ul class='list--muted'>
+        {
+          notDetectedItems.map((item) => (
+            <li>
+              <span class='list-marker list-marker--muted' aria-hidden='true'>
+                ~
+              </span>
+              <span>{item}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </article>
+</section>
+
+<style>
+  .coverage {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3rem;
+    width: min(900px, calc(100% - 3rem));
+    margin-inline: auto;
+    padding: 1rem 0 2rem;
+  }
+
+  /* Sticker card */
+  .sticker-card {
+    position: relative;
+  }
+
+  .sticker-card__shadow {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    translate: 6px 6px;
+  }
+
+  .sticker-card__shadow--inverse {
+    translate: -6px 6px;
+  }
+
+  .sticker-card__body {
+    position: relative;
+    background: var(--color-surface);
+    border: 2px solid #000;
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sticker-card__decorator {
+    position: absolute;
+    top: -1rem;
+    left: -1rem;
+    width: 2rem;
+    height: 2rem;
+    background: var(--color-surface);
+    transform: rotate(-12deg);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sticker-card__decorator :global(svg) {
+    width: 100%;
+    height: 100%;
+    stroke: #000;
+    stroke-width: 2px;
+  }
+
+  .sticker-card__decorator--right {
+    left: auto;
+    right: -0.75rem;
+    top: -0.75rem;
+    transform: rotate(12deg);
+    width: 1.7rem;
+    height: 1.7rem;
+  }
+
+  .sticker-card__body h2 {
+    margin: 0 0 1.5rem;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 2px solid #000;
+    padding-bottom: 0.75rem;
+    color: #000;
+  }
+
+  .sticker-card__body h2 .material-symbols-outlined {
+    font-size: 1.3rem;
+  }
+
+  .sticker-card__body ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--color-on-surface);
+    flex-grow: 1;
+  }
+
+  .sticker-card__body li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+
+  .list--muted {
+    opacity: 0.8;
+  }
+
+  .list-marker {
+    color: #000;
+    margin-top: 0.15rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .list-marker--muted {
+    color: var(--color-secondary);
+  }
+
+  @media (max-width: 700px) {
+    .coverage {
+      grid-template-columns: 1fr;
+    }
+
+    .sticker-card + .sticker-card {
+      margin-top: 1rem;
+    }
+  }
+</style>
