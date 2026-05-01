@@ -15,6 +15,10 @@
   font-size: 7.5rem; /* 1em = base for all proportions */
 }
 
+.mascot--md {
+  font-size: 4.5rem;
+}
+
 .mascot--sm {
   font-size: 2.5rem;
 }

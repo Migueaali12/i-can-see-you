@@ -4,6 +4,7 @@
 - **Type:** Web app demo (portfolio/viral), not a production proctoring platform.
 - **Core idea:** Simulate and visualize browser-detectable distraction signals during a timed session (60–90s).
 - **Primary language:** Spanish UI copy (can support EN later).
+- **UI language:** English.
 - **Product tone:** Playful, witty, slightly passive-aggressive, never hostile.
 ---
 ## 2) Product Goal
@@ -91,6 +92,7 @@ Always include:
 **Chosen direction:** Astro + React islands
 - Astro for fast marketing shell + clean routing.
 - React island(s) for interactive detection engine/session UI.
+- Tailwind CSS for styling.
 - Client-side state only for MVP (no backend required).
 - Optional localStorage for lightweight preferences only.
 Why this stack:

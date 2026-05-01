@@ -1,5 +1,5 @@
 ---
-import { ScanEye, EyeOff } from "@lucide/astro"
+import { DoodleCard } from "@/components/ui/DoodleCard"
 
 const detectedItems = [
   "Tab visibility changes (tab switch).",
@@ -12,64 +12,9 @@ const notDetectedItems = [
   "Exact content of other system windows.",
   "What you ate for breakfast this morning.",
 ]
-
-const listMarker = "•"
 ---
 
 <section class='grid grid-cols-1 min-[700px]:grid-cols-2 gap-16 w-[min(900px,calc(100%-3rem))] mx-auto pt-4 pb-8'>
-  <!-- Que si detectamos -->
-  <article class='relative'>
-    <div class='absolute inset-0 bg-black translate-x-1.5 translate-y-1.5'></div>
-    <div class='relative bg-(--color-surface) border-2 border-black p-8 h-full flex flex-col'>
-      <div
-        class='absolute -top-4 -left-4 w-8 h-8 bg-(--color-surface) -rotate-12 inline-flex items-center justify-center [&_svg]:w-full [&_svg]:h-full [&_svg]:stroke-black [&_svg]:stroke-2'
-        aria-hidden='true'
-      >
-        <ScanEye />
-      </div>
-      <h2 class='mb-6 font-display text-[1.35rem] font-semibold leading-tight flex items-center gap-2 border-b-2 border-black pb-3 text-black'>
-        What I can detect
-      </h2>
-      <ul class='list-none m-0 p-0 flex flex-col gap-4 text-[1.05rem] leading-relaxed text-(--color-on-surface) grow'>
-        {
-          detectedItems.map((item) => (
-            <li class='flex items-start gap-[0.6rem]'>
-              <span class='text-black mt-[0.15rem] font-bold shrink-0' aria-hidden='true'>
-                {listMarker}
-              </span>
-              <span>{item}</span>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-  </article>
-
-  <!-- Que no detectamos -->
-  <article class='relative'>
-    <div class='absolute inset-0 bg-black translate-x-1.5 translate-y-1.5'></div>
-    <div class='relative bg-(--color-surface) border-2 border-black p-8 h-full flex flex-col'>
-      <div
-        class='absolute -top-4 -left-4 w-8 h-8 bg-(--color-surface) -rotate-12 inline-flex items-center justify-center'
-        aria-hidden='true'
-      >
-        <EyeOff size={27} />
-      </div>
-      <h2 class='mb-6 font-display text-[1.35rem] font-semibold leading-tight flex items-center gap-2 border-b-2 border-black pb-3 text-black'>
-        What I can't detect
-      </h2>
-      <ul class='list-none m-0 p-0 flex flex-col gap-4 text-[1.05rem] leading-relaxed text-(--color-on-surface) grow opacity-80'>
-        {
-          notDetectedItems.map((item) => (
-            <li class='flex items-start gap-[0.6rem]'>
-              <span class='text-black mt-[0.15rem] font-bold shrink-0' aria-hidden='true'>
-                {listMarker}
-              </span>
-              <span>{item}</span>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-  </article>
+  <DoodleCard corner='scan' title='What I can detect' listItems={detectedItems} />
+  <DoodleCard corner='eye-off' title="What I can't detect" listItems={notDetectedItems} listMuted />
 </section>
