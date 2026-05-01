@@ -1,0 +1,11 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import ActiveSessionView from "@/components/demo/ActiveSessionView"
+---
+
+<Layout
+  title="Demo | I can see you"
+  description="60-second live detection session. Try not to get distracted."
+>
+  <ActiveSessionView client:load />
+</Layout>
