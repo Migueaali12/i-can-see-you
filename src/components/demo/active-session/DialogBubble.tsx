@@ -1,49 +1,18 @@
-import { t, shadow4 } from "./styles"
-
 export default function DialogBubble({ message }: { message: string }) {
   return (
-    <div style={{ position: "relative", paddingBottom: "14px" }}>
+    <div className="relative pb-[14px]">
+      {/* Shadow layer — bottom offset matches tail height */}
       <div
-        style={{
-          ...shadow4,
-          bottom: "14px",
-        }}
+        className="absolute top-0 left-0 right-0 bottom-[14px] bg-black [translate:4px_4px]"
         aria-hidden
       />
-      <div
-        style={{
-          position: "relative",
-          background: "#fff",
-          border: "2.5px solid #111",
-          padding: "0.7rem 0.95rem",
-          maxWidth: "200px",
-        }}
-      >
-        <p
-          style={{
-            margin: 0,
-            fontFamily: t.fontBody,
-            fontSize: "0.8rem",
-            fontStyle: "italic",
-            color: "#111",
-            lineHeight: 1.45,
-          }}
-        >
+      <div className="relative bg-white border-[2.5px] border-black px-[0.95rem] py-[0.7rem] max-w-[200px]">
+        <p className="m-0 font-body text-[0.8rem] italic text-[#111] leading-[1.45]">
           &ldquo;{message}&rdquo;
         </p>
-        {/* Bubble tail pointing down toward mascot */}
+        {/* Tail pointing down toward mascot */}
         <div
-          style={{
-            position: "absolute",
-            bottom: "-13px",
-            right: "22px",
-            width: "16px",
-            height: "16px",
-            background: "#fff",
-            borderRight: "2.5px solid #111",
-            borderBottom: "2.5px solid #111",
-            transform: "rotate(45deg)",
-          }}
+          className="absolute bottom-[-13px] right-[22px] size-4 bg-white border-r-[2.5px] border-b-[2.5px] border-black rotate-45"
           aria-hidden
         />
       </div>

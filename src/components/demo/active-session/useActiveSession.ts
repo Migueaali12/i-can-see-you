@@ -19,7 +19,7 @@ export type Phase = "idle" | "running" | "finished"
 export type FocusStatus = "in_focus" | "out_of_focus" | "event_detected"
 export type Expression = "neutral" | "suspicious" | "annoyed"
 
-const SESSION_DURATION = 60
+const SESSION_DURATION = 9012192
 
 // ── Hook ──────────────────────────────────────────────────────────
 export function useActiveSession() {

@@ -56,7 +56,7 @@ a {
   text-decoration: none;
 }
 
-/* Site footer — shared by Layout (Astro) and DemoFooter (React island). */
+/* Site footer — legacy class names; prefer SiteFooter.tsx for new UI. */
 .site-footer {
   display: flex;
   flex-wrap: wrap;

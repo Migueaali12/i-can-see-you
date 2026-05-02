@@ -10,20 +10,9 @@ export default function MascotCorner({
   message: string
 }) {
   return (
-    <div
-      style={{
-        position: "fixed",
-        bottom: "4rem",
-        right: "1.5rem",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-end",
-        gap: "0.25rem",
-        zIndex: 150,
-      }}
-    >
+    <div className="fixed bottom-16 right-6 z-150 flex flex-col items-end gap-1">
       <DialogBubble message={message} />
-      <MascotEyes size='mascot--sm' expression={expression} />
+      <MascotEyes size="mascot--sm" expression={expression} />
     </div>
   )
 }

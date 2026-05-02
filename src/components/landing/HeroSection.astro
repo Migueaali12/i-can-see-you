@@ -1,5 +1,5 @@
 ---
-import Button from "@/components/ui/Button.astro"
+import Button from "@/components/ui/Button.tsx"
 import { Play } from "@lucide/astro"
 import MascotEyes from "@/components/mascot/MascotEyes"
 ---
@@ -24,7 +24,7 @@ import MascotEyes from "@/components/mascot/MascotEyes"
   </p>
 
   <div class='flex flex-wrap justify-center gap-4'>
-    <Button href='/support'
+    <Button size='lg' variant='gray' href='/support'
       >Try detection
       <Play size={20} />
     </Button>

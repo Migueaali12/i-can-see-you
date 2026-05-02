@@ -1,6 +1,8 @@
-import { useState, useEffect, type CSSProperties } from "react"
+import { useState, useEffect } from "react"
 import MascotEyes from "@/components/mascot/MascotEyes"
-import { DoodleCard } from "@/components/ui/DoodleCard"
+import SiteShell from "@/components/layout/SiteShell"
+import { DoodleCard } from "@/components/ui/Card"
+import Button from "@/components/ui/Button"
 import {
   checkAllExplicitPermissions,
   hasPendingPermissions,
@@ -9,60 +11,28 @@ import {
   type ExplicitApiKey,
 } from "@/core/permissions"
 
-// ── Shared style tokens ───────────────────────────────────────────
-const css = {
-  fontDisplay: "var(--font-display)",
-  fontBody: "var(--font-body)",
-  colorSecondary: "var(--color-secondary)",
-  colorOutline: "var(--color-outline)",
-  colorOutlineVariant: "var(--color-outline-variant)",
-  colorSurface: "var(--color-surface)",
-} as const
-
 // ── Badge component ───────────────────────────────────────────────
 type BadgeVariant = "active" | "partial" | "unavailable"
 
+const BADGE_CLASSES: Record<BadgeVariant, string> = {
+  active: "bg-black text-white border-2 border-black",
+  partial: "border-2 border-dashed border-black text-black",
+  unavailable:
+    "border-2 border-(--color-outline-variant) text-(--color-outline) line-through",
+}
+
+const BADGE_LABELS: Record<BadgeVariant, string> = {
+  active: "ACTIVE",
+  partial: "PARTIAL",
+  unavailable: "UNAVAILABLE",
+}
+
 function Badge({ variant }: { variant: BadgeVariant }) {
-  const styles: Record<BadgeVariant, CSSProperties> = {
-    active: {
-      background: "#111",
-      color: "#fff",
-      border: "2px solid #111",
-    },
-    partial: {
-      background: "transparent",
-      color: "#111",
-      border: "2px dashed #111",
-    },
-    unavailable: {
-      background: "transparent",
-      color: css.colorOutline,
-      border: "2px solid var(--color-outline-variant)",
-      textDecoration: "line-through",
-    },
-  }
-
-  const labels: Record<BadgeVariant, string> = {
-    active: "ACTIVE",
-    partial: "PARTIAL",
-    unavailable: "UNAVAILABLE",
-  }
-
   return (
     <span
-      style={{
-        display: "inline-block",
-        fontFamily: css.fontBody,
-        fontSize: "0.65rem",
-        fontWeight: 700,
-        letterSpacing: "0.08em",
-        padding: "0.2rem 0.55rem",
-        borderRadius: "2px",
-        whiteSpace: "nowrap",
-        ...styles[variant],
-      }}
+      className={`inline-block font-body text-[0.65rem] font-bold tracking-[0.08em] px-[0.55rem] py-[0.2rem] rounded-[2px] whitespace-nowrap ${BADGE_CLASSES[variant]}`}
     >
-      {labels[variant]}
+      {BADGE_LABELS[variant]}
     </span>
   )
 }
@@ -74,85 +44,6 @@ function getBadgeVariant(status: ExplicitApiStatus): BadgeVariant {
   return "partial"
 }
 
-// ── ShadowButton component ────────────────────────────────────────
-interface ShadowButtonProps {
-  onClick: () => void
-  disabled?: boolean
-  loading?: boolean
-  ghost?: boolean
-  children: React.ReactNode
-}
-
-function ShadowButton({
-  onClick,
-  disabled,
-  loading,
-  ghost,
-  children,
-}: ShadowButtonProps) {
-  const shadowColor = ghost ? css.colorSecondary : "#000"
-  const isDisabled = disabled || loading
-
-  return (
-    <div
-      style={{
-        position: "relative",
-        display: "inline-block",
-        cursor: isDisabled ? "not-allowed" : "pointer",
-        opacity: isDisabled ? 0.6 : 1,
-      }}
-    >
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background: shadowColor,
-          translate: "5px 5px",
-          transition: "translate 120ms ease",
-        }}
-        aria-hidden='true'
-      />
-      <button
-        onClick={onClick}
-        disabled={isDisabled}
-        style={{
-          position: "relative",
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "0.4rem",
-          padding: ghost ? "0.6rem 1.2rem" : "0.75rem 1.5rem",
-          border: "2px solid #000",
-          background: css.colorSurface,
-          color: "#000",
-          fontFamily: css.fontBody,
-          fontSize: ghost ? "0.9rem" : "1rem",
-          fontWeight: 600,
-          cursor: isDisabled ? "not-allowed" : "pointer",
-          transition: "transform 120ms ease, translate 120ms ease",
-          whiteSpace: "nowrap",
-        }}
-        onMouseEnter={(e) => {
-          if (!isDisabled)
-            (e.currentTarget as HTMLButtonElement).style.transform =
-              "rotate(-1.5deg)"
-        }}
-        onMouseLeave={(e) => {
-          ;(e.currentTarget as HTMLButtonElement).style.transform = ""
-        }}
-        onMouseDown={(e) => {
-          if (!isDisabled)
-            (e.currentTarget as HTMLButtonElement).style.translate = "3px 3px"
-        }}
-        onMouseUp={(e) => {
-          ;(e.currentTarget as HTMLButtonElement).style.translate = ""
-        }}
-      >
-        {loading ? "Requesting…" : children}
-      </button>
-    </div>
-  )
-}
-
 // ── PermissionRow component ───────────────────────────────────────
 interface PermissionRowProps {
   status: ExplicitApiStatus
@@ -160,53 +51,41 @@ interface PermissionRowProps {
   onAuthorize: () => void
 }
 
-function PermissionRow({ status, isAuthorizing, onAuthorize }: PermissionRowProps) {
+function PermissionRow({
+  status,
+  isAuthorizing,
+  onAuthorize,
+}: PermissionRowProps) {
   const badge = getBadgeVariant(status)
   const canAuthorize = status.support && status.permission === "prompt"
 
   return (
     <DoodleCard innerClassName='relative w-full flex flex-wrap items-center justify-between gap-4 border-2 border-black bg-(--color-surface) py-[1.1rem] px-5'>
-      {/* Left: label + description */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "0.2rem", flex: 1, minWidth: 0 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
-          <span
-            style={{
-              fontFamily: css.fontBody,
-              fontSize: "1rem",
-              fontWeight: 700,
-              color: "#111",
-            }}
-          >
+      <div className='flex flex-col gap-[0.2rem] flex-1 min-w-0'>
+        <div className='flex items-center gap-[0.6rem] flex-wrap'>
+          <span className='font-body text-base font-bold text-[#111]'>
             {status.label}
           </span>
           <Badge variant={badge} />
         </div>
-        <span
-          style={{
-            fontFamily: css.fontBody,
-            fontSize: "0.82rem",
-            color: css.colorSecondary,
-            lineHeight: 1.4,
-          }}
-        >
+        <span className='font-body text-[0.82rem] text-(--color-secondary) leading-[1.4]'>
           {status.description}
         </span>
       </div>
 
       {canAuthorize && (
-        <ShadowButton onClick={onAuthorize} loading={isAuthorizing}>
+        <Button
+          onClick={onAuthorize}
+          loading={isAuthorizing}
+          loadingText='Requesting…'
+        >
           Authorize now
-        </ShadowButton>
+        </Button>
       )}
 
       {status.permission === "granted" && (
         <span
-          style={{
-            fontFamily: css.fontBody,
-            fontSize: "1.1rem",
-            fontWeight: 700,
-            color: "#111",
-          }}
+          className='font-body text-[1.1rem] font-bold text-[#111]'
           aria-label='Authorized'
         >
           ✓
@@ -256,75 +135,38 @@ export default function SupportView() {
 
   if (loading) {
     return (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          minHeight: "40vh",
-        }}
+      <SiteShell
+        className='flex min-h-screen flex-col'
+        mainClassName='flex flex-1 flex-col items-center justify-center px-6 py-16'
+        footerNavAriaLabel='Support page links'
       >
-        <span
-          style={{
-            fontFamily: css.fontBody,
-            fontSize: "1rem",
-            color: css.colorSecondary,
-          }}
-        >
+        <span className='font-body text-base text-(--color-secondary)'>
           Checking permissions…
         </span>
-      </div>
+      </SiteShell>
     )
   }
 
   return (
-    <main
-      style={{
-        maxWidth: "600px",
-        margin: "0 auto",
-        padding: "3rem 1.5rem 5rem",
-      }}
+    <SiteShell
+      className='flex min-h-screen flex-col'
+      mainClassName='mx-auto w-full max-w-[600px] flex-1 px-6 pt-12 pb-20'
+      footerNavAriaLabel='Support page links'
     >
-      {/* Mascot */}
-      <div
-        style={{ display: "flex", justifyContent: "center", marginBottom: "2rem" }}
-      >
+      <div className='mb-8 flex justify-center'>
         <MascotEyes size='mascot--md' expression='annoyed' />
       </div>
 
-      {/* Heading */}
-      <h1
-        style={{
-          fontFamily: css.fontDisplay,
-          fontSize: "clamp(2rem,5vw,3rem)",
-          fontWeight: 700,
-          textAlign: "center",
-          color: "#000",
-          margin: "0 0 0.75rem",
-          lineHeight: 1.1,
-        }}
-      >
-        Something’s missing here…
+      <h1 className='mb-3 text-center font-display text-[clamp(2rem,5vw,3rem)] font-bold leading-[1.1] text-black'>
+        Something's missing here…
       </h1>
 
-      <p
-        style={{
-          fontFamily: css.fontBody,
-          fontSize: "1rem",
-          textAlign: "center",
-          color: css.colorSecondary,
-          lineHeight: 1.55,
-          margin: "0 0 2.5rem",
-        }}
-      >
+      <p className='mb-10 text-center font-body text-base leading-[1.55] text-(--color-secondary)'>
         These signals need explicit permission. You can grant them now or
         continue without them.
       </p>
 
-      {/* Permission list */}
-      <div
-        style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "2.5rem" }}
-      >
+      <div className='mb-10 flex flex-col gap-4'>
         {statuses.map((status) => (
           <PermissionRow
             key={status.key}
@@ -335,29 +177,16 @@ export default function SupportView() {
         ))}
       </div>
 
-      {/* Global CTA */}
-      <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-        <ShadowButton ghost onClick={() => (window.location.href = "/demo")}>
+      <div className='mb-12 text-center'>
+        <Button variant='gray' onClick={() => (window.location.href = "/demo")}>
           Continue anyway
-        </ShadowButton>
+        </Button>
       </div>
 
-      {/* Disclaimer */}
-      <p
-        style={{
-          fontFamily: css.fontBody,
-          fontSize: "0.75rem",
-          textAlign: "center",
-          color: css.colorOutline,
-          lineHeight: 1.6,
-          margin: 0,
-          borderTop: "1px dashed var(--color-outline-variant)",
-          paddingTop: "1.5rem",
-        }}
-      >
+      <p className='m-0 border-t border-dashed border-(--color-outline-variant) pt-6 text-center font-body text-[0.75rem] leading-[1.6] text-(--color-outline)'>
         This demo detects browser signals; actions outside the browser may not
         be visible.
       </p>
-    </main>
+    </SiteShell>
   )
 }

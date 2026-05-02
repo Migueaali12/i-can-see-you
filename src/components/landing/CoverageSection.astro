@@ -1,5 +1,5 @@
 ---
-import { DoodleCard } from "@/components/ui/DoodleCard"
+import { DoodleCard } from "@/components/ui/Card"
 
 const detectedItems = [
   "Tab visibility changes (tab switch).",
@@ -14,7 +14,20 @@ const notDetectedItems = [
 ]
 ---
 
-<section class='grid grid-cols-1 min-[700px]:grid-cols-2 gap-16 w-[min(900px,calc(100%-3rem))] mx-auto pt-4 pb-8'>
-  <DoodleCard corner='scan' title='What I can detect' listItems={detectedItems} />
-  <DoodleCard corner='eye-off' title="What I can't detect" listItems={notDetectedItems} listMuted />
+<section
+  class='grid grid-cols-1 min-[700px]:grid-cols-2 gap-16 w-[min(900px,calc(100%-3rem))] mx-auto pt-4 pb-8'
+>
+  <DoodleCard
+    dashedBorder
+    corner='scan'
+    title='What I can detect'
+    listItems={detectedItems}
+  />
+  <DoodleCard
+    dashedBorder
+    corner='eye-off'
+    title="What I can't detect"
+    listItems={notDetectedItems}
+    listMuted
+  />
 </section>

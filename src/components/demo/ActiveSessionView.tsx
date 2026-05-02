@@ -1,38 +1,17 @@
 import MascotEyes from "@/components/mascot/MascotEyes"
+import SiteShell from "@/components/layout/SiteShell"
 import { useActiveSession } from "./active-session/useActiveSession"
-import { t } from "./active-session/styles"
-import ShadowButton from "./active-session/ShadowButton"
 import StatusCard from "./active-session/StatusCard"
 import IncidentsCard from "./active-session/IncidentsCard"
 import TimerHero from "./active-session/TimerHero"
 import MascotCorner from "./active-session/MascotCorner"
-import DemoFooter from "./active-session/DemoFooter"
 
 // ── Finished (transition screen while building results) ───────────
 function FinishedView() {
   return (
-    <div
-      className="notebook-bg"
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 100,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "column",
-        gap: "1.5rem",
-      }}
-    >
-      <MascotEyes size='mascot--md' expression='suspicious' />
-      <p
-        style={{
-          fontFamily: t.fontBody,
-          fontSize: "1rem",
-          color: t.secondary,
-          margin: 0,
-        }}
-      >
+    <div className="notebook-bg fixed inset-0 z-100 flex flex-col items-center justify-center gap-6">
+      <MascotEyes size="mascot--md" expression="suspicious" />
+      <p className="font-body text-base text-(--color-secondary) m-0">
         Compiling results…
       </p>
     </div>
@@ -60,76 +39,23 @@ function RunningView({
   onStop: () => void
 }) {
   return (
-    <div
-      className="notebook-bg"
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 100,
-        display: "flex",
-        flexDirection: "column",
-      }}
+    <SiteShell
+      className="notebook-bg fixed inset-0 z-100 flex min-h-0 flex-col"
+      mainClassName="flex flex-1 flex-col items-center justify-center gap-6 overflow-auto px-8 pt-8 pb-12"
+      afterMain={
+        <MascotCorner expression={mascotExpression} message={mascotMessage} />
+      }
+      footerNavAriaLabel="Demo links"
+      footerWithPageSpacing={false}
     >
-      <header
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "0.85rem 1.5rem",
-          background: "#fff",
-          borderBottom: "3px solid #111",
-          flexShrink: 0,
-        }}
-      >
-        <span
-          style={{
-            fontFamily: t.fontDisplay,
-            fontSize: "1.5rem",
-            fontWeight: 700,
-            fontStyle: "italic",
-            color: "#111",
-          }}
-        >
-          I Can See You
-        </span>
-        <ShadowButton onClick={onStop} variant='danger'>
-          ✕ Stop
-        </ShadowButton>
-      </header>
-
-      <main
-        style={{
-          flex: 1,
-          overflow: "auto",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "2rem 2rem 3rem",
-          gap: "1.5rem",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            gap: "1.25rem",
-            width: "100%",
-            maxWidth: "720px",
-            flexWrap: "wrap",
-          }}
-        >
-          <StatusCard status={focusStatus} signal={currentSignal} />
-          <IncidentsCard count={incidentCount} />
+      <div className="grid w-full max-w-[720px] grid-cols-[2fr_1fr] gap-5">
+        <StatusCard status={focusStatus} signal={currentSignal} />
+        <IncidentsCard count={incidentCount} />
+        <div className="col-span-2">
+          <TimerHero timeLeft={timeLeft} isUrgent={isUrgent} onStop={onStop} />
         </div>
-
-        <div style={{ width: "100%", maxWidth: "720px" }}>
-          <TimerHero timeLeft={timeLeft} isUrgent={isUrgent} />
-        </div>
-      </main>
-
-      <MascotCorner expression={mascotExpression} message={mascotMessage} />
-      <DemoFooter />
-    </div>
+      </div>
+    </SiteShell>
   )
 }
 

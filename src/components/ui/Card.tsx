@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+import type { CSSProperties, ReactNode } from "react"
 
 export type DoodleCardCorner = "scan" | "eye-off"
 
@@ -74,6 +74,10 @@ export type DoodleCardProps = {
   listMuted?: boolean
   /** Replaces default inner panel classes (border, padding, flex). */
   innerClassName?: string
+  /** Inline styles applied to the inner panel (useful for dynamic values like border or background). */
+  innerStyle?: CSSProperties
+  /** Adds a dashed inset border inside the card panel. */
+  dashedBorder?: boolean
   children?: ReactNode
 }
 
@@ -87,10 +91,11 @@ export function DoodleCard({
   listItems,
   listMuted,
   innerClassName,
+  innerStyle,
+  dashedBorder = false,
   children,
 }: DoodleCardProps) {
   const inner = innerClassName ?? defaultInnerClass
-  const showTitle = title != null && title !== ""
 
   return (
     <article className={["relative", className].filter(Boolean).join(" ")}>
@@ -98,9 +103,15 @@ export function DoodleCard({
         className='absolute inset-0 bg-black translate-x-1.5 translate-y-1.5'
         aria-hidden='true'
       />
-      <div className={inner}>
+      <div className={inner} style={innerStyle}>
+        {dashedBorder && (
+          <div
+            className='absolute inset-[10px] border border-dashed border-[#ddd] pointer-events-none'
+            aria-hidden='true'
+          />
+        )}
         {corner != null ? <CornerSticker corner={corner} /> : null}
-        {showTitle ? (
+        {(title != null && title !== "") ? (
           <h2 className='mb-6 font-display text-[1.35rem] font-semibold leading-tight flex items-center gap-2 border-b-2 border-black pb-3 text-black'>
             {title}
           </h2>
