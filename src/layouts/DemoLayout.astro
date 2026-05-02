@@ -5,18 +5,16 @@ import '@fontsource/nanum-pen-script'
 import '@fontsource/lxgw-wenkai-mono-tc'
 import nanumLatinWoff2 from '@fontsource/nanum-pen-script/files/nanum-pen-script-latin-400-normal.woff2?url'
 import wenkaiLatinWoff2 from '@fontsource/lxgw-wenkai-mono-tc/files/lxgw-wenkai-mono-tc-latin-400-normal.woff2?url'
-import SiteHeader from '@/components/layout/SiteHeader.astro'
-import SiteFooter from '@/components/layout/SiteFooter.astro'
 
 interface Props {
-  title?: string;
-  description?: string;
+  title?: string
+  description?: string
 }
 
 const {
-  title = 'I can see you',
-  description = 'Visual simulator of browser-detectable distraction signals.'
-} = Astro.props as Props;
+  title = 'Demo | I can see you',
+  description = '60-second live detection session. Try not to get distracted.',
+} = Astro.props as Props
 ---
 
 <!doctype html>
@@ -29,24 +27,12 @@ const {
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <title>{title}</title>
-
     <link rel="preload" href={nanumLatinWoff2} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={wenkaiLatinWoff2} as="font" type="font/woff2" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-      rel="stylesheet"
-    />
   </head>
   <body class="notebook-bg">
-    <!-- Header -->
-    <SiteHeader />
-
-    <!-- Content -->
     <slot />
-
-    <SiteFooter />
   </body>
 </html>

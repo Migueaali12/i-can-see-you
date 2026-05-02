@@ -155,6 +155,7 @@ All agents operating on this project must:
 5. Default to frontend-only unless explicitly asked to add backend.
 6. Maintain consistency with this document before introducing new features.
 7. Propose phased evolution instead of scope jumps.
+8. Avoid using emojis in UI; prefer Lucide icons (already installed).
 ---
 13) Planned Evolution (Post-MVP)
 - Free mode (modo libre)
