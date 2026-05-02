@@ -22,7 +22,7 @@ export default function TimerHero({
       onMouseEnter={onStop ? () => setHovered(true) : undefined}
       onMouseLeave={onStop ? () => setHovered(false) : undefined}
       innerClassName={[
-        "relative block w-full p-12 text-center flex-col",
+        "relative block w-full text-center flex-col",
         isUrgent ? "!bg-[#111]" : "",
       ].join(" ")}
     >
@@ -35,7 +35,6 @@ export default function TimerHero({
 
       {/* Timer number */}
       <div
-      className="bg-blue-500"
         style={{
           fontFamily: t.fontDisplay,
           fontSize: "clamp(5rem, 20vw, 9rem)",
@@ -55,9 +54,9 @@ export default function TimerHero({
           fontFamily: t.fontBody,
           fontSize: "0.68rem",
           color: isUrgent ? "#888" : t.secondary,
+          marginBottom: "0.9rem",
           letterSpacing: "0.2em",
           textTransform: "uppercase",
-          marginTop: "0.6rem",
           opacity: hovered && onStop ? 0 : 1,
           transition: "color 300ms ease, opacity 200ms ease",
         }}

@@ -7,7 +7,7 @@ export default function DialogBubble({ message }: { message: string }) {
         aria-hidden
       />
       <div className="relative bg-white border-[2.5px] border-black px-[0.95rem] py-[0.7rem] max-w-[200px]">
-        <p className="m-0 font-body text-[0.8rem] italic text-[#111] leading-[1.45]">
+        <p className="m-0 font-body text-[0.9rem] italic text-[#111] leading-[1.45]">
           &ldquo;{message}&rdquo;
         </p>
         {/* Tail pointing down toward mascot */}

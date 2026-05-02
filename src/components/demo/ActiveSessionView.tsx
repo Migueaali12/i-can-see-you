@@ -9,9 +9,9 @@ import MascotCorner from "./active-session/MascotCorner"
 // ── Finished (transition screen while building results) ───────────
 function FinishedView() {
   return (
-    <div className="notebook-bg fixed inset-0 z-100 flex flex-col items-center justify-center gap-6">
-      <MascotEyes size="mascot--md" expression="suspicious" />
-      <p className="font-body text-base text-(--color-secondary) m-0">
+    <div className='notebook-bg fixed inset-0 z-100 flex flex-col items-center justify-center gap-6'>
+      <MascotEyes size='mascot--md' expression='suspicious' />
+      <p className='font-body text-base text-(--color-secondary) m-0'>
         Compiling results…
       </p>
     </div>
@@ -40,18 +40,18 @@ function RunningView({
 }) {
   return (
     <SiteShell
-      className="notebook-bg fixed inset-0 z-100 flex min-h-0 flex-col"
-      mainClassName="flex flex-1 flex-col items-center justify-center gap-6 overflow-auto px-8 pt-8 pb-12"
+      className='notebook-bg fixed inset-0 z-100 flex min-h-0 flex-col'
+      mainClassName='flex flex-1 flex-col items-center justify-center gap-6 overflow-auto px-8 pt-8 pb-12'
       afterMain={
         <MascotCorner expression={mascotExpression} message={mascotMessage} />
       }
-      footerNavAriaLabel="Demo links"
+      footerNavAriaLabel='Demo links'
       footerWithPageSpacing={false}
     >
-      <div className="grid w-full max-w-[720px] grid-cols-[2fr_1fr] gap-5">
+      <div className='grid w-full max-w-[720px] grid-cols-[2fr_1fr] gap-5'>
         <StatusCard status={focusStatus} signal={currentSignal} />
         <IncidentsCard count={incidentCount} />
-        <div className="col-span-2">
+        <div className='col-span-2'>
           <TimerHero timeLeft={timeLeft} isUrgent={isUrgent} onStop={onStop} />
         </div>
       </div>

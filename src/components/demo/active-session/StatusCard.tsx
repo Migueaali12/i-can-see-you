@@ -1,6 +1,6 @@
 import type { DetectionSignal } from "@/core/detectionEngine"
 import type { FocusStatus } from "./useActiveSession"
-import { EyeOff, ScanEye } from "lucide-react"
+import { EyeClosed, ScanEye } from "lucide-react"
 import { t, SIGNAL_LABELS } from "./styles"
 import { DoodleCard } from "@/components/ui/Card"
 
@@ -45,14 +45,17 @@ export default function StatusCard({
 }) {
   const cfg = STATUS_CONFIG[status]
   const Icon =
-    status === "out_of_focus" || status === "event_detected" ? EyeOff : ScanEye
+    status === "out_of_focus" || status === "event_detected" ? EyeClosed : ScanEye
   const iconColor = cfg.dark ? "#fff" : "#111"
 
   return (
     <DoodleCard
-      className="min-w-0"
-      innerClassName="relative px-6 py-5 transition-[background] duration-300"
-      innerStyle={{ background: cfg.dark ? "#111" : "#fff", border: cfg.border }}
+      className='min-w-0'
+      innerClassName='relative px-6 py-5 transition-[background] duration-300'
+      innerStyle={{
+        background: cfg.dark ? "#111" : "#fff",
+        border: cfg.border,
+      }}
       dashedBorder
     >
       <div

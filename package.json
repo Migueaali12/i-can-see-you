@@ -16,7 +16,6 @@
     "@astrojs/react": "^5.0.4",
     "@fontsource/lxgw-wenkai-mono-tc": "^5.2.9",
     "@fontsource/nanum-pen-script": "^5.2.7",
-    "@lucide/astro": "^1.14.0",
     "@tailwindcss/vite": "^4.2.4",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
