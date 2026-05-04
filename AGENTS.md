@@ -95,6 +95,7 @@ Always include:
 - Tailwind CSS for styling.
 - Client-side state only for MVP (no backend required).
 - Optional localStorage for lightweight preferences only.
+- Package manager: pnpm.
 Why this stack:
 - Great performance and SEO for landing.
 - Keeps interactive complexity isolated.

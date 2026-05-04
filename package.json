@@ -2,6 +2,7 @@
   "name": "i-can-see-you",
   "type": "module",
   "version": "0.0.1",
+  "packageManager": "pnpm@10.32.1",
   "engines": {
     "node": ">=22.12.0"
   },
@@ -9,21 +10,24 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "check": "astro sync && astro check",
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.8",
     "@astrojs/react": "^5.0.4",
     "@fontsource/lxgw-wenkai-mono-tc": "^5.2.9",
     "@fontsource/nanum-pen-script": "^5.2.7",
-    "@tailwindcss/vite": "^4.2.4",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
     "astro": "^6.1.9",
     "lucide-react": "^1.14.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "tailwindcss": "^4.2.4",
+    "tailwindcss": "^4.2.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.8",
+    "@tailwindcss/vite": "^4.2.4",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
     "typescript": "^6.0.3"
   }
 }
