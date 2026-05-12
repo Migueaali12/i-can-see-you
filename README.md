@@ -1,4 +1,8 @@
-# I Can See You
+<p align="center">
+  <img src="public/favicon.svg" alt="I Can See You logo" width="120" />
+</p>
+
+<h1 align="center">I Can See You</h1>
 
 Demo web app that simulates and visualizes browser-detectable distraction signals during a timed session. Experience what typical exam platforms can (and cannot) detect when you lose focus — tab switches, window blur, fullscreen exits, and more.
 
