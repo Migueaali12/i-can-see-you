@@ -90,7 +90,7 @@ export default function TimerHero({
               color: isUrgent ? "#fff" : "#111",
             }}
           >
-            Detener
+            Stop
           </span>
         </div>
       )}
