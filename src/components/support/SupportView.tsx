@@ -78,6 +78,8 @@ function PermissionRow({
           onClick={onAuthorize}
           loading={isAuthorizing}
           loadingText='Requesting…'
+          variant="gray"
+          
         >
           Authorize now
         </Button>
