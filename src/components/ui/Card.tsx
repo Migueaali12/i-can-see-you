@@ -2,11 +2,15 @@ import type { CSSProperties, ReactNode } from "react"
 import { CircleCheck, CircleX } from "lucide-react"
 
 export type DoodleCardCorner = "scan" | "eye-off"
+export type DoodleCardVariant = "default" | "inverted"
 
 const listMarker = "•"
 
 const defaultInnerClass =
   "relative bg-(--color-surface) border-2 border-black p-8 h-full flex flex-col"
+
+const invertedInnerClass =
+  "relative bg-black border-2 border-black p-8 h-full flex flex-col text-white"
 
 function CornerSticker({ corner }: { corner: DoodleCardCorner }) {
   const Icon = corner === "scan" ? CircleCheck : CircleX
@@ -22,6 +26,10 @@ function CornerSticker({ corner }: { corner: DoodleCardCorner }) {
 
 export type DoodleCardProps = {
   className?: string
+  /** Extra classes applied to the offset shadow element behind the card. */
+  shadowClassName?: string
+  /** Visual variant: "default" (light) or "inverted" (dark/black). */
+  variant?: DoodleCardVariant
   corner?: DoodleCardCorner
   title?: string
   listItems?: string[]
@@ -37,9 +45,14 @@ export type DoodleCardProps = {
 
 /**
  * Notebook-style card with offset shadow, matching landing coverage blocks.
+ *
+ * Use `variant="inverted"` for a black background / white text card.
+ * `className` targets the main card `<article>`; use `shadowClassName` to style the shadow div separately.
  */
 export function DoodleCard({
   className,
+  shadowClassName,
+  variant = "default",
   corner,
   title,
   listItems,
@@ -49,14 +62,23 @@ export function DoodleCard({
   dashedBorder = false,
   children,
 }: DoodleCardProps) {
-  const inner = innerClassName ?? defaultInnerClass
+  const isInverted = variant === "inverted"
+  const inner = innerClassName ?? (isInverted ? invertedInnerClass : defaultInnerClass)
 
   return (
     <article className={["relative", className].filter(Boolean).join(" ")}>
+      {/* Offset shadow */}
       <div
-        className='absolute inset-0 bg-black translate-x-1.5 translate-y-1.5'
+        className={[
+          "absolute inset-0 bg-black translate-x-1.5 translate-y-1.5",
+          shadowClassName,
+        ]
+          .filter(Boolean)
+          .join(" ")}
         aria-hidden='true'
       />
+
+      {/* Main panel */}
       <div className={inner} style={innerStyle}>
         {dashedBorder && (
           <div
@@ -64,16 +86,19 @@ export function DoodleCard({
             aria-hidden='true'
           />
         )}
+
         {corner != null ? <CornerSticker corner={corner} /> : null}
-        {(title != null && title !== "") ? (
-          <h2 className='mb-6 font-display text-[1.35rem] font-semibold leading-tight flex items-center gap-2 border-b-2 border-black pb-3 text-black'>
+
+        {title != null && title !== "" ? (
+          <h2 className='mb-6 font-display text-[1.35rem] font-semibold leading-tight flex items-center gap-2 border-b-2 border-current pb-3'>
             {title}
           </h2>
         ) : null}
+
         {listItems != null && listItems.length > 0 ? (
           <ul
             className={[
-              "list-none m-0 p-0 flex flex-col gap-4 text-[1.05rem] leading-relaxed text-(--color-on-surface) grow",
+              "list-none m-0 p-0 flex flex-col gap-4 text-[1.05rem] leading-relaxed grow",
               listMuted ? "opacity-80" : "",
             ]
               .filter(Boolean)
@@ -81,10 +106,7 @@ export function DoodleCard({
           >
             {listItems.map((item, i) => (
               <li key={`${i}-${item}`} className='flex items-start gap-[0.6rem]'>
-                <span
-                  className='text-black mt-[0.15rem] font-bold shrink-0'
-                  aria-hidden='true'
-                >
+                <span className='mt-[0.15rem] font-bold shrink-0' aria-hidden='true'>
                   {listMarker}
                 </span>
                 <span>{item}</span>
@@ -92,6 +114,7 @@ export function DoodleCard({
             ))}
           </ul>
         ) : null}
+
         {children}
       </div>
     </article>

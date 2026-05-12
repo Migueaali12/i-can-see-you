@@ -11,11 +11,15 @@ import SiteFooter from '@/components/layout/SiteFooter'
 interface Props {
   title?: string;
   description?: string;
+  hideHeader?: boolean;
+  hideFooter?: boolean;
 }
 
 const {
   title = 'I can see you',
-  description = 'Visual simulator of browser-detectable distraction signals.'
+  description = 'Visual simulator of browser-detectable distraction signals.',
+  hideHeader = false,
+  hideFooter = false,
 } = Astro.props as Props;
 ---
 
@@ -34,19 +38,12 @@ const {
     <link rel="preload" href={wenkaiLatinWoff2} as="font" type="font/woff2" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-      rel="stylesheet"
-    />
   </head>
-  <body class="notebook-bg">
-    <!-- Header -->
-    <SiteHeader />
+  <body class="notebook-bg flex flex-col min-h-dvh">
+    {!hideHeader && <SiteHeader />}
 
-    <!-- Content -->
     <slot />
 
-    <SiteFooter />
+    {!hideFooter && <SiteFooter />}
   </body>
 </html>
