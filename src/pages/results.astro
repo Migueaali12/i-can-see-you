@@ -1,0 +1,13 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import ResultsView from "@/components/results/ResultsView"
+---
+
+<Layout
+  title='Results | I can see you'
+  description='Summary of your detection session.'
+>
+  <main class='min-h-[78svh]'>
+    <ResultsView client:only='react' />
+  </main>
+</Layout>

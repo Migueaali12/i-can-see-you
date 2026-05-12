@@ -14,6 +14,8 @@ export interface SessionResults {
   endedAt: number
 }
 
+const RESULTS_KEY = "icsy_session_results:v1"
+
 export function buildResults(
   store: EventStore,
   sessionDurationMs: number,
@@ -45,8 +47,25 @@ export function buildResults(
 
 export function persistResults(results: SessionResults): void {
   try {
-    localStorage.setItem("icsy_session_results", JSON.stringify(results))
+    sessionStorage.setItem(RESULTS_KEY, JSON.stringify(results))
   } catch {
     // localStorage unavailable — silently continue
+  }
+}
+
+export function loadResults(): SessionResults | null {
+  try {
+    const raw = sessionStorage.getItem(RESULTS_KEY)
+    return raw ? (JSON.parse(raw) as SessionResults) : null
+  } catch {
+    return null
+  }
+}
+
+export function clearResults() {
+  try {
+    sessionStorage.removeItem(RESULTS_KEY)
+  } catch {
+    // ignore
   }
 }

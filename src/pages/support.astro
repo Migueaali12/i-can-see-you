@@ -1,11 +1,13 @@
 ---
-import DemoLayout from "@/layouts/DemoLayout.astro"
+import Layout from "@/layouts/Layout.astro"
 import SupportView from "@/components/support/SupportView"
 ---
 
-<DemoLayout
+<Layout
   title="Permissions | I can see you"
   description="Grant the signals that need explicit browser permission."
+  hideHeader
+  hideFooter
 >
   <SupportView client:load />
-</DemoLayout>
+</Layout>

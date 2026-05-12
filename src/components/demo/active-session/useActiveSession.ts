@@ -58,7 +58,7 @@ export function useActiveSession() {
     persistResults(results)
     setPhase("finished")
     setTimeout(() => {
-      window.location.href = "/result"
+      window.location.href = "/results"
     }, 900)
   }, [])
 
