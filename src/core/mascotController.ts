@@ -59,6 +59,12 @@ export class MascotController {
 
   constructor(cooldownMs = 4000) {
     this.cooldownMs = cooldownMs
+    const keys = Object.keys(this.variantCursor) as DetectionSignal[]
+    for (const key of keys) {
+      this.variantCursor[key] = Math.floor(
+        Math.random() * SIGNAL_MESSAGE_VARIANTS[key].length,
+      )
+    }
   }
 
   private nextVariant(signal: DetectionSignal): string {
