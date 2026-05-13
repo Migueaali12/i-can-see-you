@@ -70,7 +70,7 @@ export default function MascotEyes({
   const triggerBlink = useCallback((kind: BlinkKind) => {
     if (prefersReducedRef.current) return
     setBlinkKind(kind)
-    const duration = kind === "double" ? 550 : 180
+    const duration = kind === "double" ? 680 : 250
     setTimeout(() => setBlinkKind("none"), duration)
   }, [])
 
