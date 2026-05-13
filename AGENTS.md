@@ -98,6 +98,8 @@ Always include:
 - **Package manager:** pnpm
 - **Fonts:** `@fontsource/nanum-pen-script`, `@fontsource/lxgw-wenkai-mono-tc`
 - **Icons:** Lucide React
+- **Deployment:** Cloudflare Pages
+- **Production URL:** https://icanseeyou.dev/
 **Why this stack:**
 - Great performance and SEO for landing.
 - Keeps interactive complexity isolated in React islands.

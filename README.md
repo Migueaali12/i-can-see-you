@@ -6,15 +6,29 @@
 
 Demo web app that simulates and visualizes browser-detectable distraction signals during a timed session. Experience what typical exam platforms can (and cannot) detect when you lose focus — tab switches, window blur, fullscreen exits, and more.
 
+<p align="center">
+  <a href="https://astro.build"><img src="https://img.shields.io/badge/Astro-6.1-BC52EE?style=flat-square&logo=astro" alt="Astro" /></a>
+  <a href="https://react.dev"><img src="https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react" alt="React" /></a>
+  <a href="https://tailwindcss.com"><img src="https://img.shields.io/badge/Tailwind_CSS-4.2-06B6D4?style=flat-square&logo=tailwindcss" alt="Tailwind CSS" /></a>
+  <a href="https://www.typescriptlang.org"><img src="https://img.shields.io/badge/TypeScript-6.0-3178C6?style=flat-square&logo=typescript" alt="TypeScript" /></a>
+  <a href="https://pnpm.io"><img src="https://img.shields.io/badge/pnpm-10.32-F69220?style=flat-square&logo=pnpm" alt="pnpm" /></a>
+  <a href="https://pages.cloudflare.com"><img src="https://img.shields.io/badge/Cloudflare_Pages-F38020?style=flat-square&logo=cloudflarepages" alt="Cloudflare Pages" /></a>
+</p>
+
 > This project demonstrates **browser signals only**, not OS-level surveillance. Transparency is a core principle.
 
 ## Tech Stack
 
-- **[Astro](https://astro.build)** 6 — static shell + routing
+- **[Astro](https://astro.build)** 6.1 — static shell + routing
 - **[React](https://react.dev)** 19 — interactive islands for session UI
-- **[Tailwind CSS](https://tailwindcss.com)** 4 — utility-first styling
-- **TypeScript** strict mode
-- **pnpm** — package manager
+- **[Tailwind CSS](https://tailwindcss.com)** 4.2 — utility-first styling
+- **TypeScript** 6.0 strict mode
+- **pnpm** 10.32 — package manager
+- **Client-side state** — no backend for MVP
+- **sessionStorage** — lightweight results transfer between `/demo` and `/results`
+- **[@fontsource/nanum-pen-script](https://fontsource.org/fonts/nanum-pen-script)** + **[@fontsource/lxgw-wenkai-mono-tc](https://fontsource.org/fonts/lxgw-wenkai-mono-tc)** — typography
+- **[Lucide React](https://lucide.dev)** — icons
+- **[Cloudflare Pages](https://pages.cloudflare.com)** — deployment
 
 ## Getting Started
 
