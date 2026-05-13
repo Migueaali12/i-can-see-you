@@ -43,6 +43,7 @@
   animation-delay: 500ms;
 }
 
+/* Design tokens — monochrome notebook palette */
 :root {
   --color-primary: #000000;
   --color-on-primary: #ffffff;
