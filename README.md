@@ -68,7 +68,7 @@ src/
 │   ├── support/            # Fallback/error view
 │   └── ui/                 # Shared primitives (Button, Card)
 ├── layouts/                # Astro layouts (Layout, DemoLayout)
-├── pages/                  # Routes: /, /demo, /result, /support
+├── pages/                  # Routes: /, /demo, /results, /signals
 ├── styles/                 # Global CSS, mascot styles
 └── assets/                 # Static assets (SVGs)
 ```
@@ -79,8 +79,8 @@ src/
 |------------|--------------------------------------------------|
 | `/`        | Landing page with CTA and coverage overview       |
 | `/demo`    | Timed detection session (60--90 s)                |
-| `/result`  | Summary dashboard with metrics and disclaimer     |
-| `/support` | Fallback for unsupported browsers / API failures  |
+| `/results` | Summary dashboard with metrics and disclaimer     |
+| `/signals` | Detection signal reference and coverage table     |
 
 ## Detection Signals
 
