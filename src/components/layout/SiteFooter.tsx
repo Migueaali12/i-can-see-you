@@ -23,7 +23,7 @@ const SiteFooter = ({
         <ul className='m-0 flex list-none gap-6 p-0'>
           <li>
             <a
-              href='#'
+              href='/privacy'
               className='font-mono text-[0.75rem] uppercase tracking-widest text-(--color-secondary) hover:italic'
             >
               Privacy

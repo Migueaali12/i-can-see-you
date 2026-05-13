@@ -1,0 +1,85 @@
+---
+import { ContractCard } from "@/components/ui/ContractCard"
+import Button from "@/components/ui/Button"
+
+const detectItems = [
+  "Tab switches via the Page Visibility API.",
+  "When you lose or regain window focus.",
+  "Exiting fullscreen mode.",
+  "Your cursor leaving the browser viewport.",
+  "Paste events during the session.",
+  "Developer tools (best effort heuristic).",
+]
+
+const notDetectItems = [
+  "Applications running outside your browser.",
+  "Content of other windows, tabs, or your clipboard history.",
+  "Your camera or microphone \u2014 I never ask for permission.",
+  "Keyboard input when you\u2019re typing in another app.",
+  "Obviously, I can\u2019t see you when you are taking a bath.",
+  "Whether you actually read the terms of service. (Nobody does.)",
+  "Your inner monologue. Yet.",
+]
+
+const dataItems = [
+  "Nothing is sent to any server.",
+  "All detection happens locally in your browser.",
+  "Session data is cleared when you close the tab.",
+  "No tracking cookies whatsoever.",
+  "I don\u2019t have a server. I don\u2019t even have a database. Your secrets are safe from me.",
+]
+
+const howItems = [
+  "Page Visibility API \u2014 detects when you switch tabs.",
+  "Focus Events \u2014 registers when the window gains or loses focus.",
+  "Fullscreen API \u2014 notices when you exit fullscreen.",
+  "Mouse Events \u2014 tracks when your cursor leaves the viewport.",
+  "Paste Events \u2014 registers paste actions during the session.",
+  "DevTools Heuristic \u2014 estimates whether developer tools are open (low confidence).",
+]
+---
+
+<section
+  class='grid grid-cols-1 min-[700px]:grid-cols-2 gap-16 w-[min(900px,calc(100%-3rem))] mx-auto pt-4 pb-8'
+>
+  <div class='animate-in fade-in slide-in-from-bottom-4' style='animation-delay:100ms'>
+    <ContractCard
+      dashedBorder
+      title='What I can detect'
+      listItems={detectItems}
+    />
+  </div>
+
+  <div class='animate-in fade-in slide-in-from-bottom-4' style='animation-delay:200ms'>
+    <ContractCard
+      dashedBorder
+      title="What I can't detect"
+      listItems={notDetectItems}
+      listMuted
+    />
+  </div>
+
+  <div class='animate-in fade-in slide-in-from-bottom-4' style='animation-delay:300ms'>
+    <ContractCard
+      dashedBorder
+      variant='inverted'
+      title='Your data stays here'
+      listItems={dataItems}
+      hasSignatureLine
+    />
+  </div>
+
+  <div class='animate-in fade-in slide-in-from-bottom-4' style='animation-delay:400ms'>
+    <ContractCard
+      dashedBorder
+      title='How I work'
+      listItems={howItems}
+    />
+  </div>
+</section>
+
+<div class='flex justify-center mt-12 mb-8 animate-in fade-in slide-in-from-bottom-4' style='animation-delay:500ms'>
+  <Button href='/' variant='gray' size='lg'>
+    Back to Home
+  </Button>
+</div>
