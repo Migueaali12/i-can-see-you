@@ -1,5 +1,48 @@
 @import "tailwindcss";
 
+/* ─── Entry animations ────────────────────────────────────────────
+ * Composable entrance system: combine `animate-in` with modifiers
+ * like `fade-in` and `slide-in-from-bottom-*`.
+ * Uses a gentle deceleration curve that feels organic / hand-drawn.
+ * ---------------------------------------------------------------- */
+
+@keyframes enter {
+  from {
+    opacity: var(--tw-enter-opacity, 1);
+    transform: translate3d(
+      var(--tw-enter-translate-x, 0),
+      var(--tw-enter-translate-y, 0),
+      0
+    );
+  }
+}
+
+@utility animate-in {
+  animation-name: enter;
+  animation-duration: 500ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: both;
+  --tw-enter-opacity: initial;
+  --tw-enter-translate-x: initial;
+  --tw-enter-translate-y: initial;
+}
+
+@utility fade-in {
+  --tw-enter-opacity: 0;
+}
+
+@utility slide-in-from-bottom-2 {
+  --tw-enter-translate-y: 0.5rem;
+}
+
+@utility slide-in-from-bottom-4 {
+  --tw-enter-translate-y: 1rem;
+}
+
+@utility delay-500 {
+  animation-delay: 500ms;
+}
+
 :root {
   --color-primary: #000000;
   --color-on-primary: #ffffff;
