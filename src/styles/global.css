@@ -43,8 +43,8 @@
   animation-delay: 500ms;
 }
 
-/* Design tokens — monochrome notebook palette */
 :root {
+  --_v: 1; /* cache-bust token — safe to remove after deploy */
   --color-primary: #000000;
   --color-on-primary: #ffffff;
   --color-surface: #f9f9f9;
