@@ -2,15 +2,70 @@
 import Layout from "@/layouts/Layout.astro"
 import HeroSection from "@/components/landing/HeroSection.astro"
 import CoverageSection from "@/components/landing/CoverageSection.astro"
+
+const faqStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is I Can See You?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "I Can See You is a free browser activity detector that shows which signals your browser reveals when you get distracted — tab switches, focus loss, fullscreen exits, cursor leaving, and paste events. It runs entirely in your browser with no server or camera access."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does browser distraction detection work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Browser distraction detection uses native web APIs like Page Visibility API, Focus Events, Fullscreen API, and Mouse Events to detect when you switch tabs, lose window focus, exit fullscreen, move your cursor outside the viewport, or paste content during a session."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is I Can See You a real proctoring tool?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. I Can See You is an educational demo that shows what browser-level signals can detect about your attention. It does not use your camera, microphone, or access other applications. All data stays local in your browser."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What browser signals can detect inactivity?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Common browser signals that detect inactivity include: tab visibility changes (Page Visibility API), window focus and blur events, fullscreen exit events, mouse leave events when the cursor exits the viewport, paste events, and developer tools detection heuristics."
+      }
+    },
+  ]
+}
+
+const webAppStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "I Can See You",
+  "description": "Free browser activity and distraction detector. Test which signals your browser reveals when you get distracted — tab switches, focus loss, fullscreen exits, and more.",
+  "url": "https://icanseeyou.dev",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires a modern browser with JavaScript support",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
 ---
 
 <Layout
-  title='I can see you | Demo of distraction detection'
-  description='Visual simulator of browser-detectable distraction signals.'
+  title="I Can See You — Browser Activity & Distraction Detector"
+  description="Test which browser signals expose your distractions. Detect tab switches, focus loss, fullscreen exits, and cursor leaving — 60-second demo, 100% local, no camera needed."
+  structuredData={[faqStructuredData, webAppStructuredData]}
 >
   <main>
     <HeroSection />
     <CoverageSection />
   </main>
 </Layout>
-

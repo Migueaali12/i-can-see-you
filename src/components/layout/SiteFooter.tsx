@@ -4,7 +4,7 @@ type SiteFooterProps = {
 }
 
 const SiteFooter = ({
-  navAriaLabel = "Links del pie de pagina",
+  navAriaLabel = "Footer navigation",
   withPageSpacing = true,
 }: SiteFooterProps) => {
   return (
@@ -31,18 +31,18 @@ const SiteFooter = ({
           </li>
           <li>
             <a
-              href='#'
+              href='/demo'
               className='font-mono text-[0.75rem] uppercase tracking-widest text-(--color-secondary) hover:italic'
             >
-              Manual
+              Try demo
             </a>
           </li>
           <li>
             <a
-              href='#'
+              href='/signals'
               className='font-mono text-[0.75rem] uppercase tracking-widest text-(--color-secondary) hover:italic'
             >
-              Opt-out
+              Signals
             </a>
           </li>
         </ul>
