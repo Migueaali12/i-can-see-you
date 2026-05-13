@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import MascotEyes from "@/components/mascot/MascotEyes"
 import SiteShell from "@/components/layout/SiteShell"
 import { DoodleCard } from "@/components/ui/Card"
@@ -102,13 +102,11 @@ export default function SupportView() {
   const [statuses, setStatuses] = useState<ExplicitApiStatus[]>([])
   const [loading, setLoading] = useState(true)
   const [authorizing, setAuthorizing] = useState<ExplicitApiKey | null>(null)
-  const hasPendingFlag = useRef(false)
 
   useEffect(() => {
     checkAllExplicitPermissions().then((results) => {
       setStatuses(results)
       setLoading(false)
-      hasPendingFlag.current = hasPendingPermissions(results)
     })
   }, [])
 
@@ -147,6 +145,8 @@ export default function SupportView() {
     )
   }
 
+  const hasPending = hasPendingPermissions(statuses)
+
   return (
     <SiteShell
       className='flex flex-col min-h-dvh'
@@ -154,7 +154,10 @@ export default function SupportView() {
       footerNavAriaLabel='Support page links'
     >
       <div className='mb-8 flex justify-center'>
-        <MascotEyes size='mascot--md' expression='annoyed' />
+        <MascotEyes
+          size='mascot--md'
+          expression={hasPending ? "annoyed" : "neutral"}
+        />
       </div>
 
       <h1 className='mb-3 text-center font-display text-[clamp(2rem,5vw,3rem)] font-bold leading-[1.1] text-black'>
@@ -204,7 +207,7 @@ export default function SupportView() {
         style={{ animationDelay: `${statuses.length * 100 + 200}ms` }}
       >
         <Button variant='gray' onClick={() => (window.location.href = "/demo")}>
-          {hasPendingFlag.current ? (
+          {hasPending ? (
             "Continue anyway"
           ) : (
             <>

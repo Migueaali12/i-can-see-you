@@ -83,7 +83,7 @@ export default function ResultsView() {
           It looks like you haven't completed a detection session yet. Let's try
           again.
         </p>
-        <Button href='/support' variant='black' size='lg' icon={<RefreshCw />}>
+        <Button href='/demo' variant='black' size='lg' icon={<RefreshCw />}>
           Try detection
         </Button>
       </div>
@@ -121,7 +121,7 @@ export default function ResultsView() {
 
       {/* ── CTA Buttons ─────────────────────────────────────────────── */}
       <div className='flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-500'>
-        <Button href='/support' variant='gray' size='lg' icon={<RefreshCw />}>
+        <Button href='/demo' variant='gray' size='lg' icon={<RefreshCw />}>
           Retry demo
         </Button>
         <Button
