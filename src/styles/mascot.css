@@ -60,6 +60,11 @@
   transition: transform 0.55s cubic-bezier(0.34, 1.2, 0.64, 1);
 }
 
+/* Catch-up glide: smooth handoff from idle wander to cursor tracking */
+.mascot[data-transitioning="true"] .mascot__pupil {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 /* pupil highlight (white glint) */
 .mascot__pupil::after {
   content: "";

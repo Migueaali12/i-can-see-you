@@ -58,8 +58,11 @@ export default function MascotEyes({
   const annoyedTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const blinkTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const transitionTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const isIdleRef = useRef(true) // treat as idle until first mousemove
   const prefersReducedRef = useRef(false)
+
+  const [isTransitioning, setIsTransitioning] = useState(false)
 
   const activeExpression = externalExpression ?? internalExpression
 
@@ -131,6 +134,12 @@ export default function MascotEyes({
 
       if (isIdleRef.current) {
         stopIdle()
+        setIsTransitioning(true)
+        if (transitionTimer.current) clearTimeout(transitionTimer.current)
+        transitionTimer.current = setTimeout(
+          () => setIsTransitioning(false),
+          350,
+        )
         if (!externalExpression) setInternalExpression("neutral")
       }
 
@@ -179,6 +188,9 @@ export default function MascotEyes({
     if (neutralTimer.current) clearTimeout(neutralTimer.current)
     if (annoyedTimer.current) clearTimeout(annoyedTimer.current)
 
+    setIsTransitioning(false)
+    if (transitionTimer.current) clearTimeout(transitionTimer.current)
+
     setInternalExpression("annoyed")
     triggerBlink("single")
 
@@ -187,7 +199,6 @@ export default function MascotEyes({
       startIdle()
     }, ANNOYED_DURATION)
 
-    // Also start idle pupil wandering immediately (eyes drift while annoyed)
     startIdle()
   }, [externalExpression, triggerBlink, startIdle])
 
@@ -242,6 +253,7 @@ export default function MascotEyes({
       )
       if (neutralTimer.current) clearTimeout(neutralTimer.current)
       if (annoyedTimer.current) clearTimeout(annoyedTimer.current)
+      if (transitionTimer.current) clearTimeout(transitionTimer.current)
     }
   }, [handleMouseMove, handleWindowMouseLeave])
 
@@ -262,6 +274,7 @@ export default function MascotEyes({
       className={`mascot ${size} ${className}`.trim()}
       data-expression={activeExpression}
       data-idle={isIdle ? "true" : "false"}
+      data-transitioning={isTransitioning ? "true" : "false"}
       role='img'
       aria-label='Ojos observando'
       onMouseEnter={handleMouseEnter}
