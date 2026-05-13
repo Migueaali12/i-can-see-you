@@ -25,15 +25,13 @@ export default function MetricCard({
   const isScore = variant === "score"
 
   return (
+    <div
+      className='animate-in fade-in slide-in-from-bottom-4'
+      style={{ animationDelay: `${delay}ms` }}
+    >
     <DoodleCard
-      className={[
-        "animate-in fade-in slide-in-from-bottom-4 duration-500",
-        className,
-      ]
-        .filter(Boolean)
-        .join(" ")}
+      className={className}
       innerClassName='relative bg-(--color-surface) border-2 border-black p-6 md:p-8 h-full flex flex-col'
-      innerStyle={{ animationDelay: `${delay}ms` }}
     >
       <div className='flex items-center gap-3 mb-4 text-(--color-secondary)'>
         <span className='shrink-0 [&_svg]:w-5 [&_svg]:h-5'>{icon}</span>
@@ -55,5 +53,6 @@ export default function MetricCard({
         {description}
       </p>
     </DoodleCard>
+    </div>
   )
 }

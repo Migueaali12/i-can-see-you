@@ -39,7 +39,6 @@ export default function MetricsRow({ results }: MetricsRowProps) {
                 ? "Hmm... there's room for improvement."
                 : "We lost sight of you quite a bit."
         }
-        variant='score'
         delay={300}
       />
     </div>

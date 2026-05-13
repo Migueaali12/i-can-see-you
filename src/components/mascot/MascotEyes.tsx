@@ -258,7 +258,6 @@ export default function MascotEyes({
 
   return (
     <div
- 
       ref={containerRef}
       className={`mascot ${size} ${className}`.trim()}
       data-expression={activeExpression}

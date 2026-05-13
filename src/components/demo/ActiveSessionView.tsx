@@ -49,9 +49,13 @@ function RunningView({
       footerWithPageSpacing={false}
     >
       <div className='grid w-full max-w-[720px] grid-cols-[2fr_1fr] gap-5'>
-        <StatusCard status={focusStatus} signal={currentSignal} />
-        <IncidentsCard count={incidentCount} />
-        <div className='col-span-2'>
+        <div className='animate-in fade-in slide-in-from-bottom-4'>
+          <StatusCard status={focusStatus} signal={currentSignal} />
+        </div>
+        <div className='animate-in fade-in slide-in-from-bottom-4' style={{ animationDelay: '100ms' }}>
+          <IncidentsCard count={incidentCount} />
+        </div>
+        <div className='col-span-2 animate-in fade-in slide-in-from-bottom-4' style={{ animationDelay: '200ms' }}>
           <TimerHero timeLeft={timeLeft} isUrgent={isUrgent} onStop={onStop} />
         </div>
       </div>

@@ -169,17 +169,22 @@ export default function SupportView() {
       </p>
 
       <div className='mb-10 flex flex-col gap-4'>
-        {statuses.map((status) => (
-          <PermissionRow
+        {statuses.map((status, i) => (
+          <div
             key={status.key}
-            status={status}
-            isAuthorizing={authorizing === status.key}
-            onAuthorize={() => handleAuthorize(status.key)}
-          />
+            className='animate-in fade-in slide-in-from-bottom-4'
+            style={{ animationDelay: `${i * 100}ms` }}
+          >
+            <PermissionRow
+              status={status}
+              isAuthorizing={authorizing === status.key}
+              onAuthorize={() => handleAuthorize(status.key)}
+            />
+          </div>
         ))}
       </div>
 
-      <div className='mb-12 text-center'>
+      <div className='mb-12 text-center animate-in fade-in slide-in-from-bottom-2' style={{ animationDelay: `${statuses.length * 100 + 100}ms` }}>
         <Button variant='gray' onClick={() => (window.location.href = "/demo")}>
           Continue anyway
         </Button>
