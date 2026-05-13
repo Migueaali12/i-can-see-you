@@ -13,16 +13,7 @@ const SiteHeader = () => {
         <ul className='m-0 flex list-none items-center gap-8 p-0'>
           <li>
             <a
-              href='/'
-              className='inline-block text-[0.85rem] font-bold uppercase tracking-wider text-(--color-secondary) underline decoration-2 transition-[color,transform] duration-150 ease-in-out hover:-rotate-1 hover:scale-[1.05] hover:text-black'
-            >
-              Home
-            </a>
-          </li>
-
-          <li>
-            <a
-              href='/#transparencia'
+              href='/signals'
               className='inline-block text-[0.85rem] font-bold uppercase tracking-wider text-(--color-secondary) underline decoration-2 transition-[color,transform] duration-150 ease-in-out hover:-rotate-1 hover:scale-[1.05] hover:text-black'
             >
               Signals

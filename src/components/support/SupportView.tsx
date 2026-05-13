@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import MascotEyes from "@/components/mascot/MascotEyes"
 import SiteShell from "@/components/layout/SiteShell"
 import { DoodleCard } from "@/components/ui/Card"
@@ -10,6 +10,7 @@ import {
   type ExplicitApiStatus,
   type ExplicitApiKey,
 } from "@/core/permissions"
+import { MoveRight, Info } from "lucide-react"
 
 // ── Badge component ───────────────────────────────────────────────
 type BadgeVariant = "active" | "partial" | "unavailable"
@@ -61,7 +62,7 @@ function PermissionRow({
 
   return (
     <DoodleCard innerClassName='relative w-full flex flex-wrap items-center justify-between gap-4 border-2 border-black bg-(--color-surface) py-[1.1rem] px-5'>
-      <div className='flex flex-col gap-[0.2rem] flex-1 min-w-0'>
+      <div className='flex flex-col gap-[0.35rem] flex-1 min-w-0'>
         <div className='flex items-center gap-[0.6rem] flex-wrap'>
           <span className='font-body text-base font-bold text-[#111]'>
             {status.label}
@@ -78,8 +79,7 @@ function PermissionRow({
           onClick={onAuthorize}
           loading={isAuthorizing}
           loadingText='Requesting…'
-          variant="gray"
-          
+          variant='gray'
         >
           Authorize now
         </Button>
@@ -102,15 +102,13 @@ export default function SupportView() {
   const [statuses, setStatuses] = useState<ExplicitApiStatus[]>([])
   const [loading, setLoading] = useState(true)
   const [authorizing, setAuthorizing] = useState<ExplicitApiKey | null>(null)
+  const hasPendingFlag = useRef(false)
 
   useEffect(() => {
     checkAllExplicitPermissions().then((results) => {
-      if (!hasPendingPermissions(results)) {
-        window.location.href = "/demo"
-        return
-      }
       setStatuses(results)
       setLoading(false)
+      hasPendingFlag.current = hasPendingPermissions(results)
     })
   }, [])
 
@@ -151,8 +149,8 @@ export default function SupportView() {
 
   return (
     <SiteShell
-      className='flex min-h-screen flex-col'
-      mainClassName='mx-auto w-full max-w-[600px] flex-1 px-6 pt-12 pb-20'
+      className='flex flex-col min-h-dvh'
+      mainClassName='mx-auto w-full max-w-[600px] flex-1 px-6 pt-12 pb-5'
       footerNavAriaLabel='Support page links'
     >
       <div className='mb-8 flex justify-center'>
@@ -165,7 +163,7 @@ export default function SupportView() {
 
       <p className='mb-10 text-center font-body text-base leading-[1.55] text-(--color-secondary)'>
         These signals need explicit permission. You can grant them now or
-        continue without them.
+        continue without them — the demo works great either way.
       </p>
 
       <div className='mb-10 flex flex-col gap-4'>
@@ -184,16 +182,37 @@ export default function SupportView() {
         ))}
       </div>
 
-      <div className='mb-12 text-center animate-in fade-in slide-in-from-bottom-2' style={{ animationDelay: `${statuses.length * 100 + 100}ms` }}>
+      {statuses.some((s) => s.permission === "unsupported") && (
+        <div className='mb-10 p-4 border border-dashed border-(--color-outline-variant) rounded-[4px] bg-(--color-surface) animate-in fade-in slide-in-from-bottom-3'>
+          <div className='flex items-start gap-2'>
+            <Info
+              size={14}
+              className='mt-0.5 text-(--color-outline) shrink-0'
+            />
+            <p className='font-body text-[0.82rem] text-(--color-secondary) leading-normal m-0'>
+              Even if some signals aren't available in your browser (common in
+              Firefox and Safari), the demo will still detect tab switches,
+              focus loss, fullscreen exit, and mouse leaving — so the core
+              experience will be great.
+            </p>
+          </div>
+        </div>
+      )}
+
+      <div
+        className='text-center animate-in fade-in slide-in-from-bottom-2'
+        style={{ animationDelay: `${statuses.length * 100 + 200}ms` }}
+      >
         <Button variant='gray' onClick={() => (window.location.href = "/demo")}>
-          Continue anyway
+          {hasPendingFlag.current ? (
+            "Continue anyway"
+          ) : (
+            <>
+              Continue <MoveRight size={18} />
+            </>
+          )}
         </Button>
       </div>
-
-      <p className='m-0 border-t border-dashed border-(--color-outline-variant) pt-6 text-center font-body text-[0.75rem] leading-[1.6] text-(--color-outline)'>
-        This demo detects browser signals; actions outside the browser may not
-        be visible.
-      </p>
     </SiteShell>
   )
 }
