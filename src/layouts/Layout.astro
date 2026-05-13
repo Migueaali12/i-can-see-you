@@ -11,33 +11,74 @@ import SiteFooter from '@/components/layout/SiteFooter'
 interface Props {
   title?: string;
   description?: string;
+  canonicalUrl?: string;
+  ogImage?: string;
   hideHeader?: boolean;
   hideFooter?: boolean;
+  structuredData?: object | object[];
+  noindex?: boolean;
 }
 
 const {
-  title = 'I can see you',
-  description = 'Visual simulator of browser-detectable distraction signals.',
+  title = 'I Can See You — Browser Activity & Distraction Detector',
+  description = 'Test which browser signals expose your distractions. 60-second demo that detects tab switches, focus loss, fullscreen exits, cursor leaving, and paste events. No camera, no server, 100% local.',
+  canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://icanseeyou.dev').href,
+  ogImage = '/og-default.svg',
   hideHeader = false,
   hideFooter = false,
+  structuredData,
+  noindex = false,
 } = Astro.props as Props;
+
+const siteOrigin = Astro.site ? Astro.site.origin : 'https://icanseeyou.dev';
+const siteName = 'I Can See You';
+const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
+const ogImageUrl = new URL(ogImage, siteOrigin).href;
+const structuredDataArray = structuredData
+  ? Array.isArray(structuredData) ? structuredData : [structuredData]
+  : [];
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta name="theme-color" content="#111111" />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
-    <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={description} />
-    <title>{title}</title>
 
     <link rel="preload" href={nanumLatinWoff2} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={wenkaiLatinWoff2} as="font" type="font/woff2" crossorigin />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={fullTitle} />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={fullTitle} />
+
+    {structuredDataArray.map((data) => (
+      <script type="application/ld+json" set:html={JSON.stringify(data)} is:inline />
+    ))}
   </head>
   <body class="notebook-bg flex flex-col h-full">
     {!hideHeader && <SiteHeader />}

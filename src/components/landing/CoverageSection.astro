@@ -2,36 +2,47 @@
 import { DoodleCard } from "@/components/ui/Card"
 
 const detectedItems = [
-  "Tab visibility changes (tab switch).",
-  "Window focus loss and recovery.",
-  "Fullscreen exit and prolonged inactivity.",
+  "Tab visibility changes via the Page Visibility API.",
+  "Window focus loss and recovery events.",
+  "Fullscreen exit — detects when you leave full-screen mode.",
+  "Mouse leave — your cursor leaving the browser viewport.",
+  "Paste events during the detection session.",
+  "DevTools heuristic — best-effort check for open developer tools.",
 ]
 
 const notDetectedItems = [
   "Applications open outside the browser.",
   "Exact content of other system windows.",
+  "Your camera, microphone, or screen recording.",
   "What you ate for breakfast this morning.",
+  "Whether you're actually reading this or just scrolling.",
+  "Your excuse for switching tabs. (But I noticed.)",
 ]
 ---
 
-<section
-  class='grid grid-cols-1 min-[700px]:grid-cols-2 gap-16 w-[min(900px,calc(100%-3rem))] mx-auto pt-4 pb-8'
->
-  <div class='animate-in fade-in slide-in-from-bottom-4' style='animation-delay:150ms'>
-    <DoodleCard
-      dashedBorder
-      corner='scan'
-      title='What I can detect'
-      listItems={detectedItems}
-    />
-  </div>
-  <div class='animate-in fade-in slide-in-from-bottom-4' style='animation-delay:250ms'>
-    <DoodleCard
-      dashedBorder
-      corner='eye-off'
-      title="What I can't detect"
-      listItems={notDetectedItems}
-      listMuted
-    />
+<section aria-labelledby="coverage-heading">
+  <h2 id="coverage-heading" class='sr-only'>Browser signal detection coverage</h2>
+
+  <div
+    class='grid grid-cols-1 min-[700px]:grid-cols-2 gap-16 w-[min(900px,calc(100%-3rem))] mx-auto pt-4 pb-8'
+  >
+    <div class='animate-in fade-in slide-in-from-bottom-4' style='animation-delay:150ms'>
+      <DoodleCard
+        dashedBorder
+        corner='scan'
+        title='What I can detect'
+        listItems={detectedItems}
+      />
+    </div>
+    <div class='animate-in fade-in slide-in-from-bottom-4' style='animation-delay:250ms'>
+      <DoodleCard
+      className='h-full'
+        dashedBorder
+        corner='eye-off'
+        title="What I can't detect"
+        listItems={notDetectedItems}
+        listMuted
+      />
+    </div>
   </div>
 </section>

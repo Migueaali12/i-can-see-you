@@ -9,7 +9,7 @@ const SiteHeader = () => {
       >
         I can see you
       </a>
-      <nav aria-label='Navegacion principal'>
+      <nav aria-label='Main navigation'>
         <ul className='m-0 flex list-none items-center gap-8 p-0'>
           <li>
             <a
@@ -32,7 +32,7 @@ const SiteHeader = () => {
               href='https://github.com/Migueaali12/i-can-see-you'
               target='_blank'
               rel='noopener noreferrer'
-              aria-label='Ver repositorio en GitHub'
+              aria-label='View source on GitHub'
               className='inline-flex items-center text-(--color-secondary) transition-[color,transform] duration-150 ease-in-out hover:scale-[1.15] hover:text-black'
             >
               <GitHub width={20} height={20} fill='currentColor' />

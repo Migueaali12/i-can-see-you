@@ -2,11 +2,43 @@
 import Layout from "@/layouts/Layout.astro"
 import PrivacyHero from "@/components/privacy/PrivacyHero.astro"
 import PrivacyContent from "@/components/privacy/PrivacyContent.astro"
+
+const faqStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does I Can See You access my camera or microphone?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. I Can See You never requests camera or microphone permissions. It only uses browser-level APIs like Page Visibility, Focus Events, and Mouse Events to detect distraction signals."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my data sent to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All detection happens locally in your browser. Nothing is sent to any server. Session data is stored only in sessionStorage and is cleared when you close the tab."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What browser APIs does this use to detect distraction?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It uses Page Visibility API (tab switches), Focus Events (window focus loss), Fullscreen API (fullscreen exits), Mouse Events (cursor leaving viewport), Paste Events, and a best-effort DevTools heuristic."
+      }
+    },
+  ]
+}
 ---
 
 <Layout
-  title="Privacy | I can see you"
-  description="What this demo detects, what it doesn't, and how your data is handled."
+  title="Privacy & Transparency | I Can See You"
+  description="What this browser distraction detector actually detects, what it can't, and how your data stays local. Full transparency on Page Visibility API, focus events, and other browser signals."
+  structuredData={faqStructuredData}
 >
   <main>
     <PrivacyHero />
