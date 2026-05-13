@@ -131,10 +131,10 @@ export default function ResultsView() {
           onClick={handleShare}
         >
           {shareStatus === "copied"
-            ? "Copiado"
+            ? "Copied!"
             : shareStatus === "error"
-              ? "Error al compartir"
-              : "Compartir"}
+              ? "Error sharing"
+              : "Share"}
         </Button>
       </div>
     </div>
