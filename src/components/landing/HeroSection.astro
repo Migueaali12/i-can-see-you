@@ -1,7 +1,6 @@
 ---
-import Button from "@/components/ui/Button"
-import { Play } from "lucide-react"
 import MascotEyes from "@/components/mascot/MascotEyes"
+import HeroCtaButton from "@/components/landing/HeroCtaButton"
 ---
 
 <section
@@ -23,10 +22,5 @@ import MascotEyes from "@/components/mascot/MascotEyes"
     60 seconds. That’s all it takes. Try not to get distracted.
   </p>
 
-  <div class='flex flex-wrap justify-center gap-4 animate-in fade-in slide-in-from-bottom-2'>
-    <Button size='lg' variant='gray' href='/signals'
-      >Let's try it out!
-      <Play size={20} />
-    </Button>
-  </div>
+  <HeroCtaButton client:load />
 </section>
