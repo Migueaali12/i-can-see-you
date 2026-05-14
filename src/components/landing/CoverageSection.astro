@@ -4,10 +4,10 @@ import { DoodleCard } from "@/components/ui/Card"
 const detectedItems = [
   "Tab visibility changes via the Page Visibility API.",
   "Window focus loss and recovery events.",
-  "Fullscreen exit — detects when you leave full-screen mode.",
-  "Mouse leave — your cursor leaving the browser viewport.",
+  "Fullscreen exit: detects when you leave full-screen mode.",
+  "Mouse leave: your cursor leaving the browser viewport.",
   "Paste events during the detection session.",
-  "DevTools heuristic — best-effort check for open developer tools.",
+  "DevTools heuristic: best-effort check for open developer tools.",
 ]
 
 const notDetectedItems = [
@@ -20,13 +20,13 @@ const notDetectedItems = [
 ]
 ---
 
-<section aria-labelledby="coverage-heading">
+<section aria-labelledby="coverage-heading" class='flex flex-col shrink-0 pb-[clamp(1rem,4vh,2rem)]'>
   <h2 id="coverage-heading" class='sr-only'>Browser signal detection coverage</h2>
 
   <div
-    class='grid grid-cols-1 min-[700px]:grid-cols-2 gap-16 w-[min(900px,calc(100%-3rem))] mx-auto pt-4 pb-8'
+    class='flex flex-wrap justify-center gap-[clamp(1rem,3vh,2.5rem)] max-w-[1400px] w-[calc(100%-2rem)] mx-auto items-start'
   >
-    <div class='animate-in fade-in slide-in-from-bottom-4' style='animation-delay:150ms'>
+    <div class='animate-in fade-in slide-in-from-bottom-4 [&_ul]:text-[14px]! flex-1 min-w-[280px] max-w-[560px]' style='animation-delay:150ms'>
       <DoodleCard
         dashedBorder
         corner='scan'
@@ -34,9 +34,8 @@ const notDetectedItems = [
         listItems={detectedItems}
       />
     </div>
-    <div class='animate-in fade-in slide-in-from-bottom-4' style='animation-delay:250ms'>
+    <div class='animate-in fade-in slide-in-from-bottom-4 [&_ul]:text-[14px]! flex-1 min-w-[280px] max-w-[560px]' style='animation-delay:250ms'>
       <DoodleCard
-      className='h-full'
         dashedBorder
         corner='eye-off'
         title="What I can't detect"

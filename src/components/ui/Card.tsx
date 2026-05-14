@@ -1,16 +1,14 @@
 import type { CSSProperties, ReactNode } from "react"
-import { CircleCheck, CircleX } from "lucide-react"
+import { CircleCheck, CircleX, Dot } from "lucide-react"
 
 export type DoodleCardCorner = "scan" | "eye-off"
 export type DoodleCardVariant = "default" | "inverted"
 
-const listMarker = "•"
-
 const defaultInnerClass =
-  "relative bg-(--color-surface) border-2 border-black p-8 h-full flex flex-col"
+  "relative bg-(--color-surface) border-2 border-black p-[clamp(1.25rem,4vh,2rem)] h-full flex flex-col"
 
 const invertedInnerClass =
-  "relative bg-black border-2 border-black p-8 h-full flex flex-col text-white"
+  "relative bg-black border-2 border-black p-[clamp(1.25rem,4vh,2rem)] h-full flex flex-col text-white"
 
 function CornerSticker({ corner }: { corner: DoodleCardCorner }) {
   const Icon = corner === "scan" ? CircleCheck : CircleX
@@ -28,7 +26,7 @@ export type DoodleCardProps = {
   className?: string
   /** Extra classes applied to the offset shadow element behind the card. */
   shadowClassName?: string
-  /** Visual variant: "default" (light) or "inverted" (dark/black). */
+  /** Visual variant: "default" or "inverted" (dark/black). */
   variant?: DoodleCardVariant
   corner?: DoodleCardCorner
   title?: string
@@ -90,7 +88,7 @@ export function DoodleCard({
         {corner != null ? <CornerSticker corner={corner} /> : null}
 
         {title != null && title !== "" ? (
-          <h2 className='mb-6 font-display text-[1.35rem] font-semibold leading-tight flex items-center gap-2 border-b-2 border-current pb-3'>
+          <h2 className='mb-[clamp(0.75rem,2vh,1.5rem)] font-display text-[1.35rem] font-semibold leading-tight flex items-center gap-2 border-b-2 border-current pb-[clamp(0.5rem,1.5vh,0.75rem)]'>
             {title}
           </h2>
         ) : null}
@@ -98,7 +96,7 @@ export function DoodleCard({
         {listItems != null && listItems.length > 0 ? (
           <ul
             className={[
-              "list-none m-0 p-0 flex flex-col gap-4 text-[1.05rem] leading-relaxed grow",
+              "list-none m-0 p-0 flex flex-col gap-[clamp(0.5rem,1.5vh,1rem)] text-[1.05rem] leading-relaxed grow",
               listMuted ? "opacity-80" : "",
             ]
               .filter(Boolean)
@@ -106,8 +104,8 @@ export function DoodleCard({
           >
             {listItems.map((item, i) => (
               <li key={`${i}-${item}`} className='flex items-start gap-[0.6rem]'>
-                <span className='mt-[0.15rem] font-bold shrink-0' aria-hidden='true'>
-                  {listMarker}
+                <span className='mt-[0.2rem] shrink-0' aria-hidden='true'>
+                  <Dot size={18} strokeWidth={2.5} />
                 </span>
                 <span>{item}</span>
               </li>

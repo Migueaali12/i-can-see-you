@@ -11,7 +11,7 @@ const SiteFooter = ({
     <footer
       className={[
         "flex shrink-0 flex-wrap items-center justify-between gap-4 border-2 border-b-0 border-l-0 border-r-0 border-t-4 border-black bg-white p-6",
-        withPageSpacing ? "mt-16" : "",
+        withPageSpacing ? "mt-12" : "",
       ]
         .filter(Boolean)
         .join(" ")}
