@@ -20,22 +20,35 @@ const notDetectedItems = [
 ]
 ---
 
-<section aria-labelledby="coverage-heading" class='flex flex-col shrink-0 pb-[clamp(1rem,4vh,2rem)]'>
-  <h2 id="coverage-heading" class='sr-only'>Browser signal detection coverage</h2>
+<section
+  aria-labelledby='coverage-heading'
+  class='flex flex-col shrink-0 pb-[clamp(1rem,4vh,2rem)]'
+>
+  <h2 id='coverage-heading' class='sr-only'>
+    Browser signal detection coverage
+  </h2>
 
   <div
-    class='flex flex-wrap justify-center gap-[clamp(1rem,3vh,2.5rem)] max-w-[1400px] w-[calc(100%-2rem)] mx-auto items-start'
+    class='flex flex-wrap justify-center gap-[clamp(1rem,3vh,2.5rem)] max-w-350 w-[calc(100%-2rem)] mx-auto items-start'
   >
-    <div class='animate-in fade-in slide-in-from-bottom-4 [&_ul]:text-[14px]! flex-1 min-w-[280px] max-w-[560px]' style='animation-delay:150ms'>
+    <div
+      class='animate-in fade-in slide-in-from-bottom-4 [&_ul]:text-[14px]! flex-1 min-w-70 max-w-140'
+      style='animation-delay:150ms'
+    >
       <DoodleCard
+        className='landing-card-rotate-left'
         dashedBorder
         corner='scan'
         title='What I can detect'
         listItems={detectedItems}
       />
     </div>
-    <div class='animate-in fade-in slide-in-from-bottom-4 [&_ul]:text-[14px]! flex-1 min-w-[280px] max-w-[560px]' style='animation-delay:250ms'>
+    <div
+      class='animate-in fade-in slide-in-from-bottom-4 [&_ul]:text-[14px]! flex-1 min-w-70 max-w-140'
+      style='animation-delay:250ms'
+    >
       <DoodleCard
+        className='landing-card-rotate-right'
         dashedBorder
         corner='eye-off'
         title="What I can't detect"

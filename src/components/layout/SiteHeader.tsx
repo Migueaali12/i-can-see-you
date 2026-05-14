@@ -2,7 +2,7 @@ import { GitHub } from "@/components/ui/Github"
 
 const SiteHeader = () => {
   return (
-    <header className='sticky top-0 z-50 flex shrink-0 items-center justify-between border-2 border-b-4 border-l-0 border-r-0 border-t-0 border-black bg-white px-6 py-4 shadow-[0_4px_0_rgba(0,0,0,0.08)]'>
+    <header className='sticky top-0 z-50 flex shrink-0 items-center justify-between border-2 border-b-4 border-l-0 border-r-0 border-t-0 border-black bg-white px-6 py-2 shadow-[0_4px_0_rgba(0,0,0,0.08)]'>
       <a
         href='/'
         className='font-display text-[1.4rem] font-black italic tracking-[-0.04em] text-black transition-[opacity,transform] duration-150 ease-in-out hover:opacity-75 hover:scale-[1.03]'

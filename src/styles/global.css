@@ -144,3 +144,38 @@ a {
 .site-footer nav a:hover {
   font-style: italic;
 }
+
+/* ─── Privacy Card Rotation & Wobble ──────────────────────────── */
+
+.privacy-card {
+  --card-rotation: 0deg;
+  transform: rotate(var(--card-rotation));
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: center center;
+}
+
+.privacy-card:hover {
+  transform: rotate(0deg);
+}
+
+/* ─── Landing Card Hover Rotation ─────────────────────────────── */
+
+.landing-card-rotate-left {
+  transform: rotate(-1deg);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: center center;
+}
+
+.landing-card-rotate-left:hover {
+  transform: rotate(0deg);
+}
+
+.landing-card-rotate-right {
+  transform: rotate(1deg);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: center center;
+}
+
+.landing-card-rotate-right:hover {
+  transform: rotate(0deg);
+}
