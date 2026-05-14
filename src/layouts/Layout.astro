@@ -80,7 +80,7 @@ const structuredDataArray = structuredData
       <script type="application/ld+json" set:html={JSON.stringify(data)} is:inline />
     ))}
   </head>
-  <body class="notebook-bg flex flex-col h-full">
+  <body class="notebook-bg flex flex-col min-h-dvh">
     {!hideHeader && <SiteHeader />}
 
     <slot />

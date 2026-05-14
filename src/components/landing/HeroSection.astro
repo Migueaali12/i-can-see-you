@@ -4,29 +4,29 @@ import HeroCtaButton from "@/components/landing/HeroCtaButton"
 ---
 
 <section
-  class='mx-auto flex max-w-[780px] flex-col items-center px-6 pt-16 pb-12 text-center'
+  class='mx-auto flex max-w-[780px] flex-col items-center px-6 pt-[clamp(1rem,4vh,3rem)] pb-[clamp(1rem,3vh,2rem)] text-center shrink-0'
 >
-  <div class='mb-8'>
+  <div class='mb-[clamp(1rem,3vh,2rem)]'>
     <MascotEyes client:load size='mascot--hero' />
   </div>
 
   <h1
-    class='font-display mb-6 text-[clamp(2.5rem,6vw,4rem)] leading-[1.05] font-bold tracking-[-0.02em] text-black'
+    class='font-display mb-[clamp(0.5rem,2vh,1.5rem)] text-[clamp(2.5rem,6vw,4rem)] leading-[1.05] font-bold tracking-[-0.02em] text-black'
   >
     I can see you
   </h1>
 
   <p
-    class='mb-2 border-b-2 border-dashed border-(--color-outline-variant) pb-4 text-[clamp(1.1rem,2vw,1.4rem)] leading-[1.3] font-semibold text-(--color-secondary)'
+    class='mb-[clamp(0.5rem,1vh,1rem)] border-b-2 border-dashed border-(--color-outline-variant) pb-[clamp(0.5rem,2vh,1.5rem)] text-[clamp(1.1rem,2vw,1.1rem)] leading-[0.9] font-semibold text-(--color-secondary)'
   >
     60 seconds. That's all it takes. Try not to get distracted.
   </p>
 
-  <p class='mt-4 text-[0.95rem] leading-[1.5] max-w-[520px] text-(--color-secondary)'>
-    A free browser activity detector that shows exactly which signals your browser reveals when you lose focus — tab switches, window blur, fullscreen exits, and more. No camera. No server. 100% local.
+  <p class='mt-[clamp(0.5rem,2vh,1.5rem)] text-[0.95rem] leading-normal min-w-6xl max-w-full text-(--color-secondary)'>
+    A free browser activity detector that shows exactly which signals your browser reveals when you lose focus: tab switches, window blur, fullscreen exits, and more. No camera. No server. 100% local.
   </p>
 
-  <div class='mt-8'>
+  <div class='mt-[clamp(1rem,3vh,4rem)] bg-red-300 mb-5'>
     <HeroCtaButton client:load />
   </div>
 </section>
