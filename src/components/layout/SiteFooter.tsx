@@ -29,7 +29,7 @@ const SiteFooter = ({
               Privacy
             </a>
           </li>
-          <li>
+          {/* <li>
             <a
               href='/demo'
               className='font-mono text-[0.75rem] uppercase tracking-widest text-(--color-secondary) hover:italic'
@@ -44,7 +44,7 @@ const SiteFooter = ({
             >
               Signals
             </a>
-          </li>
+          </li> */}
         </ul>
       </nav>
     </footer>
