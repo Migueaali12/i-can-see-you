@@ -53,6 +53,7 @@ export default function MascotEyes({
     useState<Expression>("neutral")
   const [blinkKind, setBlinkKind] = useState<BlinkKind>("none")
   const [isIdle, setIsIdle] = useState(true)
+  const [expressionMasked, setExpressionMasked] = useState(false)
 
   const neutralTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const annoyedTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -64,7 +65,9 @@ export default function MascotEyes({
 
   const [isTransitioning, setIsTransitioning] = useState(false)
 
-  const activeExpression = externalExpression ?? internalExpression
+  const activeExpression = expressionMasked
+    ? internalExpression
+    : (externalExpression ?? internalExpression)
 
   // ── Blink ────────────────────────────────────────────────────────
   const triggerBlink = useCallback((kind: BlinkKind) => {
@@ -140,6 +143,7 @@ export default function MascotEyes({
           () => setIsTransitioning(false),
           350,
         )
+        setExpressionMasked(false)
         if (!externalExpression) setInternalExpression("neutral")
       }
 
@@ -183,23 +187,30 @@ export default function MascotEyes({
   )
 
   // ── Mouse leaves viewport → annoyed + idle wander ───────────────
-  const handleWindowMouseLeave = useCallback(() => {
-    if (externalExpression) return
+const handleWindowMouseLeave = useCallback(() => {
     if (neutralTimer.current) clearTimeout(neutralTimer.current)
     if (annoyedTimer.current) clearTimeout(annoyedTimer.current)
 
     setIsTransitioning(false)
     if (transitionTimer.current) clearTimeout(transitionTimer.current)
 
-    setInternalExpression("annoyed")
-    triggerBlink("single")
-
-    annoyedTimer.current = setTimeout(() => {
+    if (externalExpression) {
+      setExpressionMasked(true)
       setInternalExpression("neutral")
+      triggerBlink("single")
       startIdle()
-    }, ANNOYED_DURATION)
+    } else {
+      setExpressionMasked(false)
+      setInternalExpression("annoyed")
+      triggerBlink("single")
 
-    startIdle()
+      annoyedTimer.current = setTimeout(() => {
+        setInternalExpression("neutral")
+        startIdle()
+      }, ANNOYED_DURATION)
+
+      startIdle()
+    }
   }, [externalExpression, triggerBlink, startIdle])
 
   // ── Blink on hover ───────────────────────────────────────────────
