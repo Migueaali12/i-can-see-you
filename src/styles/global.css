@@ -145,16 +145,20 @@ a {
   font-style: italic;
 }
 
-/* ─── Privacy Card Rotation & Wobble ──────────────────────────── */
+/* ─── Card Rotation & Wobble ──────────────────────────────────── */
 
-.privacy-card {
+.privacy-card,
+.manual-card,
+.doodle-card-rotation {
   --card-rotation: 0deg;
   transform: rotate(var(--card-rotation));
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   transform-origin: center center;
 }
 
-.privacy-card:hover {
+.privacy-card:hover,
+.manual-card:hover,
+.doodle-card-rotation:hover {
   transform: rotate(0deg);
 }
 
@@ -177,5 +181,24 @@ a {
 }
 
 .landing-card-rotate-right:hover {
+  transform: rotate(0deg);
+}
+
+/* ─── Note Card (organic paper shape) ─────────────────────────── */
+
+.note-card-panel,
+.note-card-shadow {
+  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+}
+
+/* Manual cards reuse the same rotation hover as privacy cards */
+.manual-card {
+  --card-rotation: 0deg;
+  transform: rotate(var(--card-rotation));
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: center center;
+}
+
+.manual-card:hover {
   transform: rotate(0deg);
 }

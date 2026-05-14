@@ -2,7 +2,7 @@ import type { ReactNode } from "react"
 import type { LucideIcon } from "lucide-react"
 import { DoodleCard } from "@/components/ui/DoodleCard"
 
-export interface PrivacyCardProps {
+export interface ManualCardProps {
   rotation?: number
   icon: LucideIcon
   title: string
@@ -10,19 +10,20 @@ export interface PrivacyCardProps {
   children: ReactNode
 }
 
-export function PrivacyCard({
+export function ManualCard({
   rotation = 0,
   icon,
   title,
   className,
   children,
-}: PrivacyCardProps) {
+}: ManualCardProps) {
   return (
     <DoodleCard
       rotation={rotation}
       icon={icon}
       title={title}
       className={className}
+      variant='note'
       dashedBorder
     >
       {children}

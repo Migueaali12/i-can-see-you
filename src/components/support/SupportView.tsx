@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import MascotEyes from "@/components/mascot/MascotEyes"
 import SiteShell from "@/components/layout/SiteShell"
-import { DoodleCard } from "@/components/ui/Card"
+import { DoodleCard } from "@/components/ui/DoodleCard"
 import Button from "@/components/ui/Button"
 import {
   checkAllExplicitPermissions,

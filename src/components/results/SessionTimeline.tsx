@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import type { SessionResults } from "@/core/resultsBuilder"
 import type { DetectionSignal } from "@/core/detectionEngine"
-import { DoodleCard } from "@/components/ui/Card"
+import { DoodleCard } from "@/components/ui/DoodleCard"
 import { formatTimerMs } from "./utils"
 import { X, Eye } from "lucide-react"
 
