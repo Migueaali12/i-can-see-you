@@ -11,6 +11,7 @@ import SiteFooter from '@/components/layout/SiteFooter'
 interface Props {
   title?: string;
   description?: string;
+  keywords?: string;
   canonicalUrl?: string;
   ogImage?: string;
   hideHeader?: boolean;
@@ -22,6 +23,7 @@ interface Props {
 const {
   title = 'I Can See You — Browser Activity & Distraction Detector',
   description = 'Test which browser signals expose your distractions. 60-second demo that detects tab switches, focus loss, fullscreen exits, cursor leaving, and paste events. No camera, no server, 100% local.',
+  keywords = 'focus browser detector, browser activity detector, distraction detector, tab switch detection, focus loss detection, browser signals, online proctoring demo, attention tracker',
   canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://icanseeyou.dev').href,
   ogImage = '/og-default.svg',
   hideHeader = false,
@@ -34,9 +36,20 @@ const siteOrigin = Astro.site ? Astro.site.origin : 'https://icanseeyou.dev';
 const siteName = 'I Can See You';
 const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
 const ogImageUrl = new URL(ogImage, siteOrigin).href;
+const organizationStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": siteName,
+  "url": siteOrigin,
+  "logo": new URL("/favicon.svg", siteOrigin).href,
+  "sameAs": [
+    "https://github.com/Migueaali12/i-can-see-you"
+  ]
+};
+
 const structuredDataArray = structuredData
-  ? Array.isArray(structuredData) ? structuredData : [structuredData]
-  : [];
+  ? [organizationStructuredData, ...(Array.isArray(structuredData) ? structuredData : [structuredData])]
+  : [organizationStructuredData];
 ---
 
 <!doctype html>
@@ -48,6 +61,7 @@ const structuredDataArray = structuredData
 
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
     <link rel="canonical" href={canonicalUrl} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
