@@ -1,4 +1,4 @@
-import { DoodleCard } from "@/components/ui/Card"
+import { DoodleCard } from "@/components/ui/DoodleCard"
 import { Info } from "lucide-react"
 import type { DetectionSignal } from "@/core/detectionEngine"
 

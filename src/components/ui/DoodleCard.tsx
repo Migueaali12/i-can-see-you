@@ -1,8 +1,9 @@
 import type { CSSProperties, ReactNode } from "react"
+import type { LucideIcon } from "lucide-react"
 import { CircleCheck, CircleX, Dot } from "lucide-react"
 
 export type DoodleCardCorner = "scan" | "eye-off"
-export type DoodleCardVariant = "default" | "inverted"
+export type DoodleCardVariant = "default" | "inverted" | "note"
 
 const defaultInnerClass =
   "relative bg-(--color-surface) border-2 border-black p-[clamp(1.25rem,4vh,2rem)] h-full flex flex-col"
@@ -38,6 +39,10 @@ export type DoodleCardProps = {
   innerStyle?: CSSProperties
   /** Adds a dashed inset border inside the card panel. */
   dashedBorder?: boolean
+  /** Rotation angle in degrees (applied via CSS custom property). */
+  rotation?: number
+  /** Icon rendered above the title. */
+  icon?: LucideIcon
   children?: ReactNode
 }
 
@@ -58,17 +63,32 @@ export function DoodleCard({
   innerClassName,
   innerStyle,
   dashedBorder = false,
+  rotation,
+  icon: Icon,
   children,
 }: DoodleCardProps) {
   const isInverted = variant === "inverted"
+  const isNote = variant === "note"
   const inner = innerClassName ?? (isInverted ? invertedInnerClass : defaultInnerClass)
 
   return (
-    <article className={["relative", className].filter(Boolean).join(" ")}>
+    <article
+      className={[
+        "relative",
+        rotation != null ? "doodle-card-rotation" : "",
+        className,
+      ].filter(Boolean).join(" ")}
+      style={
+        rotation != null
+          ? ({ "--card-rotation": `${rotation}deg` } as React.CSSProperties)
+          : undefined
+      }
+    >
       {/* Offset shadow */}
       <div
         className={[
           "absolute inset-0 bg-black translate-x-1.5 translate-y-1.5",
+          isNote ? "note-card-shadow" : "",
           shadowClassName,
         ]
           .filter(Boolean)
@@ -77,7 +97,7 @@ export function DoodleCard({
       />
 
       {/* Main panel */}
-      <div className={inner} style={innerStyle}>
+      <div className={[inner, isNote ? "note-card-panel" : ""].filter(Boolean).join(" ")} style={innerStyle}>
         {dashedBorder && (
           <div
             className='absolute inset-[10px] border border-dashed border-[#ddd] pointer-events-none'
@@ -86,6 +106,12 @@ export function DoodleCard({
         )}
 
         {corner != null ? <CornerSticker corner={corner} /> : null}
+
+        {Icon != null && (
+          <div className='relative z-10'>
+            <Icon className='w-6 h-6 text-black mb-3' strokeWidth={2} />
+          </div>
+        )}
 
         {title != null && title !== "" ? (
           <h2 className='mb-[clamp(0.75rem,2vh,1.5rem)] font-display text-[1.35rem] font-semibold leading-tight flex items-center gap-2 border-b-2 border-current pb-[clamp(0.5rem,1.5vh,0.75rem)]'>

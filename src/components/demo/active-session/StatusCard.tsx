@@ -2,7 +2,7 @@ import type { DetectionSignal } from "@/core/detectionEngine"
 import type { FocusStatus } from "./useActiveSession"
 import { EyeClosed, ScanEye } from "lucide-react"
 import { t, SIGNAL_LABELS } from "./styles"
-import { DoodleCard } from "@/components/ui/Card"
+import { DoodleCard } from "@/components/ui/DoodleCard"
 
 type StatusConfig = {
   label: string
@@ -45,7 +45,9 @@ export default function StatusCard({
 }) {
   const cfg = STATUS_CONFIG[status]
   const Icon =
-    status === "out_of_focus" || status === "event_detected" ? EyeClosed : ScanEye
+    status === "out_of_focus" || status === "event_detected"
+      ? EyeClosed
+      : ScanEye
   const iconColor = cfg.dark ? "#fff" : "#111"
 
   return (

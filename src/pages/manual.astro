@@ -1,10 +1,15 @@
 ---
 import Layout from "@/layouts/Layout.astro"
+import ManualHero from "@/components/manual/ManualHero.astro"
+import ManualGrid from "@/components/manual/ManualGrid"
 ---
 
 <Layout
   title='User Manual | I Can See You'
-  description=" A step-by-step user manual for I Can See You, the browser distraction detector. Learn how to use the demo, interpret the signals, and understand what it detects and what it doesn't. A guide to getting the most out of this local browser activity tracker."
+  description="A step-by-step user manual for I Can See You, the browser distraction detector. Learn how the detection works, what signals are tracked, and tips for the demo session."
 >
-  <main>Manual</main>
+  <main>
+    <ManualHero />
+    <ManualGrid client:load />
+  </main>
 </Layout>

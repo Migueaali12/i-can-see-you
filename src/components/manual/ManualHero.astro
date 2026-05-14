@@ -1,0 +1,26 @@
+---
+import MascotEyes from "@/components/mascot/MascotEyes"
+---
+
+<section
+  class='mx-auto flex max-w-[780px] flex-col items-center px-6 pt-16 pb-8 text-center'
+>
+  <div class='mb-6 animate-in fade-in slide-in-from-bottom-4'>
+    <MascotEyes client:load size='mascot--md' />
+  </div>
+
+  <h1
+    class='font-display mb-4 text-[clamp(2rem,5vw,3rem)] leading-[1.05] font-bold tracking-[-0.02em] text-black animate-in fade-in slide-in-from-bottom-4'
+    style='animation-delay:100ms'
+  >
+    User Manual
+  </h1>
+
+  <p
+    class='border-b-2 border-dashed border-(--color-outline-variant) pb-4 text-[clamp(1rem,2vw,1.25rem)] leading-[1.4] font-semibold text-(--color-secondary) animate-in fade-in slide-in-from-bottom-4 max-w-[600px]'
+    style='animation-delay:200ms'
+  >
+    Everything you need to know before the sketchbook starts watching. Spoiler:
+    it's just your browser talking.
+  </p>
+</section>

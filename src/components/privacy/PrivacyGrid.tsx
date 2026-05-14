@@ -1,5 +1,13 @@
 import { PrivacyCard } from "./PrivacyCard"
-import { Eye, CloudOff, EyeOff, Settings, ShieldCheck, Dot } from "lucide-react"
+import {
+  Eye,
+  CloudOff,
+  EyeOff,
+  Settings,
+  ShieldCheck,
+  Dot,
+  House,
+} from "lucide-react"
 import Button from "@/components/ui/Button"
 
 export default function PrivacyGrid() {
@@ -387,7 +395,7 @@ export default function PrivacyGrid() {
         style={{ animationDelay: "600ms" }}
       >
         <Button href='/' variant='gray' size='lg'>
-          Back to Home
+          Back to Home <House size={18} strokeWidth={2} />
         </Button>
       </div>
     </>
