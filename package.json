@@ -2,7 +2,7 @@
   "name": "i-can-see-you",
   "type": "module",
   "version": "0.0.1",
-  "packageManager": "pnpm@10.32.1",
+  "packageManager": "pnpm@11.1.2",
   "engines": {
     "node": ">=22.12.0"
   },
@@ -19,6 +19,7 @@
     "@fontsource/lxgw-wenkai-mono-tc": "^5.2.9",
     "@fontsource/nanum-pen-script": "^5.2.7",
     "astro": "^6.1.9",
+    "html-to-image": "^1.11.13",
     "lucide-react": "^1.14.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
