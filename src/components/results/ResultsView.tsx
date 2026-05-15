@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { useMemo, useRef } from "react"
 import {
   clearResults,
   loadResults,
@@ -12,6 +12,8 @@ import SessionTimeline from "./SessionTimeline"
 import TransparencyBlock from "./TransparencyBlock"
 import Button from "@/components/ui/Button"
 import { RefreshCw, Share2 } from "lucide-react"
+import { toBlob } from "html-to-image"
+import ShareableCard from "./ShareableCard"
 
 type Expression = "neutral" | "suspicious" | "annoyed"
 
@@ -45,26 +47,50 @@ export default function ResultsView() {
   )
 
   const handleShare = async () => {
-    const text = results
-      ? `I Can See You — My attention score: ${results.attentionScore}%. Got distracted ${results.incidentCount} times over ${Math.round(results.sessionDurationMs / 1000)}s.`
-      : "I Can See You — See how much your browser can tell about you."
+    if (!cardRef.current || !results) return
+
     try {
-      if (navigator.share) {
-        await navigator.share({ title: "I Can See You", text })
+      // 1. Wait for fonts to be loaded
+      await document.fonts.ready
+
+      // 2. Capture the card as a PNG blob
+      const blob = await toBlob(cardRef.current, {
+        pixelRatio: 2,
+        cacheBust: true,
+      })
+
+      if (!blob) {
+        setShareStatus("error")
+        setTimeout(() => setShareStatus("idle"), 2000)
+        return
+      }
+
+      // 3. Create a File object for the Web Share API
+      const file = new File([blob], "icanseeyou-results.png", {
+        type: "image/png",
+      })
+
+      // 4. Try native Web Share API with the image file
+      if (navigator.canShare?.({ files: [file] })) {
+        await navigator.share({
+          title: "I Can See You — My Attention Score",
+          text: `I scored ${results.attentionScore}% attention. Can you do better?`,
+          files: [file],
+        })
       } else {
-        await navigator.clipboard.writeText(text)
-        setShareStatus("copied")
+        // 5. Fallback: trigger download
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement("a")
+        link.href = url
+        link.download = "icanseeyou-results.png"
+        link.click()
+        URL.revokeObjectURL(url)
+        setShareStatus("copied") // or create a new "downloaded" status
         setTimeout(() => setShareStatus("idle"), 2000)
       }
     } catch {
-      try {
-        await navigator.clipboard.writeText(text)
-        setShareStatus("copied")
-        setTimeout(() => setShareStatus("idle"), 2000)
-      } catch {
-        setShareStatus("error")
-        setTimeout(() => setShareStatus("idle"), 2000)
-      }
+      setShareStatus("error")
+      setTimeout(() => setShareStatus("idle"), 2000)
     }
   }
 
@@ -91,6 +117,24 @@ export default function ResultsView() {
   }
 
   const expression = getScoreExpression(results.attentionScore)
+  const cardRef = useRef<HTMLDivElement>(null)
+
+  const hiddenResultsCard = results ? (
+    <div
+      style={{
+        position: "absolute",
+        top: "-9999px",
+        left: "-9999px",
+        width: "1080px",
+        height: "1920px",
+        backgroundColor: "#ffffff",
+      }}
+    >
+      <div ref={cardRef} className='w-full h-full'>
+        <ShareableCard results={results} />
+      </div>
+    </div>
+  ) : null
 
   return (
     <div className='w-full max-w-4xl mx-auto px-4 sm:px-6 py-8 md:py-16 flex flex-col gap-8 md:gap-12'>
@@ -137,6 +181,9 @@ export default function ResultsView() {
               : "Share"}
         </Button>
       </div>
+
+      {/* Hidden card for capture */}
+      {hiddenResultsCard}
     </div>
   )
 }
