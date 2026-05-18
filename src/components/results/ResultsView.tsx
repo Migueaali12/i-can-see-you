@@ -11,7 +11,7 @@ import MetricsRow from "./MetricsRow"
 import SessionTimeline from "./SessionTimeline"
 import TransparencyBlock from "./TransparencyBlock"
 import Button from "@/components/ui/Button"
-import { RefreshCw, Share2 } from "lucide-react"
+import { Loader, RefreshCw, Share2 } from "lucide-react"
 import { toBlob } from "html-to-image"
 import ShareableCard from "./ShareableCard"
 
@@ -37,9 +37,9 @@ export default function ResultsView() {
     return data
   })
 
-  const [shareStatus, setShareStatus] = useState<"idle" | "copied" | "error">(
-    "idle",
-  )
+  const [shareStatus, setShareStatus] = useState<
+    "idle" | "copied" | "error" | "sharing"
+  >("idle")
 
   const detectedSignals = useMemo(
     () => (results ? getDetectedSignals(results) : []),
@@ -50,6 +50,8 @@ export default function ResultsView() {
     if (!cardRef.current || !results) return
 
     try {
+      setShareStatus("sharing")
+
       // 1. Wait for fonts to be loaded
       await document.fonts.ready
 
@@ -77,6 +79,8 @@ export default function ResultsView() {
           text: `I scored ${results.attentionScore}% attention. Can you do better?`,
           files: [file],
         })
+        setShareStatus("copied")
+        setTimeout(() => setShareStatus("idle"), 2000)
       } else {
         // 5. Fallback: trigger download
         const url = URL.createObjectURL(blob)
@@ -169,16 +173,25 @@ export default function ResultsView() {
           Retry demo
         </Button>
         <Button
+          disabled={shareStatus === "sharing"}
           variant='gray'
           size='lg'
-          icon={<Share2 />}
+          icon={
+            shareStatus === "sharing" ? (
+              <Loader className='animate-spin' />
+            ) : (
+              <Share2 />
+            )
+          }
           onClick={handleShare}
         >
-          {shareStatus === "copied"
-            ? "Copied!"
-            : shareStatus === "error"
-              ? "Error sharing"
-              : "Share"}
+          {shareStatus === "sharing"
+            ? "Sharing..."
+            : shareStatus === "copied"
+              ? "Shared!"
+              : shareStatus === "error"
+                ? "Error sharing"
+                : "Share"}
         </Button>
       </div>
 
