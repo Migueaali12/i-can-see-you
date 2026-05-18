@@ -101,6 +101,12 @@ export default function ShareableCard({
   const width = 1080
   const height = 1920
 
+  const gridCellSize = 40 
+  const gridLineColor = "%23E2E2E2"
+
+  // Creates the dotted pattern background SVG for the notebook paper
+  const svgBackground = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='${gridCellSize}' height='${gridCellSize}'%3E%3Cpath d='M ${gridCellSize} 0 L 0 0 0 ${gridCellSize}' fill='none' stroke='${gridLineColor}' stroke-width='1'/%3E%3C/svg%3E")`
+
   return (
     <div
       className='relative'
@@ -110,9 +116,11 @@ export default function ShareableCard({
       }}
     >
       <div
-        className='w-[1080px] h-[1920px] notebook-bg relative flex flex-col overflow-hidden'
+        className='w-[1080px] h-[1920px] relative flex flex-col overflow-hidden'
         style={{
           backgroundColor: "#FAFAFA",
+          backgroundImage: svgBackground,
+          backgroundSize: `${gridCellSize}px ${gridCellSize}px`,
           transform: `scale(${scale})`,
           transformOrigin: "top left",
         }}
@@ -223,9 +231,7 @@ export default function ShareableCard({
 
         {/* ═══ Footer ═════════════════════════════════════════════════ */}
         <div className='flex justify-between items-center py-8 px-5 text-center bg-white border-t-[5px] border-[#111]'>
-          <p className='text-xl text-[#111] m-0'>
-            Browser Signals Detector
-          </p>
+          <p className='text-xl text-[#111] m-0'>Browser Signals Detector</p>
           <p className='text-xl text-[#8A8A8A] uppercase m-0'>icanseeyou.dev</p>
         </div>
       </div>
