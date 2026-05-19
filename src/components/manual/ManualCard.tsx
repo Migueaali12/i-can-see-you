@@ -24,7 +24,6 @@ export function ManualCard({
       title={title}
       className={className}
       variant='note'
-      dashedBorder
     >
       {children}
     </DoodleCard>

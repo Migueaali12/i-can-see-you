@@ -6,33 +6,45 @@ import { DoodleCard } from "@/components/ui/DoodleCard"
 
 type StatusConfig = {
   label: string
-  dot: string
+  dotBg: string
   dotBorder: string
-  border: string
-  dark: boolean
+  text: string
+  labelColor: string
+  iconColor: string
+  bg: string
+  borderStyle: string
 }
 
 const STATUS_CONFIG: Record<FocusStatus, StatusConfig> = {
   in_focus: {
     label: "IN FOCUS",
-    dot: "#111",
-    dotBorder: "#111",
-    border: "2.5px solid #111",
-    dark: false,
+    dotBg: "var(--color-on-card)",
+    dotBorder: "var(--color-on-card)",
+    text: "var(--color-on-card)",
+    labelColor: "var(--color-secondary)",
+    iconColor: "var(--color-on-card)",
+    bg: "var(--color-card)",
+    borderStyle: "2.5px solid var(--color-border)",
   },
   out_of_focus: {
     label: "OUT OF FOCUS",
-    dot: "transparent",
-    dotBorder: "#111",
-    border: "2.5px dashed #111",
-    dark: false,
+    dotBg: "transparent",
+    dotBorder: "var(--color-on-card)",
+    text: "var(--color-on-card)",
+    labelColor: "var(--color-secondary)",
+    iconColor: "var(--color-on-card)",
+    bg: "var(--color-card)",
+    borderStyle: "2.5px dashed var(--color-border)",
   },
   event_detected: {
     label: "EVENT DETECTED",
-    dot: "#fff",
-    dotBorder: "#fff",
-    border: "2.5px solid #111",
-    dark: true,
+    dotBg: "var(--color-card)",
+    dotBorder: "var(--color-card)",
+    text: "var(--color-card)",
+    labelColor: "var(--color-muted)",
+    iconColor: "var(--color-card)",
+    bg: "var(--color-on-card)",
+    borderStyle: "2.5px solid var(--color-border)",
   },
 }
 
@@ -48,15 +60,14 @@ export default function StatusCard({
     status === "out_of_focus" || status === "event_detected"
       ? EyeClosed
       : ScanEye
-  const iconColor = cfg.dark ? "#fff" : "#111"
 
   return (
     <DoodleCard
       className='min-w-0'
       innerClassName='relative px-6 py-5 transition-[background] duration-300'
       innerStyle={{
-        background: cfg.dark ? "#111" : "#fff",
-        border: cfg.border,
+        background: cfg.bg,
+        border: cfg.borderStyle,
       }}
       dashedBorder
     >
@@ -73,14 +84,14 @@ export default function StatusCard({
             fontFamily: t.fontBody,
             fontSize: "0.6rem",
             letterSpacing: "0.14em",
-            color: cfg.dark ? "#888" : t.secondary,
+            color: cfg.labelColor,
             textTransform: "uppercase",
           }}
         >
           Session status
         </span>
 
-        <Icon size={44} strokeWidth={2.25} color={iconColor} aria-hidden />
+        <Icon size={44} strokeWidth={2.25} color={cfg.iconColor} aria-hidden />
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: "0.55rem" }}>
@@ -89,7 +100,7 @@ export default function StatusCard({
             width: "0.65rem",
             height: "0.65rem",
             borderRadius: "50%",
-            background: cfg.dot,
+            background: cfg.dotBg,
             border: `2px solid ${cfg.dotBorder}`,
             flexShrink: 0,
             transition: "all 300ms ease",
@@ -100,7 +111,7 @@ export default function StatusCard({
             fontFamily: t.fontDisplay,
             fontSize: "clamp(1.5rem, 3.8vw, 2rem)",
             fontWeight: 700,
-            color: cfg.dark ? "#fff" : "#111",
+            color: cfg.text,
             lineHeight: 1,
             transition: "color 300ms ease",
           }}
@@ -113,7 +124,7 @@ export default function StatusCard({
         style={{
           fontFamily: t.fontBody,
           fontSize: "0.65rem",
-          color: cfg.dark ? "#888" : t.secondary,
+          color: cfg.labelColor,
           letterSpacing: "0.06em",
           marginTop: "0.6rem",
           minHeight: "1em",

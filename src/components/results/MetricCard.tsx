@@ -31,7 +31,7 @@ export default function MetricCard({
     >
       <DoodleCard
         className={className}
-        innerClassName='relative bg-(--color-surface) border-2 border-black p-6 md:p-8 h-full flex flex-col'
+        innerClassName='relative bg-(--color-surface) border-2 border-(--color-border) p-6 md:p-8 h-full flex flex-col'
       >
         <div className='flex items-center gap-3 mb-4 text-(--color-secondary)'>
           <span className='shrink-0 [&_svg]:w-5 [&_svg]:h-5'>{icon}</span>
@@ -44,7 +44,7 @@ export default function MetricCard({
             isScore
               ? "font-display text-5xl md:text-6xl leading-none"
               : "font-display text-4xl md:text-5xl leading-none",
-            "text-black mb-3",
+            "text-(--color-on-card) mb-3",
           ].join(" ")}
         >
           {value}

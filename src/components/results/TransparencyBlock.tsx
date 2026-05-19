@@ -30,9 +30,9 @@ export default function TransparencyBlock({
     <DoodleCard
       className='animate-in fade-in slide-in-from-bottom-4 duration-500'
       dashedBorder
-      innerClassName='relative bg-(--color-surface) border-2 border-black p-6 md:p-8 h-full flex flex-col'
+      innerClassName='relative bg-(--color-surface) border-2 border-(--color-border) p-6 md:p-8 h-full flex flex-col'
     >
-      <h2 className='mb-4 font-display text-[1.35rem] font-semibold leading-tight flex items-center gap-2 border-b-2 border-black pb-3 text-black'>
+      <h2 className='mb-4 font-display text-[1.35rem] font-semibold leading-tight flex items-center gap-2 border-b-2 border-(--color-border) pb-3 text-(--color-on-card)'>
         <Info className='w-5 h-5' />
         Technical transparency
       </h2>

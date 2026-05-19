@@ -70,9 +70,9 @@ export default function SessionTimeline({ results }: SessionTimelineProps) {
     <DoodleCard
       dashedBorder
       className='animate-in fade-in slide-in-from-bottom-4 duration-500'
-      innerClassName='relative bg-(--color-surface) border-2 border-black p-6 md:p-8 h-full flex flex-col'
+      innerClassName='relative bg-(--color-surface) border-2 border-(--color-border) p-6 md:p-8 h-full flex flex-col'
     >
-      <h2 className='mb-6 font-display text-[1.35rem] font-semibold leading-tight flex items-center gap-2 border-b-2 border-black pb-3 text-black'>
+      <h2 className='mb-6 font-display text-[1.35rem] font-semibold leading-tight flex items-center gap-2 border-b-2 border-(--color-border) pb-3 text-(--color-on-card)'>
         <Eye className='w-5 h-5' />
         Session timeline
       </h2>
@@ -85,10 +85,10 @@ export default function SessionTimeline({ results }: SessionTimelineProps) {
               className='absolute top-1/2 -translate-y-1/2 z-10 group'
               style={{ left: `${m.leftPercent}%` }}
             >
-              <div className='relative flex items-center justify-center w-6 h-6 -ml-3 bg-(--color-surface) border-2 border-black rounded-full'>
-                <X className='w-3.5 h-3.5 text-black' />
+              <div className='relative flex items-center justify-center w-6 h-6 -ml-3 bg-(--color-surface) border-2 border-(--color-border) rounded-full'>
+                <X className='w-3.5 h-3.5 text-(--color-on-card)' />
               </div>
-              <div className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-black text-(--color-on-primary) text-xs font-body rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none'>
+              <div className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-(--color-on-card) text-(--color-card) text-xs font-body rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none'>
                 {m.label} ({formatTimerMs(m.durationMs)})
               </div>
             </div>
@@ -114,7 +114,7 @@ export default function SessionTimeline({ results }: SessionTimelineProps) {
               key={`legend-${i}`}
               className='flex items-center gap-2 text-sm font-body text-(--color-on-surface)'
             >
-              <X className='w-3.5 h-3.5 shrink-0 text-black' />
+              <X className='w-3.5 h-3.5 shrink-0 text-(--color-on-card)' />
               <span className='font-semibold'>{m.label}</span>
               <span className='text-(--color-secondary)'>
                 {formatTimerMs(m.durationMs)}

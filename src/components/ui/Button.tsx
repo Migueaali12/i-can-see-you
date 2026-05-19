@@ -82,7 +82,7 @@ export default function Button({
   const shadowCls = [
     "absolute inset-0",
     shadowTranslateClasses,
-    isGray ? "bg-(--color-secondary)" : "bg-black",
+    isGray ? "bg-(--color-secondary)" : "bg-(--color-shadow)",
   ].join(" ")
 
   const typographyPadding = size
@@ -93,7 +93,7 @@ export default function Button({
 
   const innerCls = [
     "relative inline-flex items-center",
-    "border-2 border-black bg-(--color-surface) text-black",
+    "border-2 border-(--color-border) bg-(--color-surface) text-(--color-on-card)",
     "font-body font-semibold leading-[1.2]",
     "transition-[transform,translate] duration-[120ms] ease-in-out",
     isDisabled

@@ -6,19 +6,19 @@ export type DoodleCardCorner = "scan" | "eye-off"
 export type DoodleCardVariant = "default" | "inverted" | "note"
 
 const defaultInnerClass =
-  "relative bg-(--color-surface) border-2 border-black p-[clamp(1.25rem,4vh,2rem)] h-full flex flex-col"
+  "relative bg-(--color-surface) border-2 border-(--color-border) p-[clamp(1.25rem,4vh,2rem)] h-full flex flex-col"
 
 const invertedInnerClass =
-  "relative bg-black border-2 border-black p-[clamp(1.25rem,4vh,2rem)] h-full flex flex-col text-white"
+  "relative bg-black dark:bg-white border-2 border-(--color-border) p-[clamp(1.25rem,4vh,2rem)] h-full flex flex-col text-white dark:text-black"
 
 function CornerSticker({ corner }: { corner: DoodleCardCorner }) {
   const Icon = corner === "scan" ? CircleCheck : CircleX
   return (
     <div
-      className='absolute -top-4 -left-4 w-8 h-8 bg-(--color-surface) -rotate-12 inline-flex items-center justify-center [&_svg]:w-full [&_svg]:h-full [&_svg]:stroke-black [&_svg]:stroke-2'
+      className='absolute -top-4 -left-4 w-8 h-8 bg-(--color-surface) -rotate-12 inline-flex items-center justify-center [&_svg]:w-full [&_svg]:h-full [&_svg]:stroke-(--color-border) [&_svg]:stroke-2'
       aria-hidden='true'
     >
-      <Icon className='text-black' size={24} strokeWidth={2} aria-hidden />
+      <Icon className='text-(--color-on-card)' size={24} strokeWidth={2} aria-hidden />
     </div>
   )
 }
@@ -87,7 +87,7 @@ export function DoodleCard({
       {/* Offset shadow */}
       <div
         className={[
-          "absolute inset-0 bg-black translate-x-1.5 translate-y-1.5",
+          "absolute inset-0 bg-(--color-shadow) translate-x-1.5 translate-y-1.5",
           isNote ? "note-card-shadow" : "",
           shadowClassName,
         ]
@@ -100,7 +100,7 @@ export function DoodleCard({
       <div className={[inner, isNote ? "note-card-panel" : ""].filter(Boolean).join(" ")} style={innerStyle}>
         {dashedBorder && (
           <div
-            className='absolute inset-[10px] border border-dashed border-[#ddd] pointer-events-none'
+            className='absolute inset-[10px] border border-dashed border-(--color-outline-variant) pointer-events-none'
             aria-hidden='true'
           />
         )}
@@ -109,12 +109,15 @@ export function DoodleCard({
 
         {Icon != null && (
           <div className='relative z-10'>
-            <Icon className='w-6 h-6 text-black mb-3' strokeWidth={2} />
+            <Icon className='w-6 h-6 text-(--color-on-card) mb-3' strokeWidth={2} />
           </div>
         )}
 
         {title != null && title !== "" ? (
-          <h2 className='mb-[clamp(0.75rem,2vh,1.5rem)] font-display text-[1.35rem] font-semibold leading-tight flex items-center gap-2 border-b-2 border-current pb-[clamp(0.5rem,1.5vh,0.75rem)]'>
+          <h2 className={[
+            "mb-[clamp(0.75rem,2vh,1.5rem)] font-display text-[1.35rem] font-semibold leading-tight flex items-center gap-2 border-b-2 pb-[clamp(0.5rem,1.5vh,0.75rem)]",
+            isInverted ? "border-(--color-on-primary)" : "border-current",
+          ].filter(Boolean).join(" ")}>
             {title}
           </h2>
         ) : null}

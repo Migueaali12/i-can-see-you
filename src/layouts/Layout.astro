@@ -65,7 +65,23 @@ const structuredDataArray = structuredData
     <link rel="canonical" href={canonicalUrl} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
-    <meta name="theme-color" content="#111111" />
+    <meta name="theme-color" content="#f9f9f9" />
+
+    <!-- Dark mode flash prevention -->
+    <script is:inline>
+      (function() {
+        const theme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDark = theme === 'dark' || (!theme && prefersDark);
+        if (isDark) {
+          document.documentElement.classList.add('dark');
+        }
+        const themeColor = document.querySelector('meta[name="theme-color"]');
+        if (themeColor) {
+          themeColor.setAttribute('content', isDark ? '#1a1c1c' : '#f9f9f9');
+        }
+      })();
+    </script>
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
@@ -95,7 +111,7 @@ const structuredDataArray = structuredData
     ))}
   </head>
   <body class="notebook-bg flex flex-col min-h-dvh">
-    {!hideHeader && <SiteHeader />}
+    {!hideHeader && <SiteHeader client:load />}
 
     <slot />
 

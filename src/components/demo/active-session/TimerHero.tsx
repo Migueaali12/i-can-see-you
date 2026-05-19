@@ -23,13 +23,13 @@ export default function TimerHero({
       onMouseLeave={onStop ? () => setHovered(false) : undefined}
       innerClassName={[
         "relative block w-full text-center flex-col",
-        isUrgent ? "!bg-[#111]" : "",
+        isUrgent ? "!bg-(--color-on-card) dark:!bg-(--color-card)" : "",
       ].join(" ")}
     >
       {/* Dashed inset border — same as DoodleCard dashedBorder prop */}
       <div
         className="absolute inset-[10px] border border-dashed pointer-events-none transition-[border-color] duration-300"
-        style={{ borderColor: isUrgent ? "#444" : "#ddd" }}
+        style={{ borderColor: isUrgent ? "var(--color-muted)" : "var(--color-outline-variant)" }}
         aria-hidden
       />
 
@@ -39,7 +39,7 @@ export default function TimerHero({
           fontFamily: t.fontDisplay,
           fontSize: "clamp(5rem, 20vw, 9rem)",
           fontWeight: 700,
-          color: isUrgent ? "#fff" : "#111",
+          color: isUrgent ? "var(--color-card)" : "var(--color-on-card)",
           lineHeight: 1,
           opacity: hovered && onStop ? 0.12 : 1,
           transition: "color 300ms ease, opacity 200ms ease",
@@ -53,7 +53,7 @@ export default function TimerHero({
         style={{
           fontFamily: t.fontBody,
           fontSize: "0.68rem",
-          color: isUrgent ? "#888" : t.secondary,
+          color: isUrgent ? "var(--color-muted)" : "var(--color-secondary)",
           marginBottom: "0.9rem",
           letterSpacing: "0.2em",
           textTransform: "uppercase",
@@ -80,14 +80,14 @@ export default function TimerHero({
           }}
           aria-hidden
         >
-          <X size={18} strokeWidth={2.5} style={{ color: isUrgent ? "#fff" : "#111" }} />
+          <X size={18} strokeWidth={2.5} style={{ color: isUrgent ? "var(--color-card)" : "var(--color-on-card)" }} />
           <span
             style={{
               fontFamily: t.fontBody,
               fontSize: "0.8rem",
               letterSpacing: "0.15em",
               textTransform: "uppercase",
-              color: isUrgent ? "#fff" : "#111",
+              color: isUrgent ? "var(--color-card)" : "var(--color-on-card)",
             }}
           >
             Stop
