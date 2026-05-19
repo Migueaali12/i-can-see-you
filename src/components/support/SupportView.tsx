@@ -16,10 +16,12 @@ import { MoveRight, Info } from "lucide-react"
 type BadgeVariant = "active" | "partial" | "unavailable"
 
 const BADGE_CLASSES: Record<BadgeVariant, string> = {
-  active: "bg-black text-white border-2 border-black",
-  partial: "border-2 border-dashed border-black text-black",
+  active:
+    "bg-(--color-on-surface) text-(--color-surface) border-2 border-(--color-border)",
+  partial:
+    "border-2 border-dashed border-(--color-border) text-(--color-on-surface)",
   unavailable:
-    "border-2 border-(--color-outline-variant) text-(--color-outline) line-through",
+    "border-2 border-dashed border-(--color-outline-variant) text-(--color-outline) line-through",
 }
 
 const BADGE_LABELS: Record<BadgeVariant, string> = {
@@ -61,10 +63,10 @@ function PermissionRow({
   const canAuthorize = status.support && status.permission === "prompt"
 
   return (
-    <DoodleCard innerClassName='relative w-full flex flex-wrap items-center justify-between gap-4 border-2 border-black bg-(--color-surface) py-[1.1rem] px-5'>
+    <DoodleCard innerClassName='relative w-full flex flex-wrap items-center justify-between gap-4 border-2 border-(--color-border) bg-(--color-surface) py-[1.1rem] px-5'>
       <div className='flex flex-col gap-[0.35rem] flex-1 min-w-0'>
         <div className='flex items-center gap-[0.6rem] flex-wrap'>
-          <span className='font-body text-base font-bold text-[#111]'>
+          <span className='font-body text-base font-bold text-(--color-on-surface)'>
             {status.label}
           </span>
           <Badge variant={badge} />
@@ -87,7 +89,7 @@ function PermissionRow({
 
       {status.permission === "granted" && (
         <span
-          className='font-body text-[1.1rem] font-bold text-[#111]'
+          className='font-body text-[1.1rem] font-bold text-(--color-on-surface)'
           aria-label='Authorized'
         >
           ✓
@@ -160,7 +162,7 @@ export default function SupportView() {
         />
       </div>
 
-      <h1 className='mb-3 text-center font-display text-[clamp(2rem,5vw,3rem)] font-bold leading-[1.1] text-black'>
+      <h1 className='mb-3 text-center font-display text-[clamp(2rem,5vw,3rem)] font-bold leading-[1.1] text-(--color-on-surface)'>
         Something's missing here…
       </h1>
 

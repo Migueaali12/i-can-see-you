@@ -100,13 +100,13 @@ export default function ResultsView() {
 
   if (!results) {
     return (
-      <div className='flex flex-col items-center justify-center flex-1 px-6 text-center min-h-[78svh]'>
+      <div className='flex flex-col items-center justify-center flex-1 px-6 text-center min-h-[calc(100dvh-150px)]'>
         <MascotEyes
           size='mascot--md'
           expression='suspicious'
           className='mb-8'
         />
-        <h1 className='font-display text-4xl md:text-5xl text-black mb-4'>
+        <h1 className='font-display text-4xl md:text-5xl text-(--color-on-card) mb-4'>
           No results
         </h1>
         <p className='text-(--color-secondary) text-base md:text-lg mb-8 max-w-md'>
@@ -149,7 +149,7 @@ export default function ResultsView() {
           expression={expression}
           className='mb-6'
         />
-        <h1 className='font-display text-4xl md:text-6xl text-black m-0 tracking-tight'>
+        <h1 className='font-display text-4xl md:text-6xl text-(--color-on-card) m-0 tracking-tight'>
           Your results
         </h1>
         <p className='text-base md:text-lg text-(--color-secondary) mt-4 max-w-xl leading-relaxed m-0'>

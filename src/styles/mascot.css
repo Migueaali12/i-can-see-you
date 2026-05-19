@@ -34,10 +34,10 @@
   height: 1.25em;
   border-radius: 50% 50% 48% 52% / 55% 55% 45% 45%;
   background: #fafafa;
-  border: 0.07em solid #111;
+  border: 0.07em solid var(--mascot-eye-border);
   /* subtle doodle shadow: slightly offset, no blur */
   box-shadow:
-    0.04em 0.04em 0 #000,
+    0.04em 0.04em 0 var(--mascot-eye-border),
     inset 0 0.04em 0.04em rgba(0, 0, 0, 0.06);
   overflow: hidden;
   /* Safari html-to-image fixes for box-shadow + border-radius + overflow: hidden */

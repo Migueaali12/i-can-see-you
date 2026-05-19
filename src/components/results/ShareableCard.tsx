@@ -22,13 +22,13 @@ function ScoreRing({ score }: { score: number }) {
   return (
     <div className='relative w-[600px] h-[600px]'>
       <svg width='600' height='600' viewBox='0 0 600 600' className='block'>
-        <circle cx='300' cy='300' r={normalizedRadius} fill='#FFF' />
+        <circle cx='300' cy='300' r={normalizedRadius} fill='var(--color-card)' />
         <circle
           cx='300'
           cy='300'
           r={normalizedRadius}
           fill='none'
-          stroke='#E2E2E2'
+          stroke='var(--color-outline-variant)'
           strokeWidth={stroke}
         />
         <circle
@@ -36,7 +36,7 @@ function ScoreRing({ score }: { score: number }) {
           cy='300'
           r={normalizedRadius}
           fill='none'
-          stroke='#111'
+          stroke='var(--color-on-surface)'
           strokeWidth={stroke}
           strokeLinecap='round'
           strokeDasharray={`${progress} ${circumference}`}
@@ -47,7 +47,7 @@ function ScoreRing({ score }: { score: number }) {
           cy='300'
           r={normalizedRadius + 35}
           fill='none'
-          stroke='#111'
+          stroke='var(--color-on-surface)'
           strokeWidth='5'
           strokeDasharray='12 18'
           opacity='0.22'
@@ -56,12 +56,12 @@ function ScoreRing({ score }: { score: number }) {
 
       <div className='absolute inset-0 flex flex-col items-center justify-center pointer-events-none'>
         <span
-          className='text-[13rem] leading-none font-bold text-[#111]'
+          className='text-[13rem] leading-none font-bold text-(--color-on-surface)'
           style={{ fontFamily: "var(--font-display)" }}
         >
           {score}%
         </span>
-        <span className='font-body text-3xl uppercase tracking-[0.25em] text-[#8A8A8A] mt-2'>
+        <span className='font-body text-3xl uppercase tracking-[0.25em] text-(--color-muted) mt-2'>
           Attention Score
         </span>
       </div>
@@ -80,15 +80,15 @@ export default function ShareableCard({
 
   if (!results) {
     return (
-      <div className='w-[1080px] h-[1920px] bg-[#FAFAFA] flex items-center justify-center border-2 border-[#111]'>
+      <div className='w-[1080px] h-[1920px] bg-(--color-notebook-bg) flex items-center justify-center border-2 border-(--color-border)'>
         <div className='text-center'>
           <p
-            className='text-4xl text-[#111]'
+            className='text-4xl text-(--color-on-surface)'
             style={{ fontFamily: "var(--font-display)" }}
           >
             No session data
           </p>
-          <p className='font-body text-sm text-[#8A8A8A] mt-3'>
+          <p className='font-body text-sm text-(--color-muted) mt-3'>
             Complete a detection session first
           </p>
         </div>
@@ -101,12 +101,6 @@ export default function ShareableCard({
   const width = 1080
   const height = 1920
 
-  const gridCellSize = 40 
-  const gridLineColor = "%23E2E2E2"
-
-  // Creates the dotted pattern background SVG for the notebook paper
-  const svgBackground = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='${gridCellSize}' height='${gridCellSize}'%3E%3Cpath d='M ${gridCellSize} 0 L 0 0 0 ${gridCellSize}' fill='none' stroke='${gridLineColor}' stroke-width='1'/%3E%3C/svg%3E")`
-
   return (
     <div
       className='relative'
@@ -116,11 +110,8 @@ export default function ShareableCard({
       }}
     >
       <div
-        className='w-[1080px] h-[1920px] relative flex flex-col overflow-hidden'
+        className='w-[1080px] h-[1920px] relative flex flex-col overflow-hidden notebook-bg'
         style={{
-          backgroundColor: "#FAFAFA",
-          backgroundImage: svgBackground,
-          backgroundSize: `${gridCellSize}px ${gridCellSize}px`,
           transform: `scale(${scale})`,
           transformOrigin: "top left",
         }}
@@ -128,12 +119,12 @@ export default function ShareableCard({
         {/* ═══ Header ═══════════════════════════════════════════════════ */}
         <div className='pt-20 pb-30 text-center'>
           <h1
-            className='text-[9rem] leading-none font-bold text-[#111] m-0'
+            className='text-[9rem] leading-none font-bold text-(--color-on-surface) m-0'
             style={{ fontFamily: "var(--font-display)" }}
           >
             I CAN SEE YOU
           </h1>
-          <p className='font-body text-4xl uppercase tracking-[0.3em] text-[#8A8A8A] mt-5 m-0'>
+          <p className='font-body text-4xl uppercase tracking-[0.3em] text-(--color-muted) mt-5 m-0'>
             Session Summary
           </p>
         </div>
@@ -144,19 +135,19 @@ export default function ShareableCard({
             <ScoreRing score={results.attentionScore} />
 
             <Sparkles
-              className='absolute -top-10 -left-16 w-16 h-16 text-[#111] rotate-12'
+              className='absolute -top-10 -left-16 w-16 h-16 text-(--color-on-surface) rotate-12'
               strokeWidth={1.5}
             />
             <Star
-              className='absolute top-10 -right-16 w-14 h-14 text-[#111] -rotate-12'
+              className='absolute top-10 -right-16 w-14 h-14 text-(--color-on-surface) -rotate-12'
               strokeWidth={1.5}
             />
             <Zap
-              className='absolute bottom-16 -left-12 w-14 h-14 text-[#111] -rotate-45'
+              className='absolute bottom-16 -left-12 w-14 h-14 text-(--color-on-surface) -rotate-45'
               strokeWidth={1.5}
             />
             <Sparkles
-              className='absolute -bottom-10 right-10 w-16 h-16 text-[#111] rotate-45'
+              className='absolute -bottom-10 right-10 w-16 h-16 text-(--color-on-surface) rotate-45'
               strokeWidth={1.5}
             />
           </div>
@@ -171,11 +162,11 @@ export default function ShareableCard({
                   <CircleX size={80} />
                 </div>
                 <div
-                  className='text-9xl leading-none text-[#111]'
+                  className='text-9xl leading-none text-(--color-on-surface)'
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {results.incidentCount}
-                  <div className='font-body text-3xl uppercase tracking-[0.2em] text-[#8A8A8A] mt-1'>
+                  <div className='font-body text-3xl uppercase tracking-[0.2em] text-(--color-muted) mt-1'>
                     Distractions
                   </div>
                 </div>
@@ -188,11 +179,11 @@ export default function ShareableCard({
                   <Clock size={80} />
                 </div>
                 <div
-                  className='text-9xl leading-none text-[#111]'
+                  className='text-9xl leading-none text-(--color-on-surface)'
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {formatMs(results.totalDistractedMs)}
-                  <div className='font-body text-3xl uppercase tracking-[0.2em] text-[#8A8A8A] mt-1'>
+                  <div className='font-body text-3xl uppercase tracking-[0.2em] text-(--color-muted) mt-1'>
                     Time Away
                   </div>
                 </div>
@@ -207,11 +198,11 @@ export default function ShareableCard({
                   <Timer size={80} />
                 </div>
                 <div
-                  className='text-9xl leading-none text-[#111]'
+                  className='text-9xl leading-none text-(--color-on-surface)'
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {sessionDurationSec}s
-                  <div className='font-body text-3xl uppercase tracking-[0.2em] text-[#8A8A8A] mt-1'>
+                  <div className='font-body text-3xl uppercase tracking-[0.2em] text-(--color-muted) mt-1'>
                     Session Time
                   </div>
                 </div>
@@ -230,9 +221,9 @@ export default function ShareableCard({
         </div>
 
         {/* ═══ Footer ═════════════════════════════════════════════════ */}
-        <div className='flex justify-between items-center py-8 px-5 text-center bg-white border-t-[5px] border-[#111]'>
-          <p className='text-xl text-[#111] m-0'>Browser Signals Detector</p>
-          <p className='text-xl text-[#8A8A8A] uppercase m-0'>icanseeyou.dev</p>
+        <div className='flex justify-between items-center py-8 px-5 text-center bg-(--color-card) border-t-[5px] border-(--color-border)'>
+          <p className='text-xl text-(--color-on-surface) m-0'>Browser Signals Detector</p>
+          <p className='text-xl text-(--color-muted) uppercase m-0'>icanseeyou.dev</p>
         </div>
       </div>
     </div>

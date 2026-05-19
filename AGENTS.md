@@ -44,6 +44,7 @@ The app demonstrates **browser signals**, not full OS-level surveillance.
   - `#8A8A8A` neutral
   - `#EAEAEA` borders / surfaces
   - `#FAFAFA` base background
+- **Dark mode:** Implemented via CSS custom properties (class-based toggle). Theme is toggled via `ThemeToggle` in the header and persisted to `localStorage`. Mascot eye border softens to `#555` in dark mode; all other mascot colors remain fixed (white sclera, black pupil/brow).
 - **Mascot:** Eyes as hero element.
   - Pupils follow cursor
   - Occasional blink
@@ -116,7 +117,7 @@ Always include:
 ```
 src/
 ├── components/
-│   ├── ui/              # Shared reusable components (Button, DoodleCard, ContractCard)
+│   ├── ui/              # Shared reusable components (Button, DoodleCard, ContractCard, ThemeToggle)
 │   ├── layout/          # SiteShell, SiteHeader, SiteFooter
 │   ├── mascot/          # MascotEyes (React), MascotEyesStatic (Astro and React)
 │   ├── demo/            # ActiveSessionView + active-session/ subfolder
@@ -165,7 +166,11 @@ src/
    - Wraps Header + Main + optional AfterMain + Footer.
    - **Use this for every page** that needs standard navigation.
 
-7. **`DialogBubble`** (`src/components/demo/active-session/DialogBubble.tsx`) — Speech bubble.
+7. **`ThemeToggle`** (`src/components/ui/ThemeToggle.tsx`) — Sun/Moon dark mode toggle.
+   - Persisted to `localStorage`, respects `prefers-color-scheme`.
+   - Rendered inside `SiteHeader`.
+
+8. **`DialogBubble`** (`src/components/demo/active-session/DialogBubble.tsx`) — Speech bubble.
    - Use with mascot for message display.
 
 ### When to create new components
@@ -246,6 +251,7 @@ All agents operating on this project must:
 12. Follow the Astro + React island pattern — keep interactive logic in React, static content in Astro.
 ---
 ## 15) Planned Evolution (Post-MVP)
+- Dark mode across remaining pages (`/signals`, `/demo`, `/results`, `/manual`, `/privacy`) — currently implemented on `/` only
 - Shareable results card (image export) — `ShareableCard` component is a TODO
 - Rich timeline with confidence breakdown per event
 - Exportable event log (JSON)
