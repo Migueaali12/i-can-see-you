@@ -7,7 +7,7 @@ import {
 } from "react"
 
 type Expression = "neutral" | "suspicious" | "annoyed"
-type BlinkKind = "none" | "single" | "double"
+type BlinkPhase = "idle" | "closing" | "closed" | "opening"
 
 interface MascotEyesProps {
   className?: string
@@ -19,6 +19,12 @@ const PUPIL_MAX_OFFSET = 0.22 // em fraction
 const SUSPICIOUS_THRESHOLD = 80 // px
 const ANNOYED_DURATION = 1800 // ms
 const NEUTRAL_DEBOUNCE = 600 // ms
+
+// Phase-based blink timing
+const BLINK_CLOSE_MS = 120
+const BLINK_HOLD_MS = 55
+const BLINK_OPEN_MS = 150
+const DOUBLE_BLINK_GAP_MS = 130
 
 // Idle wandering config
 const IDLE_GLANCE_MIN = 700 // ms looking in one direction
@@ -51,17 +57,28 @@ export default function MascotEyes({
   const [pupilOffset, setPupilOffset] = useState({ x: 0, y: 0 })
   const [internalExpression, setInternalExpression] =
     useState<Expression>("neutral")
-  const [blinkKind, setBlinkKind] = useState<BlinkKind>("none")
+  const [blinkPhase, setBlinkPhase] = useState<BlinkPhase>("idle")
   const [isIdle, setIsIdle] = useState(true)
   const [expressionMasked, setExpressionMasked] = useState(false)
 
   const neutralTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const annoyedTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const blinkTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const blinkTimers = useRef<ReturnType<typeof setTimeout>[]>([])
+  const autoBlinkTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const transitionTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const isIdleRef = useRef(true) // treat as idle until first mousemove
   const prefersReducedRef = useRef(false)
+
+  useEffect(() => {
+    const mql = window.matchMedia("(prefers-reduced-motion: reduce)")
+    prefersReducedRef.current = mql.matches
+    const handler = (e: MediaQueryListEvent) => {
+      prefersReducedRef.current = e.matches
+    }
+    mql.addEventListener("change", handler)
+    return () => mql.removeEventListener("change", handler)
+  }, [])
 
   const [isTransitioning, setIsTransitioning] = useState(false)
 
@@ -69,13 +86,76 @@ export default function MascotEyes({
     ? internalExpression
     : (externalExpression ?? internalExpression)
 
-  // ── Blink ────────────────────────────────────────────────────────
-  const triggerBlink = useCallback((kind: BlinkKind) => {
-    if (prefersReducedRef.current) return
-    setBlinkKind(kind)
-    const duration = kind === "double" ? 680 : 250
-    setTimeout(() => setBlinkKind("none"), duration)
+  // ── Phase-based blink ────────────────────────────────────────────
+  const clearBlinkTimers = useCallback(() => {
+    for (const t of blinkTimers.current) clearTimeout(t)
+    blinkTimers.current = []
   }, [])
+
+  const cancelBlink = useCallback(() => {
+    clearBlinkTimers()
+    setBlinkPhase("idle")
+  }, [clearBlinkTimers])
+
+  const scheduleBlink = useCallback(
+    (isDouble = false) => {
+      if (prefersReducedRef.current) return
+      clearBlinkTimers()
+
+      const timers: ReturnType<typeof setTimeout>[] = []
+
+      // Phase 1: closing
+      timers.push(setTimeout(() => setBlinkPhase("closing"), 0))
+      // Phase 2: closed (hold)
+      timers.push(
+        setTimeout(() => setBlinkPhase("closed"), BLINK_CLOSE_MS),
+      )
+      // Phase 3: opening
+      timers.push(
+        setTimeout(
+          () => setBlinkPhase("opening"),
+          BLINK_CLOSE_MS + BLINK_HOLD_MS,
+        ),
+      )
+      // Phase 4: idle (reset)
+      timers.push(
+        setTimeout(
+          () => setBlinkPhase("idle"),
+          BLINK_CLOSE_MS + BLINK_HOLD_MS + BLINK_OPEN_MS,
+        ),
+      )
+
+      // Double blink: schedule second blink after gap
+      if (isDouble) {
+        const secondStart =
+          BLINK_CLOSE_MS + BLINK_HOLD_MS + BLINK_OPEN_MS + DOUBLE_BLINK_GAP_MS
+        timers.push(setTimeout(() => setBlinkPhase("closing"), secondStart))
+        timers.push(
+          setTimeout(() => setBlinkPhase("closed"), secondStart + BLINK_CLOSE_MS),
+        )
+        timers.push(
+          setTimeout(
+            () => setBlinkPhase("opening"),
+            secondStart + BLINK_CLOSE_MS + BLINK_HOLD_MS,
+          ),
+        )
+        timers.push(
+          setTimeout(
+            () => setBlinkPhase("idle"),
+            secondStart + BLINK_CLOSE_MS + BLINK_HOLD_MS + BLINK_OPEN_MS,
+          ),
+        )
+      }
+
+      blinkTimers.current = timers
+    },
+    [clearBlinkTimers],
+  )
+
+  // Cancel blink when expression becomes annoyed (avoids scaleY conflict)
+  useEffect(() => {
+    if (activeExpression === "annoyed") cancelBlink()
+  }, [activeExpression, cancelBlink])
 
   // ── Idle pupil wander ────────────────────────────────────────────
   const getMaxPx = useCallback(() => {
@@ -108,14 +188,14 @@ export default function MascotEyes({
 
       if (Math.random() < IDLE_BLINK_CHANCE) {
         const isDouble = Math.random() < IDLE_DOUBLE_BLINK_CHANCE
-        triggerBlink(isDouble ? "double" : "single")
+        scheduleBlink(isDouble)
         // Small pause after blink before next glance
-        idleTimer.current = setTimeout(runIdleLoop, isDouble ? 380 : 220)
+        idleTimer.current = setTimeout(runIdleLoop, isDouble ? 580 : 420)
       } else {
         runIdleLoop()
       }
     }, holdTime)
-  }, [getMaxPx, triggerBlink])
+  }, [getMaxPx, scheduleBlink])
 
   const startIdle = useCallback(() => {
     isIdleRef.current = true
@@ -187,9 +267,11 @@ export default function MascotEyes({
   )
 
   // ── Mouse leaves viewport → annoyed + idle wander ───────────────
-const handleWindowMouseLeave = useCallback(() => {
+  const handleWindowMouseLeave = useCallback(() => {
     if (neutralTimer.current) clearTimeout(neutralTimer.current)
     if (annoyedTimer.current) clearTimeout(annoyedTimer.current)
+
+    cancelBlink()
 
     setIsTransitioning(false)
     if (transitionTimer.current) clearTimeout(transitionTimer.current)
@@ -197,12 +279,10 @@ const handleWindowMouseLeave = useCallback(() => {
     if (externalExpression) {
       setExpressionMasked(true)
       setInternalExpression("neutral")
-      triggerBlink("single")
       startIdle()
     } else {
       setExpressionMasked(false)
       setInternalExpression("annoyed")
-      triggerBlink("single")
 
       annoyedTimer.current = setTimeout(() => {
         setInternalExpression("neutral")
@@ -211,27 +291,24 @@ const handleWindowMouseLeave = useCallback(() => {
 
       startIdle()
     }
-  }, [externalExpression, triggerBlink, startIdle])
+  }, [externalExpression, cancelBlink, startIdle])
 
   // ── Blink on hover ───────────────────────────────────────────────
   const handleMouseEnter = useCallback(() => {
-    triggerBlink("single")
-  }, [triggerBlink])
+    scheduleBlink()
+  }, [scheduleBlink])
 
   // ── Auto-blink (active mode only) ───────────────────────────────
   useEffect(() => {
-    prefersReducedRef.current = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches
     if (prefersReducedRef.current) return
 
     const scheduleNextBlink = () => {
       const delay = 2500 + Math.random() * 4000
-      blinkTimer.current = setTimeout(() => {
+      autoBlinkTimer.current = setTimeout(() => {
         // Only auto-blink in active mode (idle loop handles its own blinks)
         if (!isIdleRef.current) {
           const isDouble = Math.random() < 0.1
-          triggerBlink(isDouble ? "double" : "single")
+          scheduleBlink(isDouble)
         }
         scheduleNextBlink()
       }, delay)
@@ -239,9 +316,9 @@ const handleWindowMouseLeave = useCallback(() => {
 
     scheduleNextBlink()
     return () => {
-      if (blinkTimer.current) clearTimeout(blinkTimer.current)
+      if (autoBlinkTimer.current) clearTimeout(autoBlinkTimer.current)
     }
-  }, [triggerBlink])
+  }, [scheduleBlink])
 
   // ── Kick off idle on mount ───────────────────────────────────────
   useEffect(() => {
@@ -265,19 +342,13 @@ const handleWindowMouseLeave = useCallback(() => {
       if (neutralTimer.current) clearTimeout(neutralTimer.current)
       if (annoyedTimer.current) clearTimeout(annoyedTimer.current)
       if (transitionTimer.current) clearTimeout(transitionTimer.current)
+      clearBlinkTimers()
     }
-  }, [handleMouseMove, handleWindowMouseLeave])
+  }, [handleMouseMove, handleWindowMouseLeave, clearBlinkTimers])
 
   const pupilStyle: CSSProperties = {
     transform: `translate(calc(-50% + ${pupilOffset.x}px), calc(-50% + ${pupilOffset.y}px))`,
   }
-
-  const blinkClass =
-    blinkKind === "double"
-      ? "mascot__eye--double-blink"
-      : blinkKind === "single"
-        ? "mascot__eye--blinking"
-        : ""
 
   return (
     <div
@@ -286,20 +357,13 @@ const handleWindowMouseLeave = useCallback(() => {
       data-expression={activeExpression}
       data-idle={isIdle ? "true" : "false"}
       data-transitioning={isTransitioning ? "true" : "false"}
+      data-blink-phase={blinkPhase}
       role='img'
-      aria-label='Ojos observando'
+      aria-label='Eyes Watching'
       onMouseEnter={handleMouseEnter}
     >
-      <Eye
-        eyeRef={leftEyeRef}
-        blinkClass={blinkClass}
-        pupilStyle={pupilStyle}
-      />
-      <Eye
-        eyeRef={rightEyeRef}
-        blinkClass={blinkClass}
-        pupilStyle={pupilStyle}
-      />
+      <Eye eyeRef={leftEyeRef} pupilStyle={pupilStyle} />
+      <Eye eyeRef={rightEyeRef} pupilStyle={pupilStyle} />
     </div>
   )
 }
@@ -307,13 +371,12 @@ const handleWindowMouseLeave = useCallback(() => {
 // ── Eye sub-component ────────────────────────────────────────────
 interface EyeProps {
   eyeRef: React.RefObject<HTMLDivElement | null>
-  blinkClass: string
   pupilStyle: CSSProperties
 }
 
-function Eye({ eyeRef, blinkClass, pupilStyle }: EyeProps) {
+function Eye({ eyeRef, pupilStyle }: EyeProps) {
   return (
-    <div ref={eyeRef} className={`mascot__eye ${blinkClass}`}>
+    <div ref={eyeRef} className='mascot__eye'>
       <div className='mascot__brow mascot__brow--left' aria-hidden='true' />
       <div className='mascot__brow mascot__brow--right' aria-hidden='true' />
       <div className='mascot__pupil' style={pupilStyle} aria-hidden='true' />

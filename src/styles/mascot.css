@@ -94,6 +94,7 @@
   transform: scaleY(0);
   transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 2;
+  will-change: transform;
 }
 
 /* ── Brow (for expressions) ─────────────────────────────────────── */
@@ -147,23 +148,23 @@
   top: -0.15em;
 }
 
-/* ── Blink animation ────────────────────────────────────────────── */
-@keyframes mascot-blink {
-  0%   { transform: scaleY(0); }
-  35%  { transform: scaleY(1); }
-  55%  { transform: scaleY(1); }
-  100% { transform: scaleY(0); }
+/* ── Phase-based blink transitions ─────────────────────────────── */
+/* closing: eyelid rapidly closes */
+.mascot[data-blink-phase="closing"] .mascot__eyelid {
+  transform: scaleY(1);
+  transition: transform 120ms ease-in;
 }
 
-.mascot__eye--blinking .mascot__eyelid {
-  animation: mascot-blink 0.22s ease-in-out forwards;
+/* closed: hold shut briefly */
+.mascot[data-blink-phase="closed"] .mascot__eyelid {
+  transform: scaleY(1);
+  transition: none;
 }
 
-/* double blink: slight pause between two blinks */
-.mascot__eye--double-blink .mascot__eyelid {
-  animation: mascot-blink 0.2s ease-in-out 0s,
-             mascot-blink 0.2s ease-in-out 0.28s;
-  animation-fill-mode: forwards;
+/* opening: eyelid smoothly opens */
+.mascot[data-blink-phase="opening"] .mascot__eyelid {
+  transform: scaleY(0);
+  transition: transform 150ms ease-out;
 }
 
 /* ── Doodle "wobble" micro-animation on idle ─────────────────────── */
@@ -178,23 +179,48 @@
 }
 
 /* ── prefers-reduced-motion ─────────────────────────────────────── */
+/* Strategy: remove decorative animation (wobble, blinks) but keep
+   brief functional transitions for state changes (pupil tracking,
+   expression eyelids, brows) so users don't see jarring snaps. */
 @media (prefers-reduced-motion: reduce) {
   .mascot {
     animation: none;
   }
 
+  /* Pupils: brief transition to prevent teleport on position changes
+     (reduced from default durations, linear easing) */
   .mascot__pupil {
-    transition: none;
+    transition: transform 100ms linear;
   }
 
-  .mascot__eyelid,
-  .mascot__eye--blinking .mascot__eyelid,
-  .mascot__eye--double-blink .mascot__eyelid {
-    animation: none;
+  .mascot[data-idle="true"] .mascot__pupil {
+    transition: transform 150ms linear;
+  }
+
+  .mascot[data-transitioning="true"] .mascot__pupil {
+    transition: transform 150ms linear;
+  }
+
+  /* Eyelids: brief transition for expression state changes so the
+     annoyed→neutral transition doesn't snap */
+  .mascot__eyelid {
+    transition: transform 150ms linear;
+  }
+
+  .mascot[data-expression="annoyed"] .mascot__eyelid {
+    transition: transform 150ms linear;
+  }
+
+  /* Blink phases: fully disabled (decorative effect) */
+  .mascot[data-blink-phase="closing"] .mascot__eyelid,
+  .mascot[data-blink-phase="closed"] .mascot__eyelid,
+  .mascot[data-blink-phase="opening"] .mascot__eyelid {
+    transition: none;
     transform: scaleY(0);
   }
 
+  /* Brows: brief transition for expression changes */
   .mascot__brow {
-    transition: none;
+    transition: transform 120ms linear, top 120ms linear;
   }
 }
