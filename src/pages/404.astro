@@ -14,10 +14,10 @@ import { Home } from "lucide-react"
   <main class="flex flex-col items-center justify-center min-h-[calc(100dvh-150px)] px-4 py-16 text-center gap-6">
     <DialogBubble message="I looked everywhere, but this page is invisible." />
     <MascotEyes client:load size="mascot--md-small" />
-    <h1 class="font-display text-[clamp(5rem,10vw,10rem)] font-semibold text-[#111111] leading-none">
+    <h1 class="font-display text-[clamp(5rem,10vw,10rem)] font-semibold text-(--color-primary) leading-none">
       404
     </h1>
-    <p class="font-body text-lg mb-6 text-[#444444] max-w-md leading-relaxed">
+    <p class="font-body text-lg mb-6 text-(--color-muted) max-w-md leading-relaxed">
       This page went off the radar. Even my eyes can't detect it.
     </p>
     <Button href="/" size="lg">Go back home <Home/></Button>

@@ -1,10 +1,38 @@
-import { useState } from "react"
+import { useId, useState } from "react"
 import type { SessionResults } from "@/core/resultsBuilder"
 import { loadResults } from "@/core/resultsBuilder"
 import { formatMs } from "./utils"
 import { DoodleCard } from "@/components/ui/DoodleCard"
 import { CircleX, Clock, Timer, Sparkles, Star, Zap } from "lucide-react"
 import MascotEyesStatic from "../mascot/MascotEyesStatic"
+
+/* ─── Notebook Grid Background (SVG-based for Firefox compat) ───── */
+function NotebookGrid({ patternId }: { patternId: string }) {
+  return (
+    <svg
+      className='absolute inset-0 w-full h-full pointer-events-none -z-1'
+      aria-hidden='true'
+      xmlns='http://www.w3.org/2000/svg'
+    >
+      <defs>
+        <pattern
+          id={patternId}
+          width='40'
+          height='40'
+          patternUnits='userSpaceOnUse' 
+        >
+          <path
+            d='M 40 0 L 0 0 0 40'
+            fill='none'
+            stroke='var(--color-notebook-line)'
+            strokeWidth='1'
+          />
+        </pattern>
+      </defs>
+      <rect width='100%' height='100%' fill={`url(#${patternId})`} />
+    </svg>
+  )
+}
 
 interface ShareableCardProps {
   results?: SessionResults
@@ -77,11 +105,13 @@ export default function ShareableCard({
   const [results] = useState<SessionResults | null>(() => {
     return propResults ?? loadResults()
   })
+  const gridId = useId()
 
   if (!results) {
     return (
-      <div className='w-[1080px] h-[1920px] bg-(--color-notebook-bg) flex items-center justify-center border-2 border-(--color-border)'>
-        <div className='text-center'>
+      <div className='w-[1080px] h-[1920px] relative bg-(--color-notebook-bg) flex items-center justify-center border-2 border-(--color-border)'>
+        <NotebookGrid patternId={gridId} />
+        <div className='text-center relative'>
           <p
             className='text-4xl text-(--color-on-surface)'
             style={{ fontFamily: "var(--font-display)" }}
@@ -110,12 +140,13 @@ export default function ShareableCard({
       }}
     >
       <div
-        className='w-[1080px] h-[1920px] relative flex flex-col overflow-hidden notebook-bg'
+        className='w-[1080px] h-[1920px] relative flex flex-col overflow-hidden bg-(--color-notebook-bg)'
         style={{
           transform: `scale(${scale})`,
           transformOrigin: "top left",
         }}
       >
+        <NotebookGrid patternId={gridId} />
         {/* ═══ Header ═══════════════════════════════════════════════════ */}
         <div className='pt-20 pb-30 text-center'>
           <h1
