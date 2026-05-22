@@ -11,6 +11,8 @@ import {
   type ExplicitApiKey,
 } from "@/core/permissions"
 import { MoveRight, Info } from "lucide-react"
+import { useTranslations, getRelativeLocaleUrl } from "@/i18n/utils"
+import type { Lang } from "@/i18n/ui"
 
 // ── Badge component ───────────────────────────────────────────────
 type BadgeVariant = "active" | "partial" | "unavailable"
@@ -24,18 +26,22 @@ const BADGE_CLASSES: Record<BadgeVariant, string> = {
     "border-2 border-dashed border-(--color-outline-variant) text-(--color-outline) line-through",
 }
 
-const BADGE_LABELS: Record<BadgeVariant, string> = {
-  active: "ACTIVE",
-  partial: "PARTIAL",
-  unavailable: "UNAVAILABLE",
+function getBadgeLabels(lang: Lang): Record<BadgeVariant, string> {
+  const t = useTranslations(lang)
+  return {
+    active: t('signals.badgeActive'),
+    partial: t('signals.badgePartial'),
+    unavailable: t('signals.badgeUnavailable'),
+  }
 }
 
-function Badge({ variant }: { variant: BadgeVariant }) {
+function Badge({ variant, lang = 'en' }: { variant: BadgeVariant; lang?: Lang }) {
+  const labels = getBadgeLabels(lang)
   return (
     <span
       className={`inline-block font-body text-[0.65rem] font-bold tracking-[0.08em] px-[0.55rem] py-[0.2rem] rounded-[2px] whitespace-nowrap ${BADGE_CLASSES[variant]}`}
     >
-      {BADGE_LABELS[variant]}
+      {labels[variant]}
     </span>
   )
 }
@@ -52,13 +58,16 @@ interface PermissionRowProps {
   status: ExplicitApiStatus
   isAuthorizing: boolean
   onAuthorize: () => void
+  lang?: Lang
 }
 
 function PermissionRow({
   status,
   isAuthorizing,
   onAuthorize,
+  lang = 'en',
 }: PermissionRowProps) {
+  const t = useTranslations(lang)
   const badge = getBadgeVariant(status)
   const canAuthorize = status.support && status.permission === "prompt"
 
@@ -69,7 +78,7 @@ function PermissionRow({
           <span className='font-body text-base font-bold text-(--color-on-surface)'>
             {status.label}
           </span>
-          <Badge variant={badge} />
+          <Badge variant={badge} lang={lang} />
         </div>
         <span className='font-body text-[0.82rem] text-(--color-secondary) leading-[1.4]'>
           {status.description}
@@ -80,17 +89,18 @@ function PermissionRow({
         <Button
           onClick={onAuthorize}
           loading={isAuthorizing}
-          loadingText='Requesting…'
+          loadingText={t('common.authorizing')}
           variant='gray'
+          lang={lang}
         >
-          Authorize now
+          {t('common.authorize')}
         </Button>
       )}
 
       {status.permission === "granted" && (
         <span
           className='font-body text-[1.1rem] font-bold text-(--color-on-surface)'
-          aria-label='Authorized'
+          aria-label={t('common.authorized')}
         >
           ✓
         </span>
@@ -100,17 +110,22 @@ function PermissionRow({
 }
 
 // ── Main SupportView ──────────────────────────────────────────────
-export default function SupportView() {
+interface SupportViewProps {
+  lang?: Lang
+}
+
+export default function SupportView({ lang = 'en' }: SupportViewProps) {
+  const t = useTranslations(lang)
   const [statuses, setStatuses] = useState<ExplicitApiStatus[]>([])
   const [loading, setLoading] = useState(true)
   const [authorizing, setAuthorizing] = useState<ExplicitApiKey | null>(null)
 
   useEffect(() => {
-    checkAllExplicitPermissions().then((results) => {
+    checkAllExplicitPermissions(lang).then((results) => {
       setStatuses(results)
       setLoading(false)
     })
-  }, [])
+  }, [lang])
 
   const handleAuthorize = async (key: ExplicitApiKey) => {
     setAuthorizing(key)
@@ -121,7 +136,7 @@ export default function SupportView() {
       // User denied or dismissed — re-check anyway
     }
 
-    const updated = await checkAllExplicitPermissions()
+    const updated = await checkAllExplicitPermissions(lang)
     setStatuses(updated)
     setAuthorizing(null)
 
@@ -129,19 +144,19 @@ export default function SupportView() {
       (s) => !s.support || s.permission === "granted",
     )
     if (allActive) {
-      window.location.href = "/demo"
+      window.location.href = getRelativeLocaleUrl(lang, '/demo')
     }
   }
 
   if (loading) {
     return (
       <SiteShell
+        lang={lang}
         className='flex min-h-screen flex-col'
         mainClassName='flex flex-1 flex-col items-center justify-center px-6 py-16'
-        footerNavAriaLabel='Support page links'
       >
         <span className='font-body text-base text-(--color-secondary)'>
-          Checking permissions…
+          {t('signals.loading')}
         </span>
       </SiteShell>
     )
@@ -151,24 +166,24 @@ export default function SupportView() {
 
   return (
     <SiteShell
+      lang={lang}
       className='flex flex-col min-h-dvh'
       mainClassName='mx-auto w-full max-w-[600px] flex-1 px-6 pt-12 pb-5'
-      footerNavAriaLabel='Support page links'
     >
       <div className='mb-8 flex justify-center'>
         <MascotEyes
           size='mascot--md'
           expression={hasPending ? "annoyed" : "neutral"}
+          ariaLabel={t('mascot.eyesAria')}
         />
       </div>
 
       <h1 className='mb-3 text-center font-display text-[clamp(2rem,5vw,3rem)] font-bold leading-[1.1] text-(--color-on-surface)'>
-        Something's missing here…
+        {t('signals.heroHeading')}
       </h1>
 
       <p className='mb-10 text-center font-body text-base leading-[1.55] text-(--color-secondary)'>
-        These signals need explicit permission. You can grant them now or
-        continue without them — the demo works great either way.
+        {t('signals.heroDesc')}
       </p>
 
       <div className='mb-10 flex flex-col gap-4'>
@@ -182,6 +197,7 @@ export default function SupportView() {
               status={status}
               isAuthorizing={authorizing === status.key}
               onAuthorize={() => handleAuthorize(status.key)}
+              lang={lang}
             />
           </div>
         ))}
@@ -195,10 +211,7 @@ export default function SupportView() {
               className='mt-0.5 text-(--color-outline) shrink-0'
             />
             <p className='font-body text-[0.82rem] text-(--color-secondary) leading-normal m-0'>
-              Even if some signals aren't available in your browser (common in
-              Firefox and Safari), the demo will still detect tab switches,
-              focus loss, fullscreen exit, and mouse leaving — so the core
-              experience will be great.
+              {t('signals.compatNote')}
             </p>
           </div>
         </div>
@@ -208,12 +221,14 @@ export default function SupportView() {
         className='text-center animate-in fade-in slide-in-from-bottom-2'
         style={{ animationDelay: `${statuses.length * 100 + 200}ms` }}
       >
-        <Button variant='gray' onClick={() => (window.location.href = "/demo")}>
+        <Button variant='gray' lang={lang} onClick={() => (window.location.href = getRelativeLocaleUrl(lang, '/demo'))}>
           {hasPending ? (
-            "Continue anyway"
+            <>
+              {t('common.continueAnyway')} <MoveRight size={18} />
+            </>
           ) : (
             <>
-              Continue <MoveRight size={18} />
+              {t('common.continue')} <MoveRight size={18} />
             </>
           )}
         </Button>

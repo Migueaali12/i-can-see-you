@@ -1,4 +1,6 @@
 import type { ReactNode } from "react"
+import { useTranslations } from "@/i18n/utils"
+import type { Lang } from "@/i18n/ui"
 
 export type ButtonVariant = "black" | "gray"
 
@@ -35,6 +37,7 @@ interface ButtonProps {
   disabled?: boolean
   loading?: boolean
   loadingText?: string
+  lang?: Lang
   className?: string
   innerClassName?: string
 }
@@ -51,10 +54,13 @@ export default function Button({
   children,
   disabled = false,
   loading = false,
-  loadingText = "Loading…",
+  loadingText,
+  lang = 'en',
   className,
   innerClassName,
 }: ButtonProps) {
+  const t = useTranslations(lang)
+  const resolvedLoadingText = loadingText ?? t('common.loading')
   const isGray = variant === "gray"
   const isDisabled = disabled || loading
 
@@ -105,7 +111,7 @@ export default function Button({
 
   const content = (
     <>
-      {loading ? loadingText : children}
+      {loading ? resolvedLoadingText : children}
       {!loading && icon}
     </>
   )

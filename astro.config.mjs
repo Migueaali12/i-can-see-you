@@ -6,6 +6,13 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://icanseeyou.dev',
+  i18n: {
+    locales: ['en', 'es'],
+    defaultLocale: 'en',
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
   vite: {
     plugins: [tailwindcss()]
   },
@@ -14,7 +21,15 @@ export default defineConfig({
     sitemap({
       filter: (page) => {
         const url = new URL(page);
-        return !['/demo/', '/results/'].includes(url.pathname);
+        const excluded = ['/demo/', '/results/', '/es/demo/', '/es/results/'];
+        return !excluded.includes(url.pathname);
+      },
+      i18n: {
+        defaultLocale: 'en',
+        locales: {
+          en: 'en-US',
+          es: 'es-ES',
+        },
       },
     }),
   ],

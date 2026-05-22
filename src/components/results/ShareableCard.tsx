@@ -5,6 +5,8 @@ import { formatMs } from "./utils"
 import { DoodleCard } from "@/components/ui/DoodleCard"
 import { CircleX, Clock, Timer, Sparkles, Star, Zap } from "lucide-react"
 import MascotEyesStatic from "../mascot/MascotEyesStatic"
+import { useTranslations } from "@/i18n/utils"
+import type { Lang } from "@/i18n/ui"
 
 /* ─── Notebook Grid Background (SVG-based for Firefox compat) ───── */
 function NotebookGrid({ patternId }: { patternId: string }) {
@@ -37,10 +39,12 @@ function NotebookGrid({ patternId }: { patternId: string }) {
 interface ShareableCardProps {
   results?: SessionResults
   scale?: number
+  lang?: Lang
 }
 
 /* ─── Score Ring (SVG circular progress) ───────────────────────── */
-function ScoreRing({ score }: { score: number }) {
+function ScoreRing({ score, lang = 'en' }: { score: number; lang?: Lang }) {
+  const t = useTranslations(lang)
   const radius = 280
   const stroke = 34
   const normalizedRadius = radius - stroke / 2
@@ -90,7 +94,7 @@ function ScoreRing({ score }: { score: number }) {
           {score}%
         </span>
         <span className='font-body text-3xl uppercase tracking-[0.25em] text-(--color-muted) mt-2'>
-          Attention Score
+          {t('results.cardScoreLabel')}
         </span>
       </div>
     </div>
@@ -101,7 +105,9 @@ function ScoreRing({ score }: { score: number }) {
 export default function ShareableCard({
   results: propResults,
   scale = 1,
+  lang = 'en',
 }: ShareableCardProps) {
+  const t = useTranslations(lang)
   const [results] = useState<SessionResults | null>(() => {
     return propResults ?? loadResults()
   })
@@ -116,10 +122,10 @@ export default function ShareableCard({
             className='text-4xl text-(--color-on-surface)'
             style={{ fontFamily: "var(--font-display)" }}
           >
-            No session data
+            {t('results.cardNoData')}
           </p>
           <p className='font-body text-sm text-(--color-muted) mt-3'>
-            Complete a detection session first
+            {t('results.cardCompleteFirst')}
           </p>
         </div>
       </div>
@@ -153,17 +159,17 @@ export default function ShareableCard({
             className='text-[9rem] leading-none font-bold text-(--color-on-surface) m-0'
             style={{ fontFamily: "var(--font-display)" }}
           >
-            I CAN SEE YOU
+            {t('results.cardHeader')}
           </h1>
           <p className='font-body text-4xl uppercase tracking-[0.3em] text-(--color-muted) mt-5 m-0'>
-            Session Summary
+            {t('results.cardSubheader')}
           </p>
         </div>
 
         {/* ═══ Score Ring ═══════════════════════════════════════════════ */}
         <div className='flex items-center justify-center pb-30'>
           <div className='relative'>
-            <ScoreRing score={results.attentionScore} />
+            <ScoreRing score={results.attentionScore} lang={lang} />
 
             <Sparkles
               className='absolute -top-10 -left-16 w-16 h-16 text-(--color-on-surface) rotate-12'
@@ -198,7 +204,7 @@ export default function ShareableCard({
                 >
                   {results.incidentCount}
                   <div className='font-body text-3xl uppercase tracking-[0.2em] text-(--color-muted) mt-1'>
-                    Distractions
+                    {t('results.cardDistractions')}
                   </div>
                 </div>
               </div>
@@ -215,7 +221,7 @@ export default function ShareableCard({
                 >
                   {formatMs(results.totalDistractedMs)}
                   <div className='font-body text-3xl uppercase tracking-[0.2em] text-(--color-muted) mt-1'>
-                    Time Away
+                    {t('results.cardTimeAway')}
                   </div>
                 </div>
               </div>
@@ -234,7 +240,7 @@ export default function ShareableCard({
                 >
                   {sessionDurationSec}s
                   <div className='font-body text-3xl uppercase tracking-[0.2em] text-(--color-muted) mt-1'>
-                    Session Time
+                    {t('results.cardSessionTime')}
                   </div>
                 </div>
               </div>
@@ -253,8 +259,8 @@ export default function ShareableCard({
 
         {/* ═══ Footer ═════════════════════════════════════════════════ */}
         <div className='flex justify-between items-center py-8 px-5 text-center bg-(--color-card) border-t-[5px] border-(--color-border)'>
-          <p className='text-xl text-(--color-on-surface) m-0'>Browser Signals Detector</p>
-          <p className='text-xl text-(--color-muted) uppercase m-0'>icanseeyou.dev</p>
+          <p className='text-xl text-(--color-on-surface) m-0'>{t('results.cardFooterLeft')}</p>
+          <p className='text-xl text-(--color-muted) uppercase m-0'>{t('results.cardFooterRight')}</p>
         </div>
       </div>
     </div>

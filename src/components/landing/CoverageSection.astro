@@ -1,22 +1,31 @@
 ---
 import { DoodleCard } from "@/components/ui/DoodleCard"
+import { useTranslations } from "@/i18n/utils"
+import type { Lang } from "@/i18n/ui"
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const t = useTranslations(lang)
 
 const detectedItems = [
-  "Tab visibility changes via the Page Visibility API.",
-  "Window focus loss and recovery events.",
-  "Fullscreen exit: detects when you leave full-screen mode.",
-  "Mouse leave: your cursor leaving the browser viewport.",
-  "Paste events during the detection session.",
-  "DevTools heuristic: best-effort check for open developer tools.",
+  t('landing.coverage.detect1'),
+  t('landing.coverage.detect2'),
+  t('landing.coverage.detect3'),
+  t('landing.coverage.detect4'),
+  t('landing.coverage.detect5'),
+  t('landing.coverage.detect6'),
 ]
 
 const notDetectedItems = [
-  "Applications open outside the browser.",
-  "Exact content of other system windows.",
-  "Your camera, microphone, or screen recording.",
-  "What you ate for breakfast this morning.",
-  "Whether you're actually reading this or just scrolling.",
-  "Your excuse for switching tabs. (But I noticed.)",
+  t('landing.coverage.cannot1'),
+  t('landing.coverage.cannot2'),
+  t('landing.coverage.cannot3'),
+  t('landing.coverage.cannot4'),
+  t('landing.coverage.cannot5'),
+  t('landing.coverage.cannot6'),
 ]
 ---
 
@@ -25,7 +34,7 @@ const notDetectedItems = [
   class='flex flex-col shrink-0 pb-[clamp(1rem,4vh,2rem)]'
 >
   <h2 id='coverage-heading' class='sr-only'>
-    Browser signal detection coverage
+    {t('landing.coverage.srHeading')}
   </h2>
 
   <div
@@ -39,7 +48,7 @@ const notDetectedItems = [
         className='landing-card-rotate-left'
         dashedBorder
         corner='scan'
-        title='What I can detect'
+        title={t('landing.coverage.detectTitle')}
         listItems={detectedItems}
       />
     </div>
@@ -51,7 +60,7 @@ const notDetectedItems = [
         className='landing-card-rotate-right'
         dashedBorder
         corner='eye-off'
-        title="What I can't detect"
+        title={t('landing.coverage.cannotTitle')}
         listItems={notDetectedItems}
         listMuted
       />

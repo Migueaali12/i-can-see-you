@@ -4,14 +4,19 @@ import type { DetectionSignal } from "@/core/detectionEngine"
 import { DoodleCard } from "@/components/ui/DoodleCard"
 import { formatTimerMs } from "./utils"
 import { X, Eye } from "lucide-react"
+import { useTranslations } from "@/i18n/utils"
+import type { Lang } from "@/i18n/ui"
 
-const SIGNAL_LABELS: Record<DetectionSignal, string> = {
-  visibility: "Tab hidden",
-  blur: "Focus lost",
-  fullscreen: "Fullscreen exit",
-  mouseleave: "Cursor left",
-  paste: "Paste",
-  devtools: "DevTools",
+function useSignalLabels(lang: Lang) {
+  const t = useTranslations(lang)
+  return {
+    visibility: t('signal.visibility'),
+    blur: t('signal.blur'),
+    fullscreen: t('signal.fullscreen'),
+    mouseleave: t('signal.mouseleave'),
+    paste: t('signal.paste'),
+    devtools: t('signal.devtools'),
+  } as Record<DetectionSignal, string>
 }
 
 interface TimelineMarker {
@@ -24,9 +29,13 @@ interface TimelineMarker {
 
 interface SessionTimelineProps {
   results: SessionResults
+  lang?: Lang
 }
 
-export default function SessionTimeline({ results }: SessionTimelineProps) {
+export default function SessionTimeline({ results, lang = 'en' }: SessionTimelineProps) {
+  const t = useTranslations(lang)
+  const signalLabels = useSignalLabels(lang)
+
   const markers = useMemo(() => {
     if (!results.endedAt || !results.sessionDurationMs) return []
     const sessionStart = results.endedAt - results.sessionDurationMs
@@ -41,7 +50,7 @@ export default function SessionTimeline({ results }: SessionTimelineProps) {
       )
       all.push({
         type: ev.type,
-        label: SIGNAL_LABELS[ev.type] ?? ev.type,
+        label: signalLabels[ev.type] ?? ev.type,
         startOffsetMs: offset,
         durationMs: ev.durationMs,
         leftPercent: leftPct,
@@ -56,7 +65,7 @@ export default function SessionTimeline({ results }: SessionTimelineProps) {
       )
       all.push({
         type: ev.type,
-        label: SIGNAL_LABELS[ev.type] ?? ev.type,
+        label: signalLabels[ev.type] ?? ev.type,
         startOffsetMs: offset,
         durationMs: ev.durationMs ?? 0,
         leftPercent: leftPct,
@@ -64,7 +73,7 @@ export default function SessionTimeline({ results }: SessionTimelineProps) {
     }
 
     return all.sort((a, b) => a.startOffsetMs - b.startOffsetMs)
-  }, [results])
+  }, [results, signalLabels])
 
   return (
     <DoodleCard
@@ -74,7 +83,7 @@ export default function SessionTimeline({ results }: SessionTimelineProps) {
     >
       <h2 className='mb-6 font-display text-[1.35rem] font-semibold leading-tight flex items-center gap-2 border-b-2 border-(--color-border) pb-3 text-(--color-on-card)'>
         <Eye className='w-5 h-5' />
-        Session timeline
+        {t('results.timelineTitle')}
       </h2>
 
       <div className='relative mt-4'>
@@ -102,7 +111,7 @@ export default function SessionTimeline({ results }: SessionTimelineProps) {
         </div>
 
         <div className='flex justify-between mt-3 text-xs font-body text-(--color-secondary)'>
-          <span>0:00</span>
+          <span>{t('results.timelineStart')}</span>
           <span>{formatTimerMs(results.sessionDurationMs)}</span>
         </div>
       </div>

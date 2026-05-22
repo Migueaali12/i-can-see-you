@@ -1,6 +1,15 @@
 ---
 import MascotEyes from "@/components/mascot/MascotEyes"
 import HeroCtaButton from "@/components/landing/HeroCtaButton"
+import { useTranslations } from "@/i18n/utils"
+import type { Lang } from "@/i18n/ui"
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const t = useTranslations(lang)
 ---
 
 <section
@@ -13,20 +22,20 @@ import HeroCtaButton from "@/components/landing/HeroCtaButton"
   <h1
     class='font-display mb-[clamp(0.5rem,2vh,1.5rem)] text-[clamp(2.5rem,6vw,4rem)] leading-[1.05] font-bold tracking-[-0.02em] text-(--color-primary)'
   >
-    I can see you
+    {t('common.brand')}
   </h1>
 
   <p
     class='mb-[clamp(0.5rem,1vh,1rem)] border-b-2 border-dashed border-(--color-outline-variant) pb-[clamp(0.5rem,2vh,1.5rem)] text-[clamp(1.1rem,2vw,1.1rem)] leading-[0.9] font-semibold text-(--color-secondary)'
   >
-    60 seconds. That's all it takes. Try not to get distracted.
+    {t('landing.heroTagline')}
   </p>
 
   <p class='mt-[clamp(0.5rem,2vh,1.5rem)] text-[0.95rem] leading-normal w-64l max-w-full text-(--color-secondary)'>
-    A free browser activity detector that shows exactly which signals your browser reveals when you lose focus: tab switches, window blur, fullscreen exits, and more. No camera. No server. 100% local.
+    {t('landing.heroDescription')}
   </p>
 
   <div class='mt-[clamp(1rem,3vh,4rem)] mb-5'>
-    <HeroCtaButton client:load />
+    <HeroCtaButton client:load lang={lang} />
   </div>
 </section>

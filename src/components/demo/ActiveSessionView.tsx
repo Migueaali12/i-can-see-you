@@ -5,14 +5,17 @@ import StatusCard from "./active-session/StatusCard"
 import IncidentsCard from "./active-session/IncidentsCard"
 import TimerHero from "./active-session/TimerHero"
 import MascotCorner from "./active-session/MascotCorner"
+import { useTranslations } from "@/i18n/utils"
+import type { Lang } from "@/i18n/ui"
 
 // ── Finished (transition screen while building results) ───────────
-function FinishedView() {
+function FinishedView({ lang = 'en' }: { lang?: Lang }) {
+  const t = useTranslations(lang)
   return (
     <div className='notebook-bg fixed inset-0 z-100 flex flex-col items-center justify-center gap-6'>
       <MascotEyes size='mascot--md' expression='suspicious' />
       <p className='font-body text-base text-(--color-secondary) m-0'>
-        Compiling results…
+        {t('demo.compiling')}
       </p>
     </div>
   )
@@ -28,6 +31,7 @@ function RunningView({
   mascotExpression,
   mascotMessage,
   onStop,
+  lang = 'en',
 }: {
   timeLeft: number
   isUrgent: boolean
@@ -37,34 +41,39 @@ function RunningView({
   mascotExpression: ReturnType<typeof useActiveSession>["mascotExpression"]
   mascotMessage: string
   onStop: () => void
+  lang?: Lang
 }) {
   return (
     <SiteShell
+      lang={lang}
       className='notebook-bg fixed inset-0 z-100 flex min-h-0 flex-col'
       mainClassName='flex flex-1 flex-col items-center justify-center gap-6 overflow-auto px-8 pt-8 pb-12'
       afterMain={
         <MascotCorner expression={mascotExpression} message={mascotMessage} />
       }
-      footerNavAriaLabel='Demo links'
       footerWithPageSpacing={false}
     >
       <div className='grid w-full max-w-[720px] grid-cols-[2fr_1fr] gap-5'>
         <div className='animate-in fade-in slide-in-from-bottom-4'>
-          <StatusCard status={focusStatus} signal={currentSignal} />
+          <StatusCard status={focusStatus} signal={currentSignal} lang={lang} />
         </div>
         <div className='animate-in fade-in slide-in-from-bottom-4' style={{ animationDelay: '100ms' }}>
-          <IncidentsCard count={incidentCount} />
+          <IncidentsCard count={incidentCount} lang={lang} />
         </div>
         <div className='col-span-2 animate-in fade-in slide-in-from-bottom-4' style={{ animationDelay: '200ms' }}>
-          <TimerHero timeLeft={timeLeft} isUrgent={isUrgent} onStop={onStop} />
+          <TimerHero timeLeft={timeLeft} isUrgent={isUrgent} onStop={onStop} lang={lang} />
         </div>
       </div>
     </SiteShell>
   )
 }
 
+interface ActiveSessionViewProps {
+  lang?: Lang
+}
+
 // ── Container ─────────────────────────────────────────────────────
-export default function ActiveSessionView() {
+export default function ActiveSessionView({ lang = 'en' }: ActiveSessionViewProps) {
   const {
     phase,
     timeLeft,
@@ -74,14 +83,14 @@ export default function ActiveSessionView() {
     mascotMessage,
     mascotExpression,
     finishSession,
-  } = useActiveSession()
+  } = useActiveSession(lang)
 
   const isUrgent = timeLeft <= 10 && phase === "running"
 
   if (phase === "idle") return null
 
   return phase === "finished" ? (
-    <FinishedView />
+    <FinishedView lang={lang} />
   ) : (
     <RunningView
       timeLeft={timeLeft}
@@ -92,6 +101,7 @@ export default function ActiveSessionView() {
       mascotExpression={mascotExpression}
       mascotMessage={mascotMessage}
       onStop={finishSession}
+      lang={lang}
     />
   )
 }

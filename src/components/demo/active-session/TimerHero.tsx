@@ -2,16 +2,23 @@ import { useState } from "react"
 import { X } from "lucide-react"
 import { t } from "./styles"
 import Button from "@/components/ui/Button"
+import { useTranslations } from "@/i18n/utils"
+import type { Lang } from "@/i18n/ui"
+
+interface TimerHeroProps {
+  timeLeft: number
+  isUrgent: boolean
+  onStop?: () => void
+  lang?: Lang
+}
 
 export default function TimerHero({
   timeLeft,
   isUrgent,
   onStop,
-}: {
-  timeLeft: number
-  isUrgent: boolean
-  onStop?: () => void
-}) {
+  lang = 'en',
+}: TimerHeroProps) {
+  const t18n = useTranslations(lang)
   const [hovered, setHovered] = useState(false)
 
   return (
@@ -61,7 +68,7 @@ export default function TimerHero({
           transition: "color 300ms ease, opacity 200ms ease",
         }}
       >
-        Seconds
+        {t18n('common.seconds')}
       </div>
 
       {/* Stop hint on hover */}
@@ -90,7 +97,7 @@ export default function TimerHero({
               color: isUrgent ? "var(--color-card)" : "var(--color-on-card)",
             }}
           >
-            Stop
+            {t18n('common.stop')}
           </span>
         </div>
       )}
