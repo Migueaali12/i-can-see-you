@@ -9,8 +9,16 @@ import {
   House,
 } from "lucide-react"
 import Button from "@/components/ui/Button"
+import { useTranslations, getRelativeLocaleUrl } from "@/i18n/utils"
+import type { Lang } from "@/i18n/ui"
 
-export default function PrivacyGrid() {
+interface PrivacyGridProps {
+  lang?: Lang
+}
+
+export default function PrivacyGrid({ lang = 'en' }: PrivacyGridProps) {
+  const t = useTranslations(lang)
+
   return (
     <>
       <section className='grid grid-cols-1 md:grid-cols-2 gap-6 w-[min(1000px,calc(100%-3rem))] mx-auto pt-4 pb-8'>
@@ -19,65 +27,34 @@ export default function PrivacyGrid() {
           className='animate-in fade-in slide-in-from-bottom-4'
           style={{ animationDelay: "100ms" }}
         >
-          <PrivacyCard rotation={-1.2} icon={Eye} title='What I Track'>
+          <PrivacyCard rotation={-1.2} icon={Eye} title={t('privacy.trackTitle')}>
             <p className='mb-4 text-(--color-secondary)'>
-              Your browser tells me more than you think. Here are the signals I
-              actually watch.
+              {t('privacy.trackDesc')}
             </p>
             <ul className='list-none m-0 p-0 flex flex-col gap-2'>
               <li className='flex items-start gap-2'>
-                <Dot
-                  size={18}
-                  strokeWidth={2.5}
-                  className='shrink-0 mt-[0.15rem]'
-                  aria-hidden='true'
-                />
-                <span>Tab switches via the Page Visibility API.</span>
+                <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                <span>{t('privacy.track1')}</span>
               </li>
               <li className='flex items-start gap-2'>
-                <Dot
-                  size={18}
-                  strokeWidth={2.5}
-                  className='shrink-0 mt-[0.15rem]'
-                  aria-hidden='true'
-                />
-                <span>When you lose or regain window focus.</span>
+                <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                <span>{t('privacy.track2')}</span>
               </li>
               <li className='flex items-start gap-2'>
-                <Dot
-                  size={18}
-                  strokeWidth={2.5}
-                  className='shrink-0 mt-[0.15rem]'
-                  aria-hidden='true'
-                />
-                <span>Exiting fullscreen mode.</span>
+                <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                <span>{t('privacy.track3')}</span>
               </li>
               <li className='flex items-start gap-2'>
-                <Dot
-                  size={18}
-                  strokeWidth={2.5}
-                  className='shrink-0 mt-[0.15rem]'
-                  aria-hidden='true'
-                />
-                <span>Your cursor leaving the browser viewport.</span>
+                <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                <span>{t('privacy.track4')}</span>
               </li>
               <li className='flex items-start gap-2'>
-                <Dot
-                  size={18}
-                  strokeWidth={2.5}
-                  className='shrink-0 mt-[0.15rem]'
-                  aria-hidden='true'
-                />
-                <span>Paste events during the session.</span>
+                <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                <span>{t('privacy.track5')}</span>
               </li>
               <li className='flex items-start gap-2'>
-                <Dot
-                  size={18}
-                  strokeWidth={2.5}
-                  className='shrink-0 mt-[0.15rem]'
-                  aria-hidden='true'
-                />
-                <span>Developer tools (best effort heuristic).</span>
+                <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                <span>{t('privacy.track6')}</span>
               </li>
             </ul>
           </PrivacyCard>
@@ -88,58 +65,30 @@ export default function PrivacyGrid() {
           className='animate-in fade-in slide-in-from-bottom-4'
           style={{ animationDelay: "200ms" }}
         >
-          <PrivacyCard rotation={1} icon={CloudOff} title='Zero Servers'>
+          <PrivacyCard rotation={1} icon={CloudOff} title={t('privacy.zeroServersTitle')}>
             <p className='mb-4 text-(--color-secondary)'>
-              Everything stays between you and your browser. I don't have a
-              server, a database, or a memory.
+              {t('privacy.zeroServersDesc')}
             </p>
             <ul className='list-none m-0 p-0 flex flex-col gap-2'>
               <li className='flex items-start gap-2'>
-                <Dot
-                  size={18}
-                  strokeWidth={2.5}
-                  className='shrink-0 mt-[0.15rem]'
-                  aria-hidden='true'
-                />
-                <span>Nothing is sent to any server.</span>
+                <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                <span>{t('privacy.zeroServers1')}</span>
               </li>
               <li className='flex items-start gap-2'>
-                <Dot
-                  size={18}
-                  strokeWidth={2.5}
-                  className='shrink-0 mt-[0.15rem]'
-                  aria-hidden='true'
-                />
-                <span>All detection happens locally in your browser.</span>
+                <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                <span>{t('privacy.zeroServers2')}</span>
               </li>
               <li className='flex items-start gap-2'>
-                <Dot
-                  size={18}
-                  strokeWidth={2.5}
-                  className='shrink-0 mt-[0.15rem]'
-                  aria-hidden='true'
-                />
-                <span>Session data is cleared when you close the tab.</span>
+                <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                <span>{t('privacy.zeroServers3')}</span>
               </li>
               <li className='flex items-start gap-2'>
-                <Dot
-                  size={18}
-                  strokeWidth={2.5}
-                  className='shrink-0 mt-[0.15rem]'
-                  aria-hidden='true'
-                />
-                <span>No tracking cookies whatsoever.</span>
+                <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                <span>{t('privacy.zeroServers4')}</span>
               </li>
               <li className='flex items-start gap-2'>
-                <Dot
-                  size={18}
-                  strokeWidth={2.5}
-                  className='shrink-0 mt-[0.15rem]'
-                  aria-hidden='true'
-                />
-                <span>
-                  I don't have a server. I don't even have a database.
-                </span>
+                <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                <span>{t('privacy.zeroServers5')}</span>
               </li>
             </ul>
           </PrivacyCard>
@@ -150,86 +99,41 @@ export default function PrivacyGrid() {
           className='animate-in fade-in slide-in-from-bottom-4 md:col-span-2'
           style={{ animationDelay: "300ms" }}
         >
-          <PrivacyCard rotation={-0.5} icon={EyeOff} title="What I Don't See">
+          <PrivacyCard rotation={-0.5} icon={EyeOff} title={t('privacy.dontSeeTitle')}>
             <p className='mb-4 text-(--color-secondary)'>
-              I'm not omniscient. There are hard limits to what a web page can
-              observe, and I respect all of them.
+              {t('privacy.dontSeeDesc')}
             </p>
             <ul className='list-none m-0 p-0 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2'>
               <div className='flex flex-col gap-2'>
                 <li className='flex items-start gap-2'>
-                  <Dot
-                    size={18}
-                    strokeWidth={2.5}
-                    className='shrink-0 mt-[0.15rem]'
-                    aria-hidden='true'
-                  />
-                  <span>Applications running outside your browser.</span>
+                  <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                  <span>{t('privacy.dontSee1')}</span>
                 </li>
                 <li className='flex items-start gap-2'>
-                  <Dot
-                    size={18}
-                    strokeWidth={2.5}
-                    className='shrink-0 mt-[0.15rem]'
-                    aria-hidden='true'
-                  />
-                  <span>
-                    Content of other windows, tabs, or your clipboard history.
-                  </span>
+                  <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                  <span>{t('privacy.dontSee2')}</span>
                 </li>
                 <li className='flex items-start gap-2'>
-                  <Dot
-                    size={18}
-                    strokeWidth={2.5}
-                    className='shrink-0 mt-[0.15rem]'
-                    aria-hidden='true'
-                  />
-                  <span>
-                    Your camera or microphone — I never ask for permission.
-                  </span>
+                  <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                  <span>{t('privacy.dontSee3')}</span>
                 </li>
                 <li className='flex items-start gap-2'>
-                  <Dot
-                    size={18}
-                    strokeWidth={2.5}
-                    className='shrink-0 mt-[0.15rem]'
-                    aria-hidden='true'
-                  />
-                  <span>Keyboard input when you're typing in another app.</span>
+                  <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                  <span>{t('privacy.dontSee4')}</span>
                 </li>
               </div>
               <div className='flex flex-col gap-2'>
                 <li className='flex items-start '>
-                  <Dot
-                    size={18}
-                    strokeWidth={2.5}
-                    className='shrink-0 mt-[0.15rem]'
-                    aria-hidden='true'
-                  />
-                  <span className='text-nowrap'>
-                    Obviously, I can't see you when you are taking a bath.
-                  </span>
+                  <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                  <span className='text-nowrap'>{t('privacy.dontSee5')}</span>
                 </li>
                 <li className='flex items-start gap-2'>
-                  <Dot
-                    size={18}
-                    strokeWidth={2.5}
-                    className='shrink-0 mt-[0.15rem]'
-                    aria-hidden='true'
-                  />
-                  <span>
-                    Whether you actually read the terms of service. (Nobody
-                    does.)
-                  </span>
+                  <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                  <span>{t('privacy.dontSee6')}</span>
                 </li>
                 <li className='flex items-start gap-2'>
-                  <Dot
-                    size={18}
-                    strokeWidth={2.5}
-                    className='shrink-0 mt-[0.15rem]'
-                    aria-hidden='true'
-                  />
-                  <span>Your inner monologue. Yet.</span>
+                  <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                  <span>{t('privacy.dontSee7')}</span>
                 </li>
               </div>
             </ul>
@@ -241,75 +145,31 @@ export default function PrivacyGrid() {
           className='animate-in fade-in slide-in-from-bottom-4'
           style={{ animationDelay: "400ms" }}
         >
-          <PrivacyCard rotation={0.8} icon={Settings} title='How It Works'>
+          <PrivacyCard rotation={0.8} icon={Settings} title={t('privacy.howWorksTitle')}>
             <p className='mb-4 text-(--color-secondary)'>
-              No magic, just standard browser APIs doing their job. Here's the
-              technical breakdown.
+              {t('privacy.howWorksDesc')}
             </p>
             <ul className='list-none m-0 p-0 flex flex-col gap-2'>
               <li className='flex items-start gap-2'>
-                <Dot
-                  size={18}
-                  strokeWidth={2.5}
-                  className='shrink-0 mt-[0.15rem]'
-                  aria-hidden='true'
-                />
-                <span>Page Visibility API — detects when you switch tabs.</span>
+                <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                <span>{t('privacy.howWorks1')}</span>
               </li>
               <li className='flex items-start gap-2'>
-                <Dot
-                  size={18}
-                  strokeWidth={2.5}
-                  className='shrink-0 mt-[0.15rem]'
-                  aria-hidden='true'
-                />
-                <span>
-                  Focus Events — registers when the window gains or loses focus.
-                </span>
+                <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                <span>{t('privacy.howWorks2')}</span>
               </li>
               <li className='flex items-start gap-2'>
-                <Dot
-                  size={18}
-                  strokeWidth={2.5}
-                  className='shrink-0 mt-[0.15rem]'
-                  aria-hidden='true'
-                />
-                <span>Fullscreen API — notices when you exit fullscreen.</span>
+                <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                <span>{t('privacy.howWorks3')}</span>
               </li>
               <li className='flex items-start gap-2'>
-                <Dot
-                  size={18}
-                  strokeWidth={2.5}
-                  className='shrink-0 mt-[0.15rem]'
-                  aria-hidden='true'
-                />
-                <span>
-                  Mouse Events — tracks when your cursor leaves the viewport.
-                </span>
+                <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                <span>{t('privacy.howWorks4')}</span>
               </li>
               <li className='flex items-start gap-2'>
-                <Dot
-                  size={18}
-                  strokeWidth={2.5}
-                  className='shrink-0 mt-[0.15rem]'
-                  aria-hidden='true'
-                />
-                <span>
-                  Paste Events — registers paste actions during the session.
-                </span>
+                <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                <span>{t('privacy.howWorks5')}</span>
               </li>
-              {/* <li className='flex items-start gap-2'>
-                <Dot
-                  size={18}
-                  strokeWidth={2.5}
-                  className='shrink-0 mt-[0.15rem]'
-                  aria-hidden='true'
-                />
-                <span>
-                  DevTools Heuristic — estimates whether developer tools are
-                  open (low confidence).
-                </span>
-              </li> */}
             </ul>
           </PrivacyCard>
         </div>
@@ -319,71 +179,39 @@ export default function PrivacyGrid() {
           className='animate-in fade-in slide-in-from-bottom-4'
           style={{ animationDelay: "500ms" }}
         >
-          <PrivacyCard
-            rotation={-0.6}
-            icon={ShieldCheck}
-            title='You Control It'
-          >
+          <PrivacyCard rotation={-0.6} icon={ShieldCheck} title={t('privacy.controlTitle')}>
             <p className='mb-4 text-(--color-secondary)'>
-              You're in charge. Close the tab and I'm amnesiac. Your privacy is
-              literally one click away.
+              {t('privacy.controlDesc')}
             </p>
             <ul className='list-none m-0 p-0 flex flex-col gap-2'>
               <li className='flex items-start gap-2'>
-                <Dot
-                  size={18}
-                  strokeWidth={2.5}
-                  className='shrink-0 mt-[0.15rem]'
-                  aria-hidden='true'
-                />
-                <span>No camera or microphone access required.</span>
+                <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                <span>{t('privacy.control1')}</span>
               </li>
               <li className='flex items-start gap-2'>
-                <Dot
-                  size={18}
-                  strokeWidth={2.5}
-                  className='shrink-0 mt-[0.15rem]'
-                  aria-hidden='true'
-                />
-                <span>
-                  All detection is passive — no permissions needed to start.
-                </span>
+                <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                <span>{t('privacy.control2')}</span>
               </li>
               <li className='flex items-start gap-2'>
-                <Dot
-                  size={18}
-                  strokeWidth={2.5}
-                  className='shrink-0 mt-[0.15rem]'
-                  aria-hidden='true'
-                />
+                <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
                 <span>
-                  Optional explicit permissions available on the{" "}
+                  {t('privacy.control3').replace('{link}', '')}{" "}
                   <a
-                    href='/signals'
+                    href={getRelativeLocaleUrl(lang, '/signals')}
                     className='underline decoration-2 hover:text-black transition-colors'
                   >
-                    Signals page
+                    {t('privacy.controlSignalsLink')}
                   </a>
                   .
                 </span>
               </li>
               <li className='flex items-start gap-2'>
-                <Dot
-                  size={18}
-                  strokeWidth={2.5}
-                  className='shrink-0 mt-[0.15rem]'
-                  aria-hidden='true'
-                />
-                <span>Close the tab and everything disappears instantly.</span>
+                <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                <span>{t('privacy.control4')}</span>
               </li>
               <li className='flex items-start gap-2'>
-                <Dot
-                  size={18}
-                  strokeWidth={2.5}
-                  className='shrink-0 mt-[0.15rem]'
-                  aria-hidden='true'
-                />
-                <span>You can stop the demo anytime with one click.</span>
+                <Dot size={18} strokeWidth={2.5} className='shrink-0 mt-[0.15rem]' aria-hidden='true' />
+                <span>{t('privacy.control5')}</span>
               </li>
             </ul>
           </PrivacyCard>
@@ -394,8 +222,8 @@ export default function PrivacyGrid() {
         className='flex justify-center mt-12 mb-8 animate-in fade-in slide-in-from-bottom-4'
         style={{ animationDelay: "600ms" }}
       >
-        <Button href='/' variant='gray' size='lg'>
-          Back to Home <House size={18} strokeWidth={2} />
+        <Button href={getRelativeLocaleUrl(lang, '/')} variant='gray' size='lg'>
+          {t('common.backToHome')} <House size={18} strokeWidth={2} />
         </Button>
       </div>
     </>

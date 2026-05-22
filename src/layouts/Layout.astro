@@ -7,6 +7,8 @@ import nanumLatinWoff2 from '@fontsource/nanum-pen-script/files/nanum-pen-script
 import wenkaiLatinWoff2 from '@fontsource/lxgw-wenkai-mono-tc/files/lxgw-wenkai-mono-tc-latin-400-normal.woff2?url'
 import SiteHeader from '@/components/layout/SiteHeader'
 import SiteFooter from '@/components/layout/SiteFooter'
+import { getLangFromUrl, useTranslations, getRelativeLocaleUrl } from '@/i18n/utils'
+import type { Lang } from '@/i18n/ui'
 
 interface Props {
   title?: string;
@@ -32,10 +34,14 @@ const {
   noindex = false,
 } = Astro.props as Props;
 
+const lang: Lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 const siteOrigin = Astro.site ? Astro.site.origin : 'https://icanseeyou.dev';
-const siteName = 'I Can See You';
+const siteName = t('common.siteName');
 const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
 const ogImageUrl = new URL(ogImage, siteOrigin).href;
+const ogLocale = lang === 'es' ? 'es_ES' : 'en_US';
+
 const organizationStructuredData = {
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -50,10 +56,12 @@ const organizationStructuredData = {
 const structuredDataArray = structuredData
   ? [organizationStructuredData, ...(Array.isArray(structuredData) ? structuredData : [structuredData])]
   : [organizationStructuredData];
+
+const allLangs: Lang[] = ['en', 'es'];
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -98,7 +106,7 @@ const structuredDataArray = structuredData
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={fullTitle} />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale" content={ogLocale} />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
@@ -106,15 +114,28 @@ const structuredDataArray = structuredData
     <meta name="twitter:image" content={ogImageUrl} />
     <meta name="twitter:image:alt" content={fullTitle} />
 
+    {allLangs.map((l) => (
+      <link
+        rel="alternate"
+        hreflang={l === 'en' ? 'en' : 'es'}
+        href={new URL(getRelativeLocaleUrl(l, Astro.url.pathname), siteOrigin).href}
+      />
+    ))}
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href={new URL(getRelativeLocaleUrl('en', Astro.url.pathname), siteOrigin).href}
+    />
+
     {structuredDataArray.map((data) => (
       <script type="application/ld+json" set:html={JSON.stringify(data)} is:inline />
     ))}
   </head>
   <body class="notebook-bg flex flex-col min-h-dvh">
-    {!hideHeader && <SiteHeader client:load />}
+    {!hideHeader && <SiteHeader client:load lang={lang} />}
 
     <slot />
 
-    {!hideFooter && <SiteFooter />}
+    {!hideFooter && <SiteFooter lang={lang} />}
   </body>
 </html>

@@ -1,5 +1,14 @@
 ---
 import MascotEyes from "@/components/mascot/MascotEyes"
+import { useTranslations } from "@/i18n/utils"
+import type { Lang } from "@/i18n/ui"
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const t = useTranslations(lang)
 ---
 
 <section
@@ -13,14 +22,13 @@ import MascotEyes from "@/components/mascot/MascotEyes"
     class='font-display mb-4 text-[clamp(2rem,5vw,3rem)] leading-[1.05] font-bold tracking-[-0.02em] text-(--color-primary) animate-in fade-in slide-in-from-bottom-4'
     style='animation-delay:100ms'
   >
-    Privacy (or lack thereof)
+    {t('privacy.heroHeading')}
   </h1>
 
   <p
     class='border-b-2 border-dashed border-(--color-outline-variant) pb-4 text-[clamp(1rem,2vw,1.25rem)] leading-[1.4] font-semibold text-(--color-secondary) animate-in fade-in slide-in-from-bottom-4 max-w-[600px]'
     style='animation-delay:200ms'
   >
-    Don't worry. I am watching you, but my sketchbook is magically erased
-    when you leave. Everything is temporary, just like my attention.
+    {t('privacy.heroSubtitle')}
   </p>
 </section>

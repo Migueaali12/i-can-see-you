@@ -1,11 +1,10 @@
-import { useMemo, useRef } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import {
   clearResults,
   loadResults,
   type SessionResults,
 } from "@/core/resultsBuilder"
 import type { DetectionSignal } from "@/core/detectionEngine"
-import { useState } from "react"
 import MascotEyes from "@/components/mascot/MascotEyes"
 import MetricsRow from "./MetricsRow"
 import SessionTimeline from "./SessionTimeline"
@@ -14,6 +13,8 @@ import Button from "@/components/ui/Button"
 import { Loader, RefreshCw, Share2 } from "lucide-react"
 import { toBlob } from "html-to-image"
 import ShareableCard from "./ShareableCard"
+import { useTranslations, getRelativeLocaleUrl } from "@/i18n/utils"
+import type { Lang } from "@/i18n/ui"
 
 type Expression = "neutral" | "suspicious" | "annoyed"
 
@@ -30,12 +31,22 @@ function getDetectedSignals(results: SessionResults): DetectionSignal[] {
   return Array.from(types)
 }
 
-export default function ResultsView() {
-  const [results] = useState<SessionResults | null>(() => {
+interface ResultsViewProps {
+  lang?: Lang
+}
+
+export default function ResultsView({ lang = 'en' }: ResultsViewProps) {
+  const t = useTranslations(lang)
+  const [results, setResults] = useState<SessionResults | null>(null)
+  const cardRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
     const data = loadResults()
-    if (data) clearResults()
-    return data
-  })
+    if (data) {
+      setResults(data)
+      clearResults()
+    }
+  }, [])
 
   const [shareStatus, setShareStatus] = useState<
     "idle" | "copied" | "error" | "sharing"
@@ -52,10 +63,8 @@ export default function ResultsView() {
     try {
       setShareStatus("sharing")
 
-      // 1. Wait for fonts to be loaded
       await document.fonts.ready
 
-      // 2. Capture the card as a PNG blob
       const blob = await toBlob(cardRef.current, {
         pixelRatio: 2,
         cacheBust: true,
@@ -67,29 +76,26 @@ export default function ResultsView() {
         return
       }
 
-      // 3. Create a File object for the Web Share API
       const file = new File([blob], "icanseeyou-results.png", {
         type: "image/png",
       })
 
-      // 4. Try native Web Share API with the image file
       if (navigator.canShare?.({ files: [file] })) {
         await navigator.share({
-          title: "I Can See You — My Attention Score",
-          text: `I scored ${results.attentionScore}% attention. Can you do better?`,
+          title: t('results.shareTitle'),
+          text: t('results.shareText', { score: results.attentionScore }),
           files: [file],
         })
         setShareStatus("copied")
         setTimeout(() => setShareStatus("idle"), 2000)
       } else {
-        // 5. Fallback: trigger download
         const url = URL.createObjectURL(blob)
         const link = document.createElement("a")
         link.href = url
         link.download = "icanseeyou-results.png"
         link.click()
         URL.revokeObjectURL(url)
-        setShareStatus("copied") // or create a new "downloaded" status
+        setShareStatus("copied")
         setTimeout(() => setShareStatus("idle"), 2000)
       }
     } catch {
@@ -107,21 +113,19 @@ export default function ResultsView() {
           className='mb-8'
         />
         <h1 className='font-display text-4xl md:text-5xl text-(--color-on-card) mb-4'>
-          No results
+          {t('results.noResults')}
         </h1>
         <p className='text-(--color-secondary) text-base md:text-lg mb-8 max-w-md'>
-          It looks like you haven't completed a detection session yet. Let's try
-          again.
+          {t('results.noResultsBody')}
         </p>
-        <Button href='/demo' variant='black' size='lg' icon={<RefreshCw />}>
-          Try detection
+        <Button href={getRelativeLocaleUrl(lang, '/demo')} variant='black' size='lg' icon={<RefreshCw />}>
+          {t('results.tryDetection')}
         </Button>
       </div>
     )
   }
 
   const expression = getScoreExpression(results.attentionScore)
-  const cardRef = useRef<HTMLDivElement>(null)
 
   const hiddenResultsCard = results ? (
     <div
@@ -135,14 +139,13 @@ export default function ResultsView() {
       }}
     >
       <div ref={cardRef} className='w-full h-full'>
-        <ShareableCard results={results} />
+        <ShareableCard results={results} lang={lang} />
       </div>
     </div>
   ) : null
 
   return (
     <div className='w-full max-w-4xl mx-auto px-4 sm:px-6 py-8 md:py-16 flex flex-col gap-8 md:gap-12'>
-      {/* ── Hero Header ─────────────────────────────────────────────── */}
       <div className='flex flex-col items-center text-center animate-in fade-in slide-in-from-bottom-2 duration-500'>
         <MascotEyes
           size='mascot--md'
@@ -150,27 +153,22 @@ export default function ResultsView() {
           className='mb-6'
         />
         <h1 className='font-display text-4xl md:text-6xl text-(--color-on-card) m-0 tracking-tight'>
-          Your results
+          {t('results.yourResults')}
         </h1>
         <p className='text-base md:text-lg text-(--color-secondary) mt-4 max-w-xl leading-relaxed m-0'>
-          The sketchbook stopped watching you (for now). Here's a summary of
-          your attention during the session.
+          {t('results.subtitle')}
         </p>
       </div>
 
-      {/* ── Metric Cards ────────────────────────────────────────────── */}
-      <MetricsRow results={results} />
+      <MetricsRow results={results} lang={lang} />
 
-      {/* ── Session Timeline ─────────────────────────────────────────── */}
-      <SessionTimeline results={results} />
+      <SessionTimeline results={results} lang={lang} />
 
-      {/* ── Transparency Block ───────────────────────────────────────── */}
-      <TransparencyBlock detectedSignals={detectedSignals} />
+      <TransparencyBlock detectedSignals={detectedSignals} lang={lang} />
 
-      {/* ── CTA Buttons ─────────────────────────────────────────────── */}
       <div className='flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-500'>
-        <Button href='/demo' variant='gray' size='lg' icon={<RefreshCw />}>
-          Retry demo
+        <Button href={getRelativeLocaleUrl(lang, '/demo')} variant='gray' size='lg' icon={<RefreshCw />}>
+          {t('common.retry')}
         </Button>
         <Button
           disabled={shareStatus === "sharing"}
@@ -186,16 +184,15 @@ export default function ResultsView() {
           onClick={handleShare}
         >
           {shareStatus === "sharing"
-            ? "Sharing..."
+            ? t('common.shareSharing')
             : shareStatus === "copied"
-              ? "Shared!"
+              ? t('common.shareShared')
               : shareStatus === "error"
-                ? "Error sharing"
-                : "Share"}
+                ? t('common.shareError')
+                : t('common.share')}
         </Button>
       </div>
 
-      {/* Hidden card for capture */}
       {hiddenResultsCard}
     </div>
   )

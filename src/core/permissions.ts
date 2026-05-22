@@ -1,3 +1,6 @@
+import { useTranslations } from "@/i18n/utils"
+import type { Lang } from "@/i18n/ui"
+
 export type PermissionState = "granted" | "denied" | "prompt" | "unsupported"
 export type ExplicitApiKey = "clipboardRead" | "screenDetails"
 
@@ -27,14 +30,13 @@ async function queryPermission(
     })
     return result.state as PermissionState
   } catch (err) {
-    // A TypeError means the browser doesn't recognise the permission name
-    // (Firefox, Safari). Any other error is treated as "prompt" (best-effort).
     if (err instanceof TypeError) return "unsupported"
     return "prompt"
   }
 }
 
-export async function checkClipboardPermission(): Promise<ExplicitApiStatus> {
+export async function checkClipboardPermission(lang: Lang): Promise<ExplicitApiStatus> {
+  const t = useTranslations(lang)
   const apiPresent =
     typeof navigator !== "undefined" &&
     "clipboard" in navigator &&
@@ -43,8 +45,8 @@ export async function checkClipboardPermission(): Promise<ExplicitApiStatus> {
   if (!apiPresent) {
     return {
       key: "clipboardRead",
-      label: "Clipboard read",
-      description: "Detects whether you paste external content during the session.",
+      label: t('signals.clipboardLabel'),
+      description: t('signals.clipboardDesc'),
       support: false,
       permission: "unsupported",
       active: false,
@@ -53,14 +55,11 @@ export async function checkClipboardPermission(): Promise<ExplicitApiStatus> {
 
   const permission = await queryPermission("clipboard-read")
 
-  // Firefox and Safari don't implement the "clipboard-read" permission name.
-  // When queryPermission returns "unsupported" we mark the whole feature as
-  // unsupported so the UI never shows a button that can't trigger a toast.
   if (permission === "unsupported") {
     return {
       key: "clipboardRead",
-      label: "Clipboard read",
-      description: "Detects whether you paste external content during the session.",
+      label: t('signals.clipboardLabel'),
+      description: t('signals.clipboardDesc'),
       support: false,
       permission: "unsupported",
       active: false,
@@ -69,23 +68,24 @@ export async function checkClipboardPermission(): Promise<ExplicitApiStatus> {
 
   return {
     key: "clipboardRead",
-    label: "Clipboard read",
-    description: "Detects whether you paste external content during the session.",
+    label: t('signals.clipboardLabel'),
+    description: t('signals.clipboardDesc'),
     support: true,
     permission,
     active: permission === "granted",
   }
 }
 
-export async function checkScreenDetailsPermission(): Promise<ExplicitApiStatus> {
+export async function checkScreenDetailsPermission(lang: Lang): Promise<ExplicitApiStatus> {
+  const t = useTranslations(lang)
   const supported =
     typeof window !== "undefined" && "getScreenDetails" in window
 
   if (!supported) {
     return {
       key: "screenDetails",
-      label: "Multi-screen",
-      description: "Detects whether you use more than one screen at once.",
+      label: t('signals.multiScreenLabel'),
+      description: t('signals.multiScreenDesc'),
       support: false,
       permission: "unsupported",
       active: false,
@@ -94,13 +94,11 @@ export async function checkScreenDetailsPermission(): Promise<ExplicitApiStatus>
 
   const permission = await queryPermission("window-management")
 
-  // Same fallback: if the browser doesn't recognise "window-management"
-  // treat the feature as unsupported rather than showing a broken button.
   if (permission === "unsupported") {
     return {
       key: "screenDetails",
-      label: "Multi-screen",
-      description: "Detects whether you use more than one screen at once.",
+      label: t('signals.multiScreenLabel'),
+      description: t('signals.multiScreenDesc'),
       support: false,
       permission: "unsupported",
       active: false,
@@ -109,18 +107,18 @@ export async function checkScreenDetailsPermission(): Promise<ExplicitApiStatus>
 
   return {
     key: "screenDetails",
-    label: "Multi-screen",
-    description: "Detects whether you use more than one screen at once.",
+    label: t('signals.multiScreenLabel'),
+    description: t('signals.multiScreenDesc'),
     support: true,
     permission,
     active: permission === "granted",
   }
 }
 
-export async function checkAllExplicitPermissions(): Promise<ExplicitApiStatus[]> {
+export async function checkAllExplicitPermissions(lang: Lang): Promise<ExplicitApiStatus[]> {
   return Promise.all([
-    checkClipboardPermission(),
-    checkScreenDetailsPermission(),
+    checkClipboardPermission(lang),
+    checkScreenDetailsPermission(lang),
   ])
 }
 

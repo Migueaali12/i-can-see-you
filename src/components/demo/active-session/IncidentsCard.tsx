@@ -1,7 +1,15 @@
 import { TriangleAlert } from "lucide-react"
 import { DoodleCard } from "@/components/ui/DoodleCard"
+import { useTranslations } from "@/i18n/utils"
+import type { Lang } from "@/i18n/ui"
 
-export default function IncidentsCard({ count }: { count: number }) {
+interface IncidentsCardProps {
+  count: number
+  lang?: Lang
+}
+
+export default function IncidentsCard({ count, lang = 'en' }: IncidentsCardProps) {
+  const t = useTranslations(lang)
   return (
     <DoodleCard
       className='min-w-0 h-full'
@@ -14,7 +22,7 @@ export default function IncidentsCard({ count }: { count: number }) {
           strokeWidth={2.5}
         />
         <span className='font-body text-[0.6rem] tracking-[0.14em] text-(--color-secondary) uppercase'>
-          Incidents
+          {t('demo.incidents')}
         </span>
       </div>
       <div className='font-display text-[clamp(2.5rem,8vw,3.8rem)] font-bold text-(--color-on-card) leading-none'>

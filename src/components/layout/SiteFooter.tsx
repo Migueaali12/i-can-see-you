@@ -1,12 +1,16 @@
+import { useTranslations, getRelativeLocaleUrl } from "@/i18n/utils"
+import type { Lang } from "@/i18n/ui"
+
 type SiteFooterProps = {
-  navAriaLabel?: string
+  lang: Lang
   withPageSpacing?: boolean
 }
 
 const SiteFooter = ({
-  navAriaLabel = "Footer navigation",
+  lang,
   withPageSpacing = true,
 }: SiteFooterProps) => {
+  const t = useTranslations(lang)
   return (
     <footer
       className={[
@@ -17,24 +21,24 @@ const SiteFooter = ({
         .join(" ")}
     >
       <span className='text-[clamp(0.75rem,1vw,1rem)] font-bold text-(--color-on-card)'>
-        This site detects browser signals... The sketchbook is watching.
+        {t('footer.copy')}
       </span>
-      <nav aria-label={navAriaLabel}>
+      <nav aria-label={t('nav.footer')}>
         <ul className='m-0 flex list-none gap-6 p-0'>
           <li>
             <a
-              href='/privacy'
+              href={getRelativeLocaleUrl(lang, '/privacy')}
               className='font-mono text-[0.75rem] uppercase tracking-widest text-(--color-secondary) hover:italic'
             >
-              Privacy
+              {t('nav.privacy')}
             </a>
           </li>
           <li>
             <a
-              href='/manual'
+              href={getRelativeLocaleUrl(lang, '/manual')}
               className='font-mono text-[0.75rem] uppercase tracking-widest text-(--color-secondary) hover:italic'
             >
-              Manual
+              {t('nav.manual')}
             </a>
           </li>
         </ul>

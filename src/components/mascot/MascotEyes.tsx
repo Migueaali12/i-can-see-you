@@ -13,6 +13,7 @@ interface MascotEyesProps {
   className?: string
   size?: string
   expression?: Expression
+  ariaLabel?: string
 }
 
 const PUPIL_MAX_OFFSET = 0.22 // em fraction
@@ -49,6 +50,7 @@ export default function MascotEyes({
   className = "",
   size = "mascot--hero",
   expression: externalExpression,
+  ariaLabel = "Eyes Watching",
 }: MascotEyesProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const leftEyeRef = useRef<HTMLDivElement>(null)
@@ -359,7 +361,7 @@ export default function MascotEyes({
       data-transitioning={isTransitioning ? "true" : "false"}
       data-blink-phase={blinkPhase}
       role='img'
-      aria-label='Eyes Watching'
+      aria-label={ariaLabel}
       onMouseEnter={handleMouseEnter}
     >
       <Eye eyeRef={leftEyeRef} pupilStyle={pupilStyle} />

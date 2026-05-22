@@ -11,8 +11,10 @@ import {
   type DetectionEvent,
 } from "@/core/detectionEngine"
 import { EventStore } from "@/core/eventStore"
-import { MascotController, DEFAULT_MESSAGE } from "@/core/mascotController"
+import { MascotController } from "@/core/mascotController"
 import { buildResults, persistResults } from "@/core/resultsBuilder"
+import { getRelativeLocaleUrl } from "@/i18n/utils"
+import type { Lang } from "@/i18n/ui"
 
 // ── Types ─────────────────────────────────────────────────────────
 export type Phase = "idle" | "running" | "finished"
@@ -22,7 +24,7 @@ export type Expression = "neutral" | "suspicious" | "annoyed"
 const SESSION_DURATION = 60
 
 // ── Hook ──────────────────────────────────────────────────────────
-export function useActiveSession() {
+export function useActiveSession(lang: Lang = 'en') {
   const [phase, setPhase] = useState<Phase>("idle")
   const [timeLeft, setTimeLeft] = useState(SESSION_DURATION)
   const [incidentCount, setIncidentCount] = useState(0)
@@ -30,24 +32,21 @@ export function useActiveSession() {
     null,
   )
   const [focusStatus, setFocusStatus] = useState<FocusStatus>("in_focus")
-  const [mascotMessage, setMascotMessage] = useState(DEFAULT_MESSAGE)
+  const [mascotMessage, setMascotMessage] = useState("")
   const [mascotExpression, setMascotExpression] = useState<Expression>("neutral")
 
   // ── Refs (transient values that don't need re-render) ─────────────
-  // (rerender-use-ref-transient-values)
   const storeRef = useRef(new EventStore())
-  const mascotRef = useRef(new MascotController(4000))
+  const mascotRef = useRef<MascotController | null>(null)
   const engineRef = useRef<DetectionEngine | null>(null)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const timeLeftRef = useRef(SESSION_DURATION)
-  const mascotMessageRef = useRef(DEFAULT_MESSAGE)
+  const mascotMessageRef = useRef("")
 
   // Sync ref to avoid stale closure inside callbacks
   mascotMessageRef.current = mascotMessage
 
   // ── Unified session close ──────────────────────────────────────────
-  // Single function used by both manual stop and natural timer end,
-  // eliminating the duplicated buildResults + persistResults + redirect.
   const finalizeSession = useCallback((elapsedMs: number) => {
     if (timerRef.current) clearInterval(timerRef.current)
     timerRef.current = null
@@ -58,9 +57,9 @@ export function useActiveSession() {
     persistResults(results)
     setPhase("finished")
     setTimeout(() => {
-      window.location.href = "/results"
+      window.location.href = getRelativeLocaleUrl(lang, '/results')
     }, 900)
-  }, [])
+  }, [lang])
 
   // ── Event handlers ────────────────────────────────────────────────
   const handleEventStart = useCallback((event: DetectionEvent) => {
@@ -78,7 +77,7 @@ export function useActiveSession() {
       setMascotExpression("suspicious")
     }
 
-    const msg = mascotRef.current.resolveMessage(signal, mascotMessageRef.current)
+    const msg = mascotRef.current?.resolveMessage(signal, mascotMessageRef.current) ?? mascotMessageRef.current
     mascotMessageRef.current = msg
     setMascotMessage(msg)
   }, [])
@@ -96,7 +95,7 @@ export function useActiveSession() {
     }
   }, [])
 
-  // ── Manual stop (calls finalizeSession with actual elapsed time) ───
+  // ── Manual stop ───
   const finishSession = useCallback(() => {
     const elapsed = Math.max(
       (SESSION_DURATION - timeLeftRef.current) * 1000,
@@ -105,12 +104,14 @@ export function useActiveSession() {
     finalizeSession(elapsed)
   }, [finalizeSession])
 
-  // ── Start session (advanced-init-once: init once per session) ────
+  // ── Start session ───
   const startSession = useCallback(() => {
     storeRef.current = new EventStore()
-    mascotRef.current = new MascotController(4000)
+    const controller = new MascotController(lang, 4000)
+    mascotRef.current = controller
     timeLeftRef.current = SESSION_DURATION
-    mascotMessageRef.current = DEFAULT_MESSAGE
+    const defaultMsg = controller.resolveMessage(null, "")
+    mascotMessageRef.current = defaultMsg
 
     setPhase("running")
     setTimeLeft(SESSION_DURATION)
@@ -118,7 +119,7 @@ export function useActiveSession() {
     setCurrentSignal(null)
     setFocusStatus("in_focus")
     setMascotExpression("neutral")
-    setMascotMessage(DEFAULT_MESSAGE)
+    setMascotMessage(defaultMsg)
 
     const engine = new DetectionEngine({
       onEventStart: handleEventStart,
@@ -128,7 +129,6 @@ export function useActiveSession() {
     engineRef.current = engine
 
     timerRef.current = setInterval(() => {
-      // Decrement via ref to avoid stale closure; sync state separately.
       timeLeftRef.current -= 1
       const next = timeLeftRef.current
       setTimeLeft(next)
@@ -139,7 +139,7 @@ export function useActiveSession() {
         finalizeSession(SESSION_DURATION * 1000)
       }
     }, 1000)
-  }, [handleEventStart, handleEventEnd, finalizeSession])
+  }, [handleEventStart, handleEventEnd, finalizeSession, lang])
 
   // ── Auto-start before first paint ────────────────────────────────
   useLayoutEffect(() => {

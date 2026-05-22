@@ -1,30 +1,37 @@
 import { DoodleCard } from "@/components/ui/DoodleCard"
 import { Info } from "lucide-react"
 import type { DetectionSignal } from "@/core/detectionEngine"
+import { useTranslations } from "@/i18n/utils"
+import type { Lang } from "@/i18n/ui"
 
-const SIGNAL_DESCRIPTIONS: Record<DetectionSignal, string> = {
-  visibility:
-    "Page Visibility API: Detects when you switch to another tab or minimize the window.",
-  blur: "Focus Events: Registers when the active document loses interaction from your operating system.",
-  fullscreen: "Fullscreen API: Detects when you exit fullscreen mode.",
-  mouseleave:
-    "Mouse Leave: Indicates when your cursor leaves the browser viewport.",
-  paste: "Paste Event: Registers if you paste content during the session.",
-  devtools:
-    "DevTools Heuristic: Best-effort estimate of whether developer tools are open.",
+function useSignalDescriptions(lang: Lang) {
+  const t = useTranslations(lang)
+  return {
+    visibility: t('signal.description.visibility'),
+    blur: t('signal.description.blur'),
+    fullscreen: t('signal.description.fullscreen'),
+    mouseleave: t('signal.description.mouseleave'),
+    paste: t('signal.description.paste'),
+    devtools: t('signal.description.devtools'),
+  } as Record<DetectionSignal, string>
 }
 
 interface TransparencyBlockProps {
   detectedSignals: DetectionSignal[]
+  lang?: Lang
 }
 
 export default function TransparencyBlock({
   detectedSignals,
+  lang = 'en',
 }: TransparencyBlockProps) {
+  const t = useTranslations(lang)
+  const signalDescriptions = useSignalDescriptions(lang)
+
   const signals =
     detectedSignals.length > 0
       ? detectedSignals
-      : (Object.keys(SIGNAL_DESCRIPTIONS) as DetectionSignal[])
+      : (Object.keys(signalDescriptions) as DetectionSignal[])
 
   return (
     <DoodleCard
@@ -34,12 +41,11 @@ export default function TransparencyBlock({
     >
       <h2 className='mb-4 font-display text-[1.35rem] font-semibold leading-tight flex items-center gap-2 border-b-2 border-(--color-border) pb-3 text-(--color-on-card)'>
         <Info className='w-5 h-5' />
-        Technical transparency
+        {t('results.transparencyTitle')}
       </h2>
 
       <p className='text-sm text-(--color-on-surface-variant) leading-relaxed mb-5'>
-        This experiment uses native browser signals to determine your attention
-        level, without turning on your camera or invading your actual privacy.
+        {t('results.transparencyText')}
       </p>
 
       <ul className='flex flex-col gap-3 mb-5'>
@@ -59,14 +65,13 @@ export default function TransparencyBlock({
                 <path d='M4 8h8' />
               </svg>
             </span>
-            <span className='leading-relaxed'>{SIGNAL_DESCRIPTIONS[sig]}</span>
+            <span className='leading-relaxed'>{signalDescriptions[sig]}</span>
           </li>
         ))}
       </ul>
 
       <p className='text-xs text-(--color-secondary) leading-relaxed border-t border-(--color-outline-variant) pt-4 mt-auto'>
-        No behavioral data is stored on our servers. Everything is processed
-        locally on this device and cleared on close.
+        {t('results.transparencyFooter')}
       </p>
     </DoodleCard>
   )

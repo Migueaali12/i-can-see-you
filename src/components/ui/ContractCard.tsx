@@ -1,4 +1,6 @@
 import type { ReactNode } from "react"
+import { useTranslations } from "@/i18n/utils"
+import type { Lang } from "@/i18n/ui"
 
 export type ContractCardVariant = "default" | "inverted"
 
@@ -18,6 +20,7 @@ export type ContractCardProps = {
   listMuted?: boolean
   dashedBorder?: boolean
   hasSignatureLine?: boolean
+  lang?: Lang
   innerClassName?: string
   children?: ReactNode
 }
@@ -30,9 +33,11 @@ export function ContractCard({
   listMuted,
   dashedBorder = false,
   hasSignatureLine = false,
+  lang = 'en',
   innerClassName,
   children,
 }: ContractCardProps) {
+  const t = useTranslations(lang)
   const isInverted = variant === "inverted"
   const inner = innerClassName ?? (isInverted ? invertedInnerClass : defaultInnerClass)
 
@@ -121,7 +126,7 @@ export function ContractCard({
               <div className='flex-1 border-b-2 border-current' />
             </div>
             <p className='text-xs opacity-40 mt-2 italic'>
-              Sign here to confirm you actually read this.
+              {t('contract.signHere')}
             </p>
           </div>
         )}

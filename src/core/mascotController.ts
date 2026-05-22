@@ -1,49 +1,52 @@
 import type { DetectionSignal } from "./detectionEngine"
+import { useTranslations } from "@/i18n/utils"
+import type { Lang } from "@/i18n/ui"
 
-/** Several lines per signal so each new incident can pick the next variant (playful / ironic). */
-export const SIGNAL_MESSAGE_VARIANTS: Record<
-  DetectionSignal,
-  readonly string[]
-> = {
-  visibility: [
-    "Hey… that tab went on a little trip.",
-    "Back already—or was that another tab pretending to care?",
-    "The page hid. My eyebrows didn't.",
-    "Multitasking, or evasive maneuvering? Tomato, suspicious tomato.",
-  ],
-  blur: [
-    "Tiny distraction detected. I saw everything.",
-    "Focus wandered off. Should I file a missing-person report?",
-    "You were late coming back—busy being mysterious?",
-    "Window lost focus; my notebook kept score anyway.",
-  ],
-  fullscreen: [
-    "Fullscreen exit… already bored?",
-    "Couldn't commit to the big picture for long, huh?",
-    "Shrinking back to normal—stage fright or strategy?",
-    "The cinematic experience ended sooner than the trailer promised.",
-  ],
-  mouseleave: [
-    "Your mouse escaped the notebook.",
-    "Cursor left the crime scene. Convenient.",
-    "Pointer off-stage again—rehearsing your alibi?",
-    "The mouse slipped away like it owed me money.",
-  ],
-  paste: [
-    "Paste detected. Creative cheating?",
-    "Ctrl+V with confidence. Brave.",
-    "That's a lot of clipboard ambition for one sitting.",
-    "Imported wisdom—or wholesale borrowing?",
-  ],
-  devtools: [
-    "Hmm… curious eyes behind the curtain?",
-    "Inspecting me? I'm touched. Also filing that away.",
-    "DevTools open—doing homework or hunting bugs in my ego?",
-    "Peeking under the hood. Cute. Obvious, but cute.",
-  ],
+export function getDefaultMessage(lang: Lang): string {
+  return useTranslations(lang)('mascot.default')
 }
 
-export const DEFAULT_MESSAGE = "All good… for now."
+export function getSignalMessageVariants(lang: Lang): Record<DetectionSignal, readonly string[]> {
+  const t = useTranslations(lang)
+  return {
+    visibility: [
+      t('mascot.visibility.1'),
+      t('mascot.visibility.2'),
+      t('mascot.visibility.3'),
+      t('mascot.visibility.4'),
+    ],
+    blur: [
+      t('mascot.blur.1'),
+      t('mascot.blur.2'),
+      t('mascot.blur.3'),
+      t('mascot.blur.4'),
+    ],
+    fullscreen: [
+      t('mascot.fullscreen.1'),
+      t('mascot.fullscreen.2'),
+      t('mascot.fullscreen.3'),
+      t('mascot.fullscreen.4'),
+    ],
+    mouseleave: [
+      t('mascot.mouseleave.1'),
+      t('mascot.mouseleave.2'),
+      t('mascot.mouseleave.3'),
+      t('mascot.mouseleave.4'),
+    ],
+    paste: [
+      t('mascot.paste.1'),
+      t('mascot.paste.2'),
+      t('mascot.paste.3'),
+      t('mascot.paste.4'),
+    ],
+    devtools: [
+      t('mascot.devtools.1'),
+      t('mascot.devtools.2'),
+      t('mascot.devtools.3'),
+      t('mascot.devtools.4'),
+    ],
+  }
+}
 
 export class MascotController {
   private lastMessageAt = 0
@@ -56,19 +59,23 @@ export class MascotController {
     paste: 0,
     devtools: 0,
   }
+  private defaultMessage: string
+  private signalMessageVariants: Record<DetectionSignal, readonly string[]>
 
-  constructor(cooldownMs = 4000) {
+  constructor(lang: Lang, cooldownMs = 4000) {
     this.cooldownMs = cooldownMs
+    this.defaultMessage = getDefaultMessage(lang)
+    this.signalMessageVariants = getSignalMessageVariants(lang)
     const keys = Object.keys(this.variantCursor) as DetectionSignal[]
     for (const key of keys) {
       this.variantCursor[key] = Math.floor(
-        Math.random() * SIGNAL_MESSAGE_VARIANTS[key].length,
+        Math.random() * this.signalMessageVariants[key].length,
       )
     }
   }
 
   private nextVariant(signal: DetectionSignal): string {
-    const variants = SIGNAL_MESSAGE_VARIANTS[signal]
+    const variants = this.signalMessageVariants[signal]
     const i = this.variantCursor[signal] % variants.length
     this.variantCursor[signal]++
     return variants[i]!
@@ -76,7 +83,7 @@ export class MascotController {
 
   /** Returns the message to display. Respects cooldown to prevent spam. */
   resolveMessage(signal: DetectionSignal | null, currentMessage: string): string {
-    if (!signal) return DEFAULT_MESSAGE
+    if (!signal) return this.defaultMessage
     const now = Date.now()
     if (now - this.lastMessageAt < this.cooldownMs) return currentMessage
     this.lastMessageAt = now

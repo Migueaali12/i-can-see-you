@@ -11,8 +11,16 @@ import {
   House,
 } from "lucide-react"
 import Button from "@/components/ui/Button"
+import { useTranslations, getRelativeLocaleUrl } from "@/i18n/utils"
+import type { Lang } from "@/i18n/ui"
 
-export default function ManualGrid() {
+interface ManualGridProps {
+  lang?: Lang
+}
+
+export default function ManualGrid({ lang = 'en' }: ManualGridProps) {
+  const t = useTranslations(lang)
+
   return (
     <>
       <section className='grid grid-cols-1 md:grid-cols-2 gap-6 w-[min(1000px,calc(100%-3rem))] mx-auto pt-4 pb-8'>
@@ -21,10 +29,9 @@ export default function ManualGrid() {
           className='animate-in fade-in slide-in-from-bottom-4'
           style={{ animationDelay: "100ms" }}
         >
-          <ManualCard rotation={-1} icon={Eye} title='How It Works'>
+          <ManualCard rotation={-1} icon={Eye} title={t('manual.howWorksTitle')}>
             <p className='mb-4 text-(--color-secondary)'>
-              No magic, just standard browser APIs doing their job. Here's what
-              the sketchbook actually listens to.
+              {t('manual.howWorksDesc')}
             </p>
             <ul className='list-none m-0 p-0 flex flex-col gap-3'>
               <li className='flex items-start gap-3'>
@@ -36,11 +43,10 @@ export default function ManualGrid() {
                 />
                 <div>
                   <span className='font-semibold text-black'>
-                    Page Visibility API
+                    {t('manual.apiVisibility')}
                   </span>
                   <p className='text-(--color-secondary) text-[0.88rem] leading-relaxed mt-0.5'>
-                    Detects when you switch tabs or minimize the browser. If the
-                    document is hidden, we know you looked away.
+                    {t('manual.apiVisibilityDesc')}
                   </p>
                 </div>
               </li>
@@ -52,10 +58,9 @@ export default function ManualGrid() {
                   aria-hidden='true'
                 />
                 <div>
-                  <span className='font-semibold text-black'>Focus Events</span>
+                  <span className='font-semibold text-black'>{t('manual.apiFocus')}</span>
                   <p className='text-(--color-secondary) text-[0.88rem] leading-relaxed mt-0.5'>
-                    Monitors when the window loses or gains focus. Clicking on
-                    another application or monitor triggers this.
+                    {t('manual.apiFocusDesc')}
                   </p>
                 </div>
               </li>
@@ -68,10 +73,10 @@ export default function ManualGrid() {
                 />
                 <div>
                   <span className='font-semibold text-black'>
-                    Fullscreen API
+                    {t('manual.apiFullscreen')}
                   </span>
                   <p className='text-(--color-secondary) text-[0.88rem] leading-relaxed mt-0.5'>
-                    Notices when you exit fullscreen mode during the session.
+                    {t('manual.apiFullscreenDesc')}
                   </p>
                 </div>
               </li>
@@ -83,9 +88,9 @@ export default function ManualGrid() {
                   aria-hidden='true'
                 />
                 <div>
-                  <span className='font-semibold text-black'>Mouse Events</span>
+                  <span className='font-semibold text-black'>{t('manual.apiMouse')}</span>
                   <p className='text-(--color-secondary) text-[0.88rem] leading-relaxed mt-0.5'>
-                    Tracks when your cursor leaves the browser viewport.
+                    {t('manual.apiMouseDesc')}
                   </p>
                 </div>
               </li>
@@ -97,9 +102,9 @@ export default function ManualGrid() {
                   aria-hidden='true'
                 />
                 <div>
-                  <span className='font-semibold text-black'>Paste Events</span>
+                  <span className='font-semibold text-black'>{t('manual.apiPaste')}</span>
                   <p className='text-(--color-secondary) text-[0.88rem] leading-relaxed mt-0.5'>
-                    Registers paste actions while the session is running.
+                    {t('manual.apiPasteDesc')}
                   </p>
                 </div>
               </li>
@@ -112,11 +117,10 @@ export default function ManualGrid() {
                 />
                 <div>
                   <span className='font-semibold text-black'>
-                    DevTools Heuristic
+                    {t('manual.apiDevtools')}
                   </span>
                   <p className='text-(--color-secondary) text-[0.88rem] leading-relaxed mt-0.5'>
-                    A best-effort size-based check to guess if developer tools
-                    are open. Low confidence, high curiosity.
+                    {t('manual.apiDevtoolsDesc')}
                   </p>
                 </div>
               </li>
@@ -132,11 +136,10 @@ export default function ManualGrid() {
           <ManualCard
             rotation={0.8}
             icon={CheckSquare}
-            title='Tips to Not Get Caught'
+            title={t('manual.tipsTitle')}
           >
             <p className='mb-4 text-(--color-secondary)'>
-              If you're trying to ace the demo without raising any flags, here's
-              your cheat sheet.
+              {t('manual.tipsDesc')}
             </p>
             <ul className='list-none m-0 p-0 flex flex-col gap-3'>
               <li className='flex items-start gap-3'>
@@ -146,7 +149,7 @@ export default function ManualGrid() {
                   className='shrink-0 mt-[0.1rem] text-black'
                   aria-hidden='true'
                 />
-                <span>Keep the browser window focused at all times.</span>
+                <span>{t('manual.tip1')}</span>
               </li>
               <li className='flex items-start gap-3'>
                 <CheckSquare
@@ -155,7 +158,7 @@ export default function ManualGrid() {
                   className='shrink-0 mt-[0.1rem] text-black'
                   aria-hidden='true'
                 />
-                <span>Do not switch tabs while the session is active.</span>
+                <span>{t('manual.tip2')}</span>
               </li>
               <li className='flex items-start gap-3'>
                 <CheckSquare
@@ -164,9 +167,7 @@ export default function ManualGrid() {
                   className='shrink-0 mt-[0.1rem] text-black'
                   aria-hidden='true'
                 />
-                <span>
-                  Use a separate device if you need to look something up.
-                </span>
+                <span>{t('manual.tip3')}</span>
               </li>
               <li className='flex items-start gap-3'>
                 <CheckSquare
@@ -175,10 +176,7 @@ export default function ManualGrid() {
                   className='shrink-0 mt-[0.1rem] text-black'
                   aria-hidden='true'
                 />
-                <span>
-                  Enter fullscreen before the session starts if you want fewer
-                  edge cases.
-                </span>
+                <span>{t('manual.tip4')}</span>
               </li>
               <li className='flex items-start gap-3'>
                 <XSquare
@@ -189,10 +187,10 @@ export default function ManualGrid() {
                 />
                 <span>
                   <span className='line-through text-(--color-secondary)'>
-                    Close your eyes.
+                    {t('manual.tip5')}
                   </span>{" "}
                   <span className='text-(--color-secondary) text-[0.88rem]'>
-                    (Does not work. We still see the browser state.)
+                    {t('manual.tip5Sub')}
                   </span>
                 </span>
               </li>
@@ -205,8 +203,8 @@ export default function ManualGrid() {
         className='flex justify-center mt-12 mb-8 animate-in fade-in slide-in-from-bottom-4'
         style={{ animationDelay: "300ms" }}
       >
-        <Button href='/' variant='gray' size='lg'>
-          Back to Home <House size={18} strokeWidth={2} />
+        <Button href={getRelativeLocaleUrl(lang, '/')} variant='gray' size='lg'>
+          {t('common.backToHome')} <House size={18} strokeWidth={2} />
         </Button>
       </div>
     </>

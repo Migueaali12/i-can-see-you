@@ -1,8 +1,10 @@
 import type { DetectionSignal } from "@/core/detectionEngine"
 import type { FocusStatus } from "./useActiveSession"
 import { EyeClosed, ScanEye } from "lucide-react"
-import { t, SIGNAL_LABELS } from "./styles"
+import { t, getSignalLabels } from "./styles"
 import { DoodleCard } from "@/components/ui/DoodleCard"
+import { useTranslations } from "@/i18n/utils"
+import type { Lang } from "@/i18n/ui"
 
 type StatusConfig = {
   label: string
@@ -15,51 +17,61 @@ type StatusConfig = {
   borderStyle: string
 }
 
-const STATUS_CONFIG: Record<FocusStatus, StatusConfig> = {
-  in_focus: {
-    label: "IN FOCUS",
-    dotBg: "var(--color-on-card)",
-    dotBorder: "var(--color-on-card)",
-    text: "var(--color-on-card)",
-    labelColor: "var(--color-secondary)",
-    iconColor: "var(--color-on-card)",
-    bg: "var(--color-card)",
-    borderStyle: "2.5px solid var(--color-border)",
-  },
-  out_of_focus: {
-    label: "OUT OF FOCUS",
-    dotBg: "transparent",
-    dotBorder: "var(--color-on-card)",
-    text: "var(--color-on-card)",
-    labelColor: "var(--color-secondary)",
-    iconColor: "var(--color-on-card)",
-    bg: "var(--color-card)",
-    borderStyle: "2.5px dashed var(--color-border)",
-  },
-  event_detected: {
-    label: "EVENT DETECTED",
-    dotBg: "var(--color-card)",
-    dotBorder: "var(--color-card)",
-    text: "var(--color-card)",
-    labelColor: "var(--color-muted)",
-    iconColor: "var(--color-card)",
-    bg: "var(--color-on-card)",
-    borderStyle: "2.5px solid var(--color-border)",
-  },
+function getStatusConfig(lang: Lang): Record<FocusStatus, StatusConfig> {
+  const tr = useTranslations(lang)
+  return {
+    in_focus: {
+      label: tr('demo.inFocus'),
+      dotBg: "var(--color-on-card)",
+      dotBorder: "var(--color-on-card)",
+      text: "var(--color-on-card)",
+      labelColor: "var(--color-secondary)",
+      iconColor: "var(--color-on-card)",
+      bg: "var(--color-card)",
+      borderStyle: "2.5px solid var(--color-border)",
+    },
+    out_of_focus: {
+      label: tr('demo.outOfFocus'),
+      dotBg: "transparent",
+      dotBorder: "var(--color-on-card)",
+      text: "var(--color-on-card)",
+      labelColor: "var(--color-secondary)",
+      iconColor: "var(--color-on-card)",
+      bg: "var(--color-card)",
+      borderStyle: "2.5px dashed var(--color-border)",
+    },
+    event_detected: {
+      label: tr('demo.eventDetected'),
+      dotBg: "var(--color-card)",
+      dotBorder: "var(--color-card)",
+      text: "var(--color-card)",
+      labelColor: "var(--color-muted)",
+      iconColor: "var(--color-card)",
+      bg: "var(--color-on-card)",
+      borderStyle: "2.5px solid var(--color-border)",
+    },
+  }
+}
+
+interface StatusCardProps {
+  status: FocusStatus
+  signal: DetectionSignal | null
+  lang?: Lang
 }
 
 export default function StatusCard({
   status,
   signal,
-}: {
-  status: FocusStatus
-  signal: DetectionSignal | null
-}) {
-  const cfg = STATUS_CONFIG[status]
+  lang = 'en',
+}: StatusCardProps) {
+  const tr = useTranslations(lang)
+  const cfg = getStatusConfig(lang)[status]
   const Icon =
     status === "out_of_focus" || status === "event_detected"
       ? EyeClosed
       : ScanEye
+
+  const signalLabels = getSignalLabels(lang)
 
   return (
     <DoodleCard
@@ -88,7 +100,7 @@ export default function StatusCard({
             textTransform: "uppercase",
           }}
         >
-          Session status
+          {tr('demo.sessionStatus')}
         </span>
 
         <Icon size={44} strokeWidth={2.25} color={cfg.iconColor} aria-hidden />
@@ -132,7 +144,7 @@ export default function StatusCard({
           transition: "opacity 200ms ease",
         }}
       >
-        {signal ? `signal: ${SIGNAL_LABELS[signal]}` : "—"}
+        {signal ? `signal: ${signalLabels[signal]}` : "—"}
       </div>
     </DoodleCard>
   )
