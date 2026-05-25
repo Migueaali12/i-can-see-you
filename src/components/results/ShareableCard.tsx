@@ -252,6 +252,7 @@ export default function ShareableCard({
                 size='mascot--md'
                 score={results.attentionScore}
                 direction='top-left'
+                lang={lang}
               />
             </div>
           </div>
