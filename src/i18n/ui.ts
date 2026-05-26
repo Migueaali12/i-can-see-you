@@ -434,7 +434,7 @@ export const ui = {
     'results.durationLabel': 'Duración',
     'results.durationDesc': 'Tiempo total fuera de foco durante la sesión.',
     'results.scoreLabel': 'Score de Atención',
-    'results.scoreExcellent': 'Enfoque excelente. Casi te pillamos deslizándote.',
+    'results.scoreExcellent': 'Enfoque excelente. Casi te atrapamos descuidándote.',
     'results.scoreGood': 'No está mal, pero sabemos que puedes hacerlo mejor.',
     'results.scoreOkay': 'Hmm... hay margen de mejora.',
     'results.scorePoor': 'Te perdimos de vista bastante.',
@@ -504,7 +504,7 @@ export const ui = {
     'privacy.howWorks5': 'Paste Events — registra acciones de pegar durante la sesión.',
     'privacy.controlTitle': 'Tú lo controlas',
     'privacy.controlDesc':
-      'Tú mandas. Cierra la pestaña y soy amnésico. Tu privacidad está literalmente a un clic de distancia.',
+      'Tú decides. Cierra la pestaña y soy amnésico. Tu privacidad está literalmente a un clic de distancia.',
     'privacy.control1': 'No requiere acceso a cámara ni micrófono.',
     'privacy.control2': 'Toda la detección es pasiva — no se necesitan permisos para empezar.',
     'privacy.control3': 'Permisos explícitos opcionales disponibles en la página de Señales.',
@@ -539,12 +539,12 @@ export const ui = {
       'Una verificación de mejor esfuerzo basada en tamaño para adivinar si las herramientas de desarrollo están abiertas. Baja confianza, alta curiosidad.',
     'manual.tipsTitle': 'Consejos para no ser atrapado',
     'manual.tipsDesc':
-      'Si intentas pasar la demo sin levantar ninguna bandera, aquí está tu hoja de trucos.',
+      'Si intentas pasar la demo sin activar ninguna alerta, aquí está tu guía de trucos.',
     'manual.tip1': 'Mantén la ventana del navegador enfocada todo el tiempo.',
     'manual.tip2': 'No cambies de pestaña mientras la sesión está activa.',
     'manual.tip3': 'Usa un dispositivo separado si necesitas buscar algo.',
     'manual.tip4':
-      'Entra en pantalla completa antes de que empiece la sesión si quieres menos casos borde.',
+      'Entra en pantalla completa antes de que empiece la sesión si quieres menos casos extremos.',
     'manual.tip5': 'Cierra los ojos.',
     'manual.tip5Sub': '(No funciona. Todavía vemos el estado del navegador.)',
 
@@ -600,7 +600,7 @@ export const ui = {
     'mascot.fullscreen.1': 'Salida de pantalla completa… ¿ya te aburriste?',
     'mascot.fullscreen.2': 'No pudiste comprometerte con la imagen grande por mucho tiempo, ¿eh?',
     'mascot.fullscreen.3': 'Volviendo a lo normal — ¿miedo escénico o estrategia?',
-    'mascot.fullscreen.4': 'La experiencia cinematográfica terminó antes que el tráiler prometía.',
+    'mascot.fullscreen.4': 'La experiencia cinematográfica terminó antes de lo que el avance prometía.',
 
     // mouseleave
     'mascot.mouseleave.1': 'Tu mouse escapó del cuaderno.',
@@ -611,8 +611,8 @@ export const ui = {
     // paste
     'mascot.paste.1': 'Pegado detectado. ¿Trampa creativa?',
     'mascot.paste.2': 'Ctrl+V con confianza. Valiente.',
-    'mascot.paste.3': 'Esa es mucha ambición del portapapeles para una sentada.',
-    'mascot.paste.4': '¿Sabiduría importada — o préstamo al por mayor?',
+    'mascot.paste.3': 'Esa es mucha ambición del portapapeles para una sola sesión.',
+    'mascot.paste.4': '¿Sabiduría importada — o préstamo en masa?',
 
     // devtools
     'mascot.devtools.1': 'Hmm… ¿ojos curiosos detrás de la cortina?',
