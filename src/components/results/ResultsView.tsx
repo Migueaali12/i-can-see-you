@@ -37,15 +37,11 @@ interface ResultsViewProps {
 
 export default function ResultsView({ lang = 'en' }: ResultsViewProps) {
   const t = useTranslations(lang)
-  const [results, setResults] = useState<SessionResults | null>(null)
+  const [results] = useState<SessionResults | null>(() => loadResults())
   const cardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const data = loadResults()
-    if (data) {
-      setResults(data)
-      clearResults()
-    }
+    clearResults()
   }, [])
 
   const [shareStatus, setShareStatus] = useState<
