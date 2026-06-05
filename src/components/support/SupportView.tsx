@@ -39,7 +39,7 @@ function Badge({ variant, lang = 'en' }: { variant: BadgeVariant; lang?: Lang })
   const labels = getBadgeLabels(lang)
   return (
     <span
-      className={`inline-block font-body text-[0.65rem] font-bold tracking-[0.08em] px-[0.55rem] py-[0.2rem] rounded-[2px] whitespace-nowrap ${BADGE_CLASSES[variant]}`}
+      className={`inline-block font-body text-[0.65rem] font-bold tracking-[0.08em] px-[0.55rem] py-[0.2rem] rounded-xs whitespace-nowrap ${BADGE_CLASSES[variant]}`}
     >
       {labels[variant]}
     </span>
@@ -204,7 +204,7 @@ export default function SupportView({ lang = 'en' }: SupportViewProps) {
       </div>
 
       {statuses.some((s) => s.permission === "unsupported") && (
-        <div className='mb-10 p-4 border border-dashed border-(--color-outline-variant) rounded-[4px] bg-(--color-surface) animate-in fade-in slide-in-from-bottom-3'>
+        <div className='mb-10 p-4 border border-dashed border-(--color-outline-variant) rounded-sm bg-(--color-surface) animate-in fade-in slide-in-from-bottom-3'>
           <div className='flex items-start gap-2'>
             <Info
               size={14}
