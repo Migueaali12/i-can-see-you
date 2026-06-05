@@ -12,7 +12,7 @@ const SiteFooter = ({ lang, withPageSpacing = true }: SiteFooterProps) => {
       <footer
          className={[
             "flex shrink-0 flex-wrap items-center justify-between gap-4 border-2 border-b-0 border-l-0 border-r-0 border-t-4 border-(--color-border) bg-(--color-card) px-6 py-3",
-            withPageSpacing ? "mt-12" : "",
+            withPageSpacing ? "mt-10" : "",
          ]
             .filter(Boolean)
             .join(" ")}
