@@ -53,7 +53,7 @@ function RunningView({
       }
       footerWithPageSpacing={false}
     >
-      <div className='grid w-full max-w-[720px] grid-cols-[2fr_1fr] gap-5'>
+      <div className='grid w-full max-w-180 grid-cols-[2fr_1fr] gap-5'>
         <div className='animate-in fade-in slide-in-from-bottom-4'>
           <StatusCard status={focusStatus} signal={currentSignal} lang={lang} />
         </div>
