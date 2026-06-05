@@ -4,66 +4,66 @@ import { useTranslations } from "@/i18n/utils"
 import type { Lang } from "@/i18n/ui"
 
 interface Props {
-  lang: Lang
+   lang: Lang
 }
 
 const { lang } = Astro.props
 const t = useTranslations(lang)
 
 const detectedItems = [
-  t('landing.coverage.detect1'),
-  t('landing.coverage.detect2'),
-  t('landing.coverage.detect3'),
-  t('landing.coverage.detect4'),
-  t('landing.coverage.detect5'),
-  t('landing.coverage.detect6'),
+   t("landing.coverage.detect1"),
+   t("landing.coverage.detect2"),
+   t("landing.coverage.detect3"),
+   t("landing.coverage.detect4"),
+   t("landing.coverage.detect5"),
+   t("landing.coverage.detect6"),
 ]
 
 const notDetectedItems = [
-  t('landing.coverage.cannot1'),
-  t('landing.coverage.cannot2'),
-  t('landing.coverage.cannot3'),
-  t('landing.coverage.cannot4'),
-  t('landing.coverage.cannot5'),
-  t('landing.coverage.cannot6'),
+   t("landing.coverage.cannot1"),
+   t("landing.coverage.cannot2"),
+   t("landing.coverage.cannot3"),
+   t("landing.coverage.cannot4"),
+   t("landing.coverage.cannot5"),
+   t("landing.coverage.cannot6"),
 ]
 ---
 
 <section
-  aria-labelledby='coverage-heading'
-  class='flex flex-col shrink-0 pb-11'
+   aria-labelledby='coverage-heading'
+   class='flex flex-col shrink-0 pb-[clamp(2.5rem,5rem,7rem)]'
 >
-  <h2 id='coverage-heading' class='sr-only'>
-    {t('landing.coverage.srHeading')}
-  </h2>
+   <h2 id='coverage-heading' class='sr-only'>
+      {t("landing.coverage.srHeading")}
+   </h2>
 
-  <div
-    class='flex flex-wrap justify-center gap-[clamp(1rem,3vh,2.5rem)] max-w-350 w-[calc(100%-2rem)] mx-auto items-start'
-  >
-    <div
-      class='animate-in fade-in slide-in-from-bottom-4 [&_ul]:text-[14px]! flex-1 min-w-70 max-w-140'
-      style='animation-delay:150ms'
-    >
-      <DoodleCard
-        className='landing-card-rotate-left'
-        dashedBorder
-        corner='scan'
-        title={t('landing.coverage.detectTitle')}
-        listItems={detectedItems}
-      />
-    </div>
-    <div
-      class='animate-in fade-in slide-in-from-bottom-4 [&_ul]:text-[14px]! flex-1 min-w-70 max-w-140'
-      style='animation-delay:250ms'
-    >
-      <DoodleCard
-        className='landing-card-rotate-right'
-        dashedBorder
-        corner='eye-off'
-        title={t('landing.coverage.cannotTitle')}
-        listItems={notDetectedItems}
-        listMuted
-      />
-    </div>
-  </div>
+   <div
+      class='flex flex-wrap justify-center gap-[clamp(1rem,3vh,2.5rem)] max-w-350 w-[calc(100%-2rem)] mx-auto items-start'
+   >
+      <div
+         class='animate-in fade-in slide-in-from-bottom-4 [&_ul]:text-[14px]! flex-1 min-w-70 max-w-140'
+         style='animation-delay:150ms'
+      >
+         <DoodleCard
+            className='landing-card-rotate-left'
+            dashedBorder
+            corner='scan'
+            title={t("landing.coverage.detectTitle")}
+            listItems={detectedItems}
+         />
+      </div>
+      <div
+         class='animate-in fade-in slide-in-from-bottom-4 [&_ul]:text-[14px]! flex-1 min-w-70 max-w-140'
+         style='animation-delay:250ms'
+      >
+         <DoodleCard
+            className='landing-card-rotate-right'
+            dashedBorder
+            corner='eye-off'
+            title={t("landing.coverage.cannotTitle")}
+            listItems={notDetectedItems}
+            listMuted
+         />
+      </div>
+   </div>
 </section>

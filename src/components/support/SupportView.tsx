@@ -152,7 +152,7 @@ export default function SupportView({ lang = 'en' }: SupportViewProps) {
     return (
       <SiteShell
         lang={lang}
-        className='flex min-h-screen flex-col'
+        className='flex min-h-dvh flex-col'
         mainClassName='flex flex-1 flex-col items-center justify-center px-6 py-16'
       >
         <span className='font-body text-base text-(--color-secondary)'>
