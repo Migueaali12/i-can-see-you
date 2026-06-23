@@ -11,6 +11,8 @@ const t = useTranslations(lang)
   title={t('signals.title')}
   description={t('signals.description')}
   keywords={t('signals.keywords')}
+  hideHeader
+  hideFooter
 >
   <SupportView client:load lang={lang} />
 </Layout>
