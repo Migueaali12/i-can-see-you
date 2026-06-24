@@ -37,26 +37,26 @@ export default function ThemeToggle({ lang = 'en' }: ThemeToggleProps) {
   }, [isDark, applyTheme])
 
   // Prevent flash of wrong icon during hydration
-  if (!mounted) {
+  if (!mounted) 
     return (
       <button
         aria-label={t('nav.toggleDark')}
-        className="inline-flex items-center justify-center w-9 h-9 rounded-md border-transparent bg-transparent text-(--color-on-card) opacity-0"
+        className="inline-flex items-center justify-center rounded-md border-transparent bg-transparent text-(--color-on-card) opacity-0"
         disabled
       >
-        <Sun size={20} />
+        <Sun size={21} />
       </button>
     )
-  }
+  
 
   return (
     <button
       onClick={toggle}
       aria-label={isDark ? t('nav.switchToLight') : t('nav.switchToDark')}
       title={isDark ? t('nav.switchToLight') : t('nav.switchToDark')}
-      className="inline-flex items-center justify-center w-9 h-9 rounded-md border-(--color-border) bg-(--color-card) text-(--color-on-card) transition-[transform,opacity] duration-150 ease-in-out hover:-rotate-3 hover:scale-110 active:scale-95"
+      className="inline-flex items-center justify-center rounded-md border-(--color-border) bg-(--color-card) text-(--color-on-card) transition-[transform,opacity] duration-150 ease-in-out hover:-rotate-3 hover:scale-110 active:scale-95"
     >
-      {isDark ? <Sun size={20} strokeWidth={2} /> : <Moon size={20} strokeWidth={2} />}
+      {isDark ? <Sun size={21} strokeWidth={2} /> : <Moon size={21} strokeWidth={2} />}
     </button>
   )
 }
