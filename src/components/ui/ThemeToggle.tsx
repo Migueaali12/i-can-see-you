@@ -8,7 +8,6 @@ interface ThemeToggleProps {
 }
 
 export default function ThemeToggle({ lang = 'en' }: ThemeToggleProps) {
-  debugger
   const t = useTranslations(lang)
   const [isDark, setIsDark] = useState(false)
   const [mounted, setMounted] = useState(false)
