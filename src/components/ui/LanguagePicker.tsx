@@ -40,16 +40,16 @@ const LanguagePicker = ({ lang }: LanguagePickerProps) => {
   }, [isOpen, close])
 
   return (
-    <div className='relative' ref={containerRef}>
+    <div className='relative flex' ref={containerRef}>
       <button
         type='button'
         onClick={toggle}
         aria-label='Select language'
         aria-expanded={isOpen}
         aria-haspopup='listbox'
-        className={`inline-flex items-center justify-center w-10 h-10 bg-(--color-card) text-(--color-on-card) transition-[transform,opacity] duration-150 ease-in-out hover:-rotate-3 hover:scale-110 active:scale-95 ${isOpen ? "-rotate-3 scale-110" : ""}`}
+        className={`inline-flex items-center justify-center bg-(--color-card) text-(--color-on-card) transition-[transform,opacity] duration-150 ease-in-out hover:-rotate-3 hover:scale-110 active:scale-95 ${isOpen ? "-rotate-3 scale-110" : ""}`}
       >
-        <Globe size={20} strokeWidth={2} />
+        <Globe size={20} />
       </button>
 
       {isOpen && (

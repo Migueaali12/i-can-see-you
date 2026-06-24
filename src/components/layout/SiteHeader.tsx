@@ -23,11 +23,11 @@ const SiteHeader = ({ lang }: SiteHeaderProps) => {
       <div className='flex w-full items-center justify-center md:w-auto md:justify-end'>
         <nav aria-label={t('nav.main')}
         >
-        <ul className='m-0 flex list-none items-center gap-4 p-0 md:gap-6'>
+        <ul className='m-0 flex list-none items-center gap-4 p-0 md:gap-8'>
           <li>
             <a
               href={getRelativeLocaleUrl(lang, '/signals')}
-              className='inline-block text-[0.85rem] font-bold uppercase tracking-wider text-(--color-secondary) underline decoration-2 transition-[color,transform] duration-150 ease-in-out hover:-rotate-1 hover:scale-[1.05] hover:text-(--color-on-card)'
+              className='inline-block text-sm font-bold uppercase tracking-wider text-(--color-secondary) underline decoration-2 transition-[color,transform] duration-150 ease-in-out hover:-rotate-1 hover:scale-[1.05] hover:text-(--color-on-card)'
             >
               {t('nav.signals')}
             </a>
@@ -35,7 +35,7 @@ const SiteHeader = ({ lang }: SiteHeaderProps) => {
           <li>
             <a
               href={getRelativeLocaleUrl(lang, '/demo')}
-              className='inline-block text-[0.85rem] font-bold uppercase tracking-wider text-(--color-secondary) underline decoration-2 transition-[color,transform] duration-150 ease-in-out hover:-rotate-1 hover:scale-[1.05] hover:text-(--color-on-card)'
+              className='inline-block text-sm font-bold uppercase tracking-wider text-(--color-secondary) underline decoration-2 transition-[color,transform] duration-150 ease-in-out hover:-rotate-1 hover:scale-[1.05] hover:text-(--color-on-card)'
             >
               {t('nav.demo')}
             </a>
@@ -55,8 +55,8 @@ const SiteHeader = ({ lang }: SiteHeaderProps) => {
               className='inline-flex items-center text-(--color-secondary) transition-[color,transform] duration-150 ease-in-out hover:scale-[1.15] hover:text-(--color-on-card)'
             >
               <GitHub
-                width={20}
-                height={20}
+                width={19}
+                height={19}
               />
             </a>
           </li>
