@@ -37,7 +37,7 @@ export default function ThemeToggle({ lang = 'en' }: ThemeToggleProps) {
   }, [isDark, applyTheme])
 
   // Prevent flash of wrong icon during hydration
-  if (!mounted) 
+  if (!mounted) {
     return (
       <button
         aria-label={t('nav.toggleDark')}
@@ -47,7 +47,7 @@ export default function ThemeToggle({ lang = 'en' }: ThemeToggleProps) {
         <Sun size={21} />
       </button>
     )
-  
+  }
 
   return (
     <button

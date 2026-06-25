@@ -24,7 +24,11 @@ const SIZE_SHADOW_TRANSLATE: Record<ButtonSize, { rest: string; active: string }
   xl: { rest: "[translate:8px_8px]", active: "group-active:[translate:3px_3px]" },
 }
 
-interface ButtonProps {
+interface ButtonProps
+  extends Omit<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    "type" | "lang" | "onClick" | "onMouseEnter" | "onMouseLeave"
+  > {
   href?: string
   variant?: ButtonVariant
   size?: ButtonSize
@@ -33,12 +37,9 @@ interface ButtonProps {
   onClick?: () => void
   onMouseEnter?: () => void
   onMouseLeave?: () => void
-  children?: ReactNode
-  disabled?: boolean
   loading?: boolean
   loadingText?: string
   lang?: Lang
-  className?: string
   innerClassName?: string
 }
 
@@ -58,6 +59,7 @@ export default function Button({
   lang = 'en',
   className,
   innerClassName,
+  ...buttonProps
 }: ButtonProps) {
   const t = useTranslations(lang)
   const resolvedLoadingText = loadingText ?? t('common.loading')
@@ -133,6 +135,7 @@ export default function Button({
           onClick={onClick}
           disabled={isDisabled}
           className={innerCls}
+          {...buttonProps}
         >
           {content}
         </button>
