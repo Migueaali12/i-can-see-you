@@ -42,6 +42,9 @@ export const ui = {
     'nav.switchToLight': 'Let there be light',
     'nav.switchToDark': 'Dim the lights',
     'nav.toggleDark': 'Toggle dark mode',
+    'nav.openMenu': 'Open menu',
+    'nav.closeMenu': 'Close menu',
+    'nav.menu': 'Menu',
 
     // ── Landing ─────────────────────────────────────────────────
     'landing.heroTagline': "60 seconds. That's all it takes. Try not to get distracted.",
@@ -383,6 +386,9 @@ export const ui = {
     'nav.switchToLight': 'Que haya luz',
     'nav.switchToDark': 'Bajar las luces',
     'nav.toggleDark': 'Cambiar modo oscuro',
+    'nav.openMenu': 'Abrir menú',
+    'nav.closeMenu': 'Cerrar menú',
+    'nav.menu': 'Menú',
 
     // ── Landing ─────────────────────────────────────────────────
     'landing.heroTagline': '60 segundos. Eso es todo lo que necesitas. Intenta no distraerte.',
