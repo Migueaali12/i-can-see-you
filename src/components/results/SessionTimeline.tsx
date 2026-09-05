@@ -2,6 +2,7 @@ import { useMemo } from "react"
 import type { SessionResults } from "@/core/resultsBuilder"
 import type { DetectionSignal } from "@/core/detectionEngine"
 import { DoodleCard } from "@/components/ui/DoodleCard"
+import AttentionChart from "./AttentionChart"
 import { formatTimerMs } from "./utils"
 import { X, Eye } from "lucide-react"
 import { useTranslations } from "@/i18n/utils"
@@ -19,12 +20,12 @@ function useSignalLabels(lang: Lang) {
   } as Record<DetectionSignal, string>
 }
 
-interface TimelineMarker {
+interface LegendGroup {
   type: DetectionSignal
   label: string
+  count: number
   startOffsetMs: number
-  durationMs: number
-  leftPercent: number
+  endOffsetMs: number
 }
 
 interface SessionTimelineProps {
@@ -36,43 +37,49 @@ export default function SessionTimeline({ results, lang = 'en' }: SessionTimelin
   const t = useTranslations(lang)
   const signalLabels = useSignalLabels(lang)
 
-  const markers = useMemo(() => {
+  const legendGroups = useMemo(() => {
     if (!results.endedAt || !results.sessionDurationMs) return []
     const sessionStart = results.endedAt - results.sessionDurationMs
 
-    const all: TimelineMarker[] = []
+    const items: Array<{ type: DetectionSignal; startOffsetMs: number; endOffsetMs: number }> = []
 
     for (const ev of results.events.closed) {
-      const offset = ev.startedAt - sessionStart
-      const leftPct = Math.max(
-        0,
-        Math.min(100, (offset / results.sessionDurationMs) * 100),
-      )
-      all.push({
+      items.push({
         type: ev.type,
-        label: signalLabels[ev.type] ?? ev.type,
-        startOffsetMs: offset,
-        durationMs: ev.durationMs,
-        leftPercent: leftPct,
+        startOffsetMs: ev.startedAt - sessionStart,
+        endOffsetMs: ev.startedAt - sessionStart + ev.durationMs,
       })
     }
 
     for (const ev of results.events.open) {
-      const offset = ev.startedAt - sessionStart
-      const leftPct = Math.max(
-        0,
-        Math.min(100, (offset / results.sessionDurationMs) * 100),
-      )
-      all.push({
+      items.push({
         type: ev.type,
-        label: signalLabels[ev.type] ?? ev.type,
-        startOffsetMs: offset,
-        durationMs: ev.durationMs ?? 0,
-        leftPercent: leftPct,
+        startOffsetMs: ev.startedAt - sessionStart,
+        endOffsetMs: ev.startedAt - sessionStart + (ev.durationMs ?? 0),
       })
     }
 
-    return all.sort((a, b) => a.startOffsetMs - b.startOffsetMs)
+    items.sort((a, b) => a.startOffsetMs - b.startOffsetMs)
+
+    // Collapse consecutive same-type incidents into one row.
+    const groups: LegendGroup[] = []
+    for (const item of items) {
+      const last = groups[groups.length - 1]
+      if (last && last.type === item.type) {
+        last.count += 1
+        last.endOffsetMs = Math.max(last.endOffsetMs, item.endOffsetMs)
+      } else {
+        groups.push({
+          type: item.type,
+          label: signalLabels[item.type] ?? item.type,
+          count: 1,
+          startOffsetMs: item.startOffsetMs,
+          endOffsetMs: item.endOffsetMs,
+        })
+      }
+    }
+
+    return groups
   }, [results, signalLabels])
 
   return (
@@ -86,50 +93,20 @@ export default function SessionTimeline({ results, lang = 'en' }: SessionTimelin
         {t('results.timelineTitle')}
       </h2>
 
-      <div className='relative mt-4'>
-        <div className='relative h-3 bg-(--color-surface-variant) border border-(--color-outline-variant)'>
-          {markers.map((m, i) => (
-            <div
-              key={`${m.type}-${i}`}
-              className='absolute top-1/2 -translate-y-1/2 z-10 group'
-              style={{ left: `${m.leftPercent}%` }}
-            >
-              <div className='relative flex items-center justify-center w-6 h-6 -ml-3 bg-(--color-surface) border-2 border-(--color-border) rounded-full'>
-                <X className='w-3.5 h-3.5 text-(--color-on-card)' />
-              </div>
-              <div className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-(--color-on-card) text-(--color-card) text-xs font-body rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none'>
-                {m.label} ({formatTimerMs(m.durationMs)})
-              </div>
-            </div>
-          ))}
+      <AttentionChart results={results} lang={lang} />
 
-          {markers.length === 0 && (
-            <div className='absolute inset-0 flex items-center justify-center'>
-              <Eye className='w-4 h-4 text-(--color-secondary)' />
-            </div>
-          )}
-        </div>
-
-        <div className='flex justify-between mt-3 text-xs font-body text-(--color-secondary)'>
-          <span>{t('results.timelineStart')}</span>
-          <span>{formatTimerMs(results.sessionDurationMs)}</span>
-        </div>
-      </div>
-
-      {markers.length > 0 && (
+      {legendGroups.length > 0 && (
         <div className='mt-6 flex flex-col gap-1'>
-          {markers.map((m, i) => (
+          {legendGroups.map((g, i) => (
             <div
               key={`legend-${i}`}
               className='flex items-center gap-2 text-sm font-body text-(--color-on-surface)'
             >
               <X className='w-3.5 h-3.5 shrink-0 text-(--color-on-card)' />
-              <span className='font-semibold'>{m.label}</span>
+              <span className='font-semibold'>{g.label}</span>
+              {g.count > 1 && <span className='text-(--color-secondary)'>×{g.count}</span>}
               <span className='text-(--color-secondary)'>
-                {formatTimerMs(m.durationMs)}
-              </span>
-              <span className='text-(--color-outline) ml-auto text-xs'>
-                {formatTimerMs(m.startOffsetMs)}
+                {formatTimerMs(g.startOffsetMs)}–{formatTimerMs(g.endOffsetMs)}
               </span>
             </div>
           ))}

@@ -1,5 +1,6 @@
 import type { EventStore, ClosedIncident } from "./eventStore"
 import type { DetectionEvent } from "./detectionEngine"
+import { buildAttentionSamples } from "./attention"
 
 export interface SessionResults {
   sessionDurationMs: number
@@ -11,6 +12,8 @@ export interface SessionResults {
     open: DetectionEvent[]
     closed: ClosedIncident[]
   }
+  /** Per-second attention samples (0-100), length ≈ duration/1s. */
+  samples?: number[]
   endedAt: number
 }
 
@@ -23,6 +26,8 @@ export function buildResults(
   const incidentCount = store.getIncidentCount()
   const totalDistractedMs = store.getTotalDistractedMs()
   const longestIncidentMs = store.getLongestIncidentMs()
+  const events = store.snapshot()
+  const endedAt = Date.now()
 
   // Base score: % of session spent in focus
   const distractedRatio = Math.min(
@@ -40,8 +45,9 @@ export function buildResults(
     totalDistractedMs,
     longestIncidentMs,
     attentionScore,
-    events: store.snapshot(),
-    endedAt: Date.now(),
+    events,
+    samples: buildAttentionSamples(events, sessionDurationMs, endedAt),
+    endedAt,
   }
 }
 

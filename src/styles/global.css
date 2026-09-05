@@ -45,6 +45,46 @@
   animation-delay: 500ms;
 }
 
+/* ─── Chart draw-in ────────────────────────────────────────────────
+ * Line draws itself via stroke-dashoffset (pathLength is normalized
+ * to 1 in the SVG), then the fill/markers fade in softly.
+ * ----------------------------------------------------------------- */
+
+@keyframes line-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@utility draw-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation-name: line-draw;
+  animation-duration: 900ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: forwards;
+}
+
+@keyframes chart-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@utility chart-fade {
+  animation-name: chart-fade;
+  animation-duration: 500ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-delay: 700ms;
+  animation-fill-mode: both;
+}
+
 /* ─── Design Tokens ─────────────────────────────────────────────── */
 
 :root {
