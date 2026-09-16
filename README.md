@@ -4,6 +4,10 @@
 
 <h1 align="center">I Can See You</h1>
 
+<p align="center">
+  <strong>English</strong> | <a href="README.es.md">Español</a>
+</p>
+
 Demo web app that simulates and visualizes browser-detectable distraction signals during a timed session. Experience what typical exam platforms can (and cannot) detect when you lose focus — tab switches, window blur, fullscreen exits, and more.
 
 <p align="center">
