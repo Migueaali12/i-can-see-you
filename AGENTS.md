@@ -23,7 +23,6 @@ The app demonstrates **browser signals**, not full OS-level surveillance.
 7. **Shareable card preview** (`/shareable-card`) — dev-only OG card preview (noindex).
 
 ### In scope (future)
-- Shareable results card (image export)
 - Session comparison / history
 - Free mode (unguided sandbox)
 - Optional stricter mode profiles
@@ -121,7 +120,7 @@ src/
 │   ├── layout/          # SiteShell, SiteHeader, SiteFooter
 │   ├── mascot/          # MascotEyes (React), MascotEyesStatic (Astro and React)
 │   ├── demo/            # ActiveSessionView + active-session/ subfolder
-│   ├── results/         # ResultsView, MetricsRow, SessionTimeline, TransparencyBlock
+│   ├── results/         # ResultsView, MetricsRow, SessionTimeline, TransparencyBlock, ShareableCard
 │   ├── landing/         # HeroSection, HeroCtaButton, CoverageSection
 │   ├── support/         # SupportView (permissions gate)
 │   ├── manual/          # ManualCard, ManualGrid, ManualHero
@@ -252,7 +251,6 @@ All agents operating on this project must:
 ---
 ## 15) Planned Evolution (Post-MVP)
 - Dark mode across remaining pages (`/signals`, `/demo`, `/results`, `/manual`, `/privacy`) — currently implemented on `/` only
-- Shareable results card (image export) — `ShareableCard` component is a TODO
 - Rich timeline with confidence breakdown per event
 - Exportable event log (JSON)
 - Session comparison / history
