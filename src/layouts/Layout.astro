@@ -93,6 +93,54 @@ const allLangs: Lang[] = ["en", "es"]
          })()
       </script>
 
+      <!-- Language auto-detection: stored preference wins, else browser language -->
+      <script is:inline>
+         ;(function () {
+            try {
+               var KEY = "preferred-lang"
+               var stored = null
+               try {
+                  stored = localStorage.getItem(KEY)
+               } catch (e) {}
+               if (stored !== "en" && stored !== "es") stored = null
+
+               var path = window.location.pathname
+               var current =
+                  path === "/es" || path.indexOf("/es/") === 0 ? "es" : "en"
+
+               var preferred = stored
+               if (!preferred) {
+                  var nav =
+                     (navigator.languages && navigator.languages[0]) ||
+                     navigator.language ||
+                     "en"
+                  preferred =
+                     typeof nav === "string" &&
+                     nav.toLowerCase().indexOf("es") === 0
+                        ? "es"
+                        : "en"
+                  try {
+                     localStorage.setItem(KEY, preferred)
+                  } catch (e) {}
+               }
+
+               if (preferred !== current) {
+                  var target
+                  if (preferred === "es") {
+                     target = "/es" + (path === "/" ? "/" : path)
+                  } else {
+                     target = path.replace(/^\/es(?=\/|$)/, "") || "/"
+                  }
+                  if (target !== path) {
+                     window.location.replace(
+                        target + window.location.search + window.location.hash
+                     )
+                  }
+               }
+            } catch (e) {}
+         })()
+      </script>
+
       <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
       <link rel='icon' href='/favicon.ico' />
 

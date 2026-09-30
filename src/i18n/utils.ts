@@ -1,4 +1,37 @@
-import { ui, defaultLang, type Lang } from './ui';
+import { ui, defaultLang, languages, type Lang } from './ui';
+
+export const LANG_STORAGE_KEY = 'preferred-lang';
+
+export function isLang(value: unknown): value is Lang {
+  return typeof value === 'string' && value in languages;
+}
+
+export function getStoredLang(): Lang | null {
+  try {
+    const stored = localStorage.getItem(LANG_STORAGE_KEY);
+    return isLang(stored) ? stored : null;
+  } catch {
+    return null;
+  }
+}
+
+export function setStoredLang(lang: Lang): void {
+  try {
+    localStorage.setItem(LANG_STORAGE_KEY, lang);
+  } catch {
+    // storage unavailable — silently continue
+  }
+}
+
+export function getBrowserLang(): Lang {
+  try {
+    const nav =
+      (navigator.languages?.[0] ?? navigator.language ?? defaultLang) as string;
+    return nav.toLowerCase().startsWith('es') ? 'es' : 'en';
+  } catch {
+    return defaultLang;
+  }
+}
 
 export function getLangFromUrl(url: URL): Lang {
   const [, lang] = url.pathname.split('/');

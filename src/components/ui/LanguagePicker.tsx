@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react"
-import { useTranslatedPath } from "@/i18n/utils"
+import { useTranslatedPath, LANG_STORAGE_KEY } from "@/i18n/utils"
 import { languages, type Lang } from "@/i18n/ui"
 import { Globe, Check } from "lucide-react"
 
@@ -14,6 +14,18 @@ const LanguagePicker = ({ lang }: LanguagePickerProps) => {
 
   const toggle = useCallback(() => setIsOpen((prev) => !prev), [])
   const close = useCallback(() => setIsOpen(false), [])
+
+  const handleSelect = useCallback(
+    (code: Lang) => {
+      try {
+        localStorage.setItem(LANG_STORAGE_KEY, code)
+      } catch {
+        // storage unavailable — navigation still works
+      }
+      setIsOpen(false)
+    },
+    [],
+  )
 
   useEffect(() => {
     if (!isOpen) return
@@ -72,7 +84,7 @@ const LanguagePicker = ({ lang }: LanguagePickerProps) => {
                   <li key={code} role='option' aria-selected={isActive}>
                     <a
                       href={translatePath("/", code as Lang)}
-                      onClick={() => setIsOpen(false)}
+                      onClick={() => handleSelect(code as Lang)}
                       className={`flex items-center gap-2 px-3 py-1.5 text-sm rounded transition-colors duration-150 font-body ${
                         isActive
                           ? "bg-(--color-primary) text-(--color-on-primary)! font-semibold"
